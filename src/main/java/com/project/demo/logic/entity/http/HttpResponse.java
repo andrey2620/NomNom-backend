@@ -1,8 +1,5 @@
 package com.project.demo.logic.entity.http;
 
-
-import com.project.demo.logic.entity.order.Order;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -56,5 +53,4 @@ public class HttpResponse<T> {
     public void setMeta(Meta meta) {
         this.meta = meta;
     }
-
 }
