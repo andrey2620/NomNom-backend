@@ -34,7 +34,6 @@ public class AuthRestController {
     private RoleRepository roleRepository;
 
 
-
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
 
