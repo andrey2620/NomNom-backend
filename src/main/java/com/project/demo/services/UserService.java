@@ -43,4 +43,10 @@ public class UserService {
         user.setTokenExpirationTime(0);  // Limpiar la expiración del token
         userRepository.save(user);
     }
+
+    public void deleteToken(User user) {
+        user.setPasswordResetToken(null);
+        user.setTokenExpirationTime(0);
+        userRepository.save(user);
+    }
 }

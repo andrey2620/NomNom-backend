@@ -1,9 +1,13 @@
 package com.project.demo.rest.user;
 
+import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.user.User;
 import com.project.demo.services.EmailService;
 import com.project.demo.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -21,11 +25,13 @@ public class PasswordResetController {
     private EmailService emailService;
 
     @PostMapping("/forgot-password")
-    public String forgotPassword(@RequestParam String email) {
+    public ResponseEntity<?> forgotPassword(@RequestParam String email, HttpServletRequest request) {
         // Verifica si el correo existe en la base de datos
         Optional<User> userOptional = userService.findByEmail(email);
         if (!userOptional.isPresent()) {
-            return "Correo no encontrado";
+            // Usamos el GlobalResponseHandler como en el resto del código
+            return new GlobalResponseHandler().handleResponse("Correo no encontrado",
+                    HttpStatus.BAD_REQUEST, request);
         }
 
         User user = userOptional.get();
@@ -42,15 +48,18 @@ public class PasswordResetController {
         // Envia el correo con el enlace
         emailService.sendPasswordResetEmail(user.getEmail(), resetLink);
 
-        return "Correo de recuperación enviado";
+        // Usamos el GlobalResponseHandler para la respuesta exitosa
+        return new GlobalResponseHandler().handleResponse("Correo de recuperación enviado",
+                HttpStatus.OK, request);
     }
 
+
     @PostMapping("/reset-password")
-    public String resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestBody String newPassword, HttpServletRequest httpRequest) {
         // Verifica si el token es válido y está asociado a un usuario
         Optional<User> userOptional = userService.findByResetToken(token);
         if (!userOptional.isPresent()) {
-            return "Token no válido o expirado";
+            return new GlobalResponseHandler().handleResponse("Token no válido o expirado", HttpStatus.BAD_REQUEST, httpRequest);
         }
 
         User user = userOptional.get();
@@ -58,12 +67,13 @@ public class PasswordResetController {
 
         // Verifica si el token ha expirado
         if (user.getTokenExpirationTime() < currentTime) {
-            return "El token ha expirado";
+            return new GlobalResponseHandler().handleResponse("El token ha expirado", HttpStatus.BAD_REQUEST, httpRequest);
         }
 
         // Actualiza la contraseña
         userService.changePassword(user, newPassword);
 
-        return "Contraseña actualizada";
+        return new GlobalResponseHandler().handleResponse("Contraseña actualizada", HttpStatus.OK, httpRequest);
     }
+
 }
