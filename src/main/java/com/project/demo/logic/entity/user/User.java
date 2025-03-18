@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,9 @@ public class User implements UserDetails {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    private String passwordResetToken;
+    private long tokenExpirationTime;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -137,5 +141,21 @@ public class User implements UserDetails {
         this.role = role;
 
         return this;
+    }
+
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
+
+    public long getTokenExpirationTime() {
+        return tokenExpirationTime;
+    }
+
+    public void setTokenExpirationTime(long tokenExpirationTime) {
+        this.tokenExpirationTime = tokenExpirationTime;
     }
 }
