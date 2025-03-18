@@ -23,6 +23,8 @@ public class User implements UserDetails {
     @Column(unique = true, length = 100, nullable = false)
     private String email;
 
+    private String picture;
+
     @Column(nullable = false)
     private String password;
 
@@ -137,6 +139,13 @@ public class User implements UserDetails {
         return role;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
     public User setRole(Role role) {
         this.role = role;
 
