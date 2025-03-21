@@ -27,7 +27,7 @@ public class RecipeGeneratorService {
         }
 
         // Construir el prompt para el modelo
-        String prompt = "Usando algunos de estos ingredientes, por favor crea 6 recetas creativas y detalladas:\n" +
+        String prompt = "Usando 5 de estos ingredientes, por favor crea 6 recetas creativas y detalladas:\n" +
                 String.join(", ", ingredientNames) + ".\n" +
                 "Devuélveme una lista con los nombres y una pequeña descripción.";
 
