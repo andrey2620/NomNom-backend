@@ -30,13 +30,14 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         this.createSuperAdministrator();
+        this.createUser();
     }
 
     private void createSuperAdministrator() {
         User superAdmin = new User();
         superAdmin.setName("Super");
         superAdmin.setLastname("Admin");
-        superAdmin.setEmail("super.admin@gmail.com");
+        superAdmin.setEmail("lopendex@gmail.com");
         superAdmin.setPassword("superadmin123");
 
         Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.SUPER_ADMIN);
@@ -55,4 +56,29 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
 
         userRepository.save(user);
     }
+
+    private void createUser() {
+        User userRol = new User();
+        userRol.setName("Normal");
+        userRol.setLastname("User");
+        userRol.setEmail("user@nomnom.com");
+        userRol.setPassword("user123");
+
+        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
+        Optional<User> optionalUser = userRepository.findByEmail(userRol.getEmail());
+
+        if (optionalRole.isEmpty() || optionalUser.isPresent()) {
+            return;
+        }
+
+        var user = new User();
+        user.setName(userRol.getName());
+        user.setLastname(userRol.getLastname());
+        user.setEmail(userRol.getEmail());
+        user.setPassword(passwordEncoder.encode(userRol.getPassword()));
+        user.setRole(optionalRole.get());
+
+        userRepository.save(user);
+    }
+
 }

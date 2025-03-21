@@ -1,0 +1,761 @@
+[
+  {
+    "name": "Tomate"
+  },
+  {
+    "name": "Cebolla"
+  },
+  {
+    "name": "Papa"
+  },
+  {
+    "name": "Pimienta"
+  },
+  {
+    "name": "Sal"
+  },
+  {
+    "name": "Azúcar"
+  },
+  {
+    "name": "Aceite de oliva"
+  },
+  {
+    "name": "Mantequilla"
+  },
+  {
+    "name": "Leche"
+  },
+  {
+    "name": "Harina"
+  },
+  {
+    "name": "Huevo"
+  },
+  {
+    "name": "Queso"
+  },
+  {
+    "name": "Tocino"
+  },
+  {
+    "name": "Pollo"
+  },
+  {
+    "name": "Carne de res"
+  },
+  {
+    "name": "Cerdo"
+  },
+  {
+    "name": "Pescado"
+  },
+  {
+    "name": "Camarón"
+  },
+  {
+    "name": "Limón"
+  },
+  {
+    "name": "Lima"
+  },
+  {
+    "name": "Naranja"
+  },
+  {
+    "name": "Manzana"
+  },
+  {
+    "name": "Banano"
+  },
+  {
+    "name": "Fresa"
+  },
+  {
+    "name": "Arándano"
+  },
+  {
+    "name": "Frambuesa"
+  },
+  {
+    "name": "Mora"
+  },
+  {
+    "name": "Piña"
+  },
+  {
+    "name": "Mango"
+  },
+  {
+    "name": "Durazno"
+  },
+  {
+    "name": "Pera"
+  },
+  {
+    "name": "Ciruela"
+  },
+  {
+    "name": "Cereza"
+  },
+  {
+    "name": "Uva"
+  },
+  {
+    "name": "Sandía"
+  },
+  {
+    "name": "Melón"
+  },
+  {
+    "name": "Melón verde"
+  },
+  {
+    "name": "Kiwi"
+  },
+  {
+    "name": "Aguacate"
+  },
+  {
+    "name": "Pepino"
+  },
+  {
+    "name": "Lechuga"
+  },
+  {
+    "name": "Espinaca"
+  },
+  {
+    "name": "Col rizada"
+  },
+  {
+    "name": "Brócoli"
+  },
+  {
+    "name": "Coliflor"
+  },
+  {
+    "name": "Repollo"
+  },
+  {
+    "name": "Coles de Bruselas"
+  },
+  {
+    "name": "Espárragos"
+  },
+  {
+    "name": "Ejote"
+  },
+  {
+    "name": "Chícharo"
+  },
+  {
+    "name": "Maíz"
+  },
+  {
+    "name": "Ajo"
+  },
+  {
+    "name": "Zanahoria"
+  },
+  {
+    "name": "Apio"
+  },
+  {
+    "name": "Pimiento"
+  },
+  {
+    "name": "Calabacín"
+  },
+  {
+    "name": "Berenjena"
+  },
+  {
+    "name": "Champiñón"
+  },
+  {
+    "name": "Perejil"
+  },
+  {
+    "name": "Albahaca"
+  },
+  {
+    "name": "Cilantro"
+  },
+  {
+    "name": "Menta"
+  },
+  {
+    "name": "Romero"
+  },
+  {
+    "name": "Tomillo"
+  },
+  {
+    "name": "Orégano"
+  },
+  {
+    "name": "Canela"
+  },
+  {
+    "name": "Nuez moscada"
+  },
+  {
+    "name": "Jengibre"
+  },
+  {
+    "name": "Clavo de olor"
+  },
+  {
+    "name": "Vainilla"
+  },
+  {
+    "name": "Chile en polvo"
+  },
+  {
+    "name": "Pimentón"
+  },
+  {
+    "name": "Comino"
+  },
+  {
+    "name": "Curry en polvo"
+  },
+  {
+    "name": "Mostaza"
+  },
+  {
+    "name": "Salsa de soja"
+  },
+  {
+    "name": "Salsa de pescado"
+  },
+  {
+    "name": "Salsa de ostras"
+  },
+  {
+    "name": "Kétchup"
+  },
+  {
+    "name": "Mayonesa"
+  },
+  {
+    "name": "Sriracha"
+  },
+  {
+    "name": "Tabasco"
+  },
+  {
+    "name": "Salsa inglesa"
+  },
+  {
+    "name": "Vinagre"
+  },
+  {
+    "name": "Jugo de limón"
+  },
+  {
+    "name": "Jugo de lima"
+  },
+  {
+    "name": "Jugo de naranja"
+  },
+  {
+    "name": "Sidra de manzana"
+  },
+  {
+    "name": "Vino tinto"
+  },
+  {
+    "name": "Vino blanco"
+  },
+  {
+    "name": "Cerveza"
+  },
+  {
+    "name": "Ron"
+  },
+  {
+    "name": "Whisky"
+  },
+  {
+    "name": "Vodka"
+  },
+  {
+    "name": "Tequila"
+  },
+  {
+    "name": "Ginebra"
+  },
+  {
+    "name": "Brandy"
+  },
+  {
+    "name": "Champán"
+  },
+  {
+    "name": "Crema"
+  },
+  {
+    "name": "Yogur"
+  },
+  {
+    "name": "Crema agria"
+  },
+  {
+    "name": "Helado"
+  },
+  {
+    "name": "Suero de leche"
+  },
+  {
+    "name": "Pan"
+  },
+  {
+    "name": "Pasta"
+  },
+  {
+    "name": "Arroz"
+  },
+  {
+    "name": "Quinua"
+  },
+  {
+    "name": "Cuscús"
+  },
+  {
+    "name": "Avena"
+  },
+  {
+    "name": "Cebada"
+  },
+  {
+    "name": "Bulgur"
+  },
+  {
+    "name": "Polenta"
+  },
+  {
+    "name": "Harina de maíz"
+  },
+  {
+    "name": "Miel"
+  },
+  {
+    "name": "Jarabe de arce"
+  },
+  {
+    "name": "Agave"
+  },
+  {
+    "name": "Melaza"
+  },
+  {
+    "name": "Mermelada"
+  },
+  {
+    "name": "Jalea"
+  },
+  {
+    "name": "Mantequilla de maní"
+  },
+  {
+    "name": "Mantequilla de almendra"
+  },
+  {
+    "name": "Nutella"
+  },
+  {
+    "name": "Chocolate"
+  },
+  {
+    "name": "Cacao"
+  },
+  {
+    "name": "Lentejas"
+  },
+  {
+    "name": "Garbanzos"
+  },
+  {
+    "name": "Frijoles negros"
+  },
+  {
+    "name": "Frijoles rojos"
+  },
+  {
+    "name": "Frijoles blancos"
+  },
+  {
+    "name": "Soja"
+  },
+  {
+    "name": "Tofu"
+  },
+  {
+    "name": "Seitán"
+  },
+  {
+    "name": "Tempeh"
+  },
+  {
+    "name": "Almendras"
+  },
+  {
+    "name": "Nueces"
+  },
+  {
+    "name": "Avellanas"
+  },
+  {
+    "name": "Pistachos"
+  },
+  {
+    "name": "Castañas"
+  },
+  {
+    "name": "Semillas de girasol"
+  },
+  {
+    "name": "Semillas de calabaza"
+  },
+  {
+    "name": "Semillas de lino"
+  },
+  {
+    "name": "Semillas de chía"
+  },
+  {
+    "name": "Semillas de sésamo"
+  },
+  {
+    "name": "Aceitunas"
+  },
+  {
+    "name": "Alcaparras"
+  },
+  {
+    "name": "Anchoas"
+  },
+  {
+    "name": "Atún"
+  },
+  {
+    "name": "Salmón"
+  },
+  {
+    "name": "Trucha"
+  },
+  {
+    "name": "Langosta"
+  },
+  {
+    "name": "Cangrejo"
+  },
+  {
+    "name": "Pulpo"
+  },
+  {
+    "name": "Calamar"
+  },
+  {
+    "name": "Mejillones"
+  },
+  {
+    "name": "Ostras"
+  },
+  {
+    "name": "Alga nori"
+  },
+  {
+    "name": "Alga wakame"
+  },
+  {
+    "name": "Alga kombu"
+  },
+  {
+    "name": "Harina de almendra"
+  },
+  {
+    "name": "Harina de coco"
+  },
+  {
+    "name": "Harina integral"
+  },
+  {
+    "name": "Harina de arroz"
+  },
+  {
+    "name": "Harina de centeno"
+  },
+  {
+    "name": "Harina de avena"
+  },
+  {
+    "name": "Azúcar moreno"
+  },
+  {
+    "name": "Azúcar de coco"
+  },
+  {
+    "name": "Eritritol"
+  },
+  {
+    "name": "Stevia"
+  },
+  {
+    "name": "Fructosa"
+  },
+  {
+    "name": "Xilitol"
+  },
+  {
+    "name": "Gluten de trigo"
+  },
+  {
+    "name": "Proteína de suero"
+  },
+  {
+    "name": "Proteína vegetal"
+  },
+  {
+    "name": "Levadura fresca"
+  },
+  {
+    "name": "Levadura seca"
+  },
+  {
+    "name": "Bicarbonato de sodio"
+  },
+  {
+    "name": "Polvo de hornear"
+  },
+  {
+    "name": "Goma xantana"
+  },
+  {
+    "name": "Goma guar"
+  },
+  {
+    "name": "Extracto de almendra"
+  },
+  {
+    "name": "Extracto de coco"
+  },
+  {
+    "name": "Extracto de menta"
+  },
+  {
+    "name": "Extracto de limón"
+  },
+  {
+    "name": "Pasta de vainilla"
+  },
+  {
+    "name": "Cáscara de limón"
+  },
+  {
+    "name": "Cáscara de naranja"
+  },
+  {
+    "name": "Cáscara de lima"
+  },
+  {
+    "name": "Hojas de laurel"
+  },
+  {
+    "name": "Pimienta blanca"
+  },
+  {
+    "name": "Pimienta rosa"
+  },
+  {
+    "name": "Pimienta verde"
+  },
+  {
+    "name": "Ají molido"
+  },
+  {
+    "name": "Ají amarillo"
+  },
+  {
+    "name": "Ají panca"
+  },
+  {
+    "name": "Sazonador de carne"
+  },
+  {
+    "name": "Sazonador de pollo"
+  },
+  {
+    "name": "Sazonador de pescado"
+  },
+  {
+    "name": "Ajinomoto"
+  },
+  {
+    "name": "Garam masala"
+  },
+  {
+    "name": "Pasta de curry"
+  },
+  {
+    "name": "Mostaza en grano"
+  },
+  {
+    "name": "Mostaza Dijon"
+  },
+  {
+    "name": "Mostaza amarilla"
+  },
+  {
+    "name": "Leche condensada"
+  },
+  {
+    "name": "Leche evaporada"
+  },
+  {
+    "name": "Leche de almendra"
+  },
+  {
+    "name": "Leche de avena"
+  },
+  {
+    "name": "Leche de coco"
+  },
+  {
+    "name": "Leche de soya"
+  },
+  {
+    "name": "Leche de arroz"
+  },
+  {
+    "name": "Leche en polvo"
+  },
+  {
+    "name": "Manteca de cerdo"
+  },
+  {
+    "name": "Manteca vegetal"
+  },
+  {
+    "name": "Aceite de coco"
+  },
+  {
+    "name": "Aceite de sésamo"
+  },
+  {
+    "name": "Aceite de maíz"
+  },
+  {
+    "name": "Aceite de girasol"
+  },
+  {
+    "name": "Aceite de aguacate"
+  },
+  {
+    "name": "Aceite de canola"
+  },
+  {
+    "name": "Aceite de nuez"
+  },
+  {
+    "name": "Aceite de linaza"
+  },
+  {
+    "name": "Masa madre"
+  },
+  {
+    "name": "Vinagre balsámico"
+  },
+  {
+    "name": "Vinagre de manzana"
+  },
+  {
+    "name": "Vinagre de arroz"
+  },
+  {
+    "name": "Vinagre de vino tinto"
+  },
+  {
+    "name": "Vinagre de jerez"
+  },
+  {
+    "name": "Miso"
+  },
+  {
+    "name": "Tahini"
+  },
+  {
+    "name": "Salsa de tamarindo"
+  },
+  {
+    "name": "Salsa de chile dulce"
+  },
+  {
+    "name": "Salsa de ajo"
+  },
+  {
+    "name": "Salsa teriyaki"
+  },
+  {
+    "name": "Salsa de mango"
+  },
+  {
+    "name": "Salsa de maracuyá"
+  },
+  {
+    "name": "Salsa BBQ"
+  },
+  {
+    "name": "Salsa de pimientos"
+  },
+  {
+    "name": "Gelatina sin sabor"
+  },
+  {
+    "name": "Agar-agar"
+  },
+  {
+    "name": "Grenetina"
+  },
+  {
+    "name": "Café molido"
+  },
+  {
+    "name": "Café instantáneo"
+  },
+  {
+    "name": "Té verde"
+  },
+  {
+    "name": "Té negro"
+  },
+  {
+    "name": "Té rojo"
+  },
+  {
+    "name": "Té blanco"
+  },
+  {
+    "name": "Té matcha"
+  },
+  {
+    "name": "Jengibre en polvo"
+  },
+  {
+    "name": "Raíz de cúrcuma"
+  },
+  {
+    "name": "Maca en polvo"
+  },
+  {
+    "name": "Espirulina"
+  },
+  {
+    "name": "Chlorella"
+  },
+  {
+    "name": "Levadura nutricional"
+  }
+]

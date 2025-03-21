@@ -1,5 +1,4 @@
 package com.project.demo.logic.entity.user;
-import com.project.demo.logic.entity.order.Order;
 import com.project.demo.logic.entity.rol.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +23,8 @@ public class User implements UserDetails {
     @Column(unique = true, length = 100, nullable = false)
     private String email;
 
+    private String picture;
+
     @Column(nullable = false)
     private String password;
 
@@ -34,6 +36,9 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    private String passwordResetToken;
+    private long tokenExpirationTime;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
@@ -43,9 +48,6 @@ public class User implements UserDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Order> orders;
 
     // Constructors
     public User() {}
@@ -137,17 +139,32 @@ public class User implements UserDetails {
         return role;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
-
     public User setRole(Role role) {
         this.role = role;
 
         return this;
+    }
+
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
+
+    public long getTokenExpirationTime() {
+        return tokenExpirationTime;
+    }
+
+    public void setTokenExpirationTime(long tokenExpirationTime) {
+        this.tokenExpirationTime = tokenExpirationTime;
     }
 }
