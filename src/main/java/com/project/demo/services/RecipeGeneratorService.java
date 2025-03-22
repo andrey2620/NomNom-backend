@@ -16,22 +16,42 @@ public class RecipeGeneratorService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<String> generateRecipesFromJsonIngredients() throws Exception {
-        // Leer el JSON desde resources
+    public JsonNode generateSingleRecipe() throws Exception {
+        // Leer ingredientes desde el archivo JSON
         InputStream is = new ClassPathResource("ingredients.json").getInputStream();
         JsonNode ingredientsArray = objectMapper.readTree(is);
 
-        List<String> ingredientNames = new ArrayList<>();
+        List<String>    ingredientNames = new ArrayList<>();
         for (JsonNode node : ingredientsArray) {
             ingredientNames.add(node.get("name").asText());
         }
 
-        // Construir el prompt para el modelo
-        String prompt = "Usando algunos de estos ingredientes, por favor crea 6 recetas creativas y detalladas:\n" +
-                String.join(", ", ingredientNames) + ".\n" +
-                "Devuélveme una lista con los nombres y una pequeña descripción.";
+        // Construir el prompt
+        String prompt = """
+            En español:
+            Usando algunos de estos ingredientes: %s
+            Crea UNA receta creativa que incluya:
+            - nombre de la receta
+            - instrucciones detalladas
+            - tiempo de preparación (en minutos)
+            - una lista de ingredientes con nombre, cantidad y medida
 
-        // Preparar request para Ollama
+            Devuelve ÚNICAMENTE un JSON con el siguiente formato:
+
+            {
+              "name": "Nombre de la receta",
+              "preparationTime": 30,
+              "instructions": "Paso a paso detallado...",
+              "ingredients": [
+                { "name": "Ingrediente A", "quantity": 2.5, "measurement": "cups" },
+                { "name": "Ingrediente B", "quantity": 1, "measurement": "tbsp" }
+              ]
+            }
+
+            No escribas nada adicional fuera del JSON.
+            """.formatted(String.join(", ", ingredientNames));
+
+        // Llamar al modelo
         Map<String, Object> body = new HashMap<>();
         body.put("model", "deepseek-r1:1.5b");
         body.put("prompt", prompt);
@@ -43,13 +63,13 @@ public class RecipeGeneratorService {
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:11434/api/generate", entity, String.class);
-
-        // Procesar la respuesta
         String responseBody = response.getBody();
-        JsonNode jsonNode = objectMapper.readTree(responseBody);
-        String generatedText = jsonNode.get("response").asText();
 
-        // Separar en recetas por líneas o ítems
-        return Arrays.asList(generatedText.split("\n"));
+        // Extraer el contenido JSON desde el campo "response"
+        JsonNode fullResponse = objectMapper.readTree(responseBody);
+        String json = fullResponse.get("response").asText();
+
+        // Parsear la cadena como JSON (puede lanzar error si el modelo devuelve basura)
+        return objectMapper.readTree(json);
     }
 }
