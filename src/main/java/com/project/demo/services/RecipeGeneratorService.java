@@ -21,39 +21,37 @@ public class RecipeGeneratorService {
         InputStream is = new ClassPathResource("ingredients.json").getInputStream();
         JsonNode ingredientsArray = objectMapper.readTree(is);
 
-        List<String>    ingredientNames = new ArrayList<>();
+        List<String> ingredientNames = new ArrayList<>();
         for (JsonNode node : ingredientsArray) {
             ingredientNames.add(node.get("name").asText());
         }
 
         // Construir el prompt
         String prompt = """
-            En español:
-            Usando algunos de estos ingredientes: %s
-            Crea UNA receta creativa que incluya:
-            - nombre de la receta
-            - instrucciones detalladas
-            - tiempo de preparación (en minutos)
-            - una lista de ingredientes con nombre, cantidad y medida
+                En español:
+                Usando algunos de estos ingredientes: %s
 
-            Devuelve ÚNICAMENTE un JSON con el siguiente formato:
+                Crea UNA receta creativa y devuélvela en el siguiente JSON ESTRICTO:
 
-            {
-              "name": "Nombre de la receta",
-              "preparationTime": 30,
-              "instructions": "Paso a paso detallado...",
-              "ingredients": [
-                { "name": "Ingrediente A", "quantity": 2.5, "measurement": "cups" },
-                { "name": "Ingrediente B", "quantity": 1, "measurement": "tbsp" }
-              ]
-            }
+                {
+                  "name": "Nombre de la receta",
+                  "preparationTime": 30,
+                  "instructions": "Paso 1. Haz esto. Paso 2. Haz esto otro.",
+                  "ingredients": [
+                    { "name": "Ingrediente A", "quantity": 2.5, "measurement": "cups" },
+                    { "name": "Ingrediente B", "quantity": 1, "measurement": "tbsp" }
+                  ]
+                }
 
-            No escribas nada adicional fuera del JSON.
-            """.formatted(String.join(", ", ingredientNames));
+                Importante:
+                - Devuelve SOLO el JSON, sin explicaciones, sin texto antes o después.
+                - No uses arrays multilínea ni Markdown.
+                - Las instrucciones deben ir como un solo string.
+                """.formatted(String.join(", ", ingredientNames));
 
         // Llamar al modelo
         Map<String, Object> body = new HashMap<>();
-        body.put("model", "deepseek-r1:1.5b");
+        body.put("model", "llama3.1:latest");
         body.put("prompt", prompt);
         body.put("stream", false);
 
@@ -62,14 +60,27 @@ public class RecipeGeneratorService {
 
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:11434/api/generate", entity, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(
+                "http://localhost:11434/api/generate", entity, String.class);
+
         String responseBody = response.getBody();
-
-        // Extraer el contenido JSON desde el campo "response"
         JsonNode fullResponse = objectMapper.readTree(responseBody);
-        String json = fullResponse.get("response").asText();
+        String json = fullResponse.get("response").asText().trim();
 
-        // Parsear la cadena como JSON (puede lanzar error si el modelo devuelve basura)
-        return objectMapper.readTree(json);
+        // Validación rápida: ¿empieza con {?
+        if (!json.startsWith("{")) {
+            System.err.println("❌ Respuesta inválida, no parece JSON:");
+            System.err.println(json);
+            throw new RuntimeException("El modelo no devolvió un JSON válido.");
+        }
+
+        // Intentar parsear como JSON
+        try {
+            return objectMapper.readTree(json);
+        } catch (Exception e) {
+            System.err.println("❌ JSON malformado recibido del modelo:");
+            System.err.println(json);
+            throw new RuntimeException("Error al parsear JSON generado por el modelo.", e);
+        }
     }
 }
