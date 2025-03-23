@@ -29,6 +29,7 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers(HttpMethod.GET, "/recipes/generator").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/auth/**").permitAll()
                         .anyRequest().authenticated()
@@ -41,5 +42,4 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-
 }
