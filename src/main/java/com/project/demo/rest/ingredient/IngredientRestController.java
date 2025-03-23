@@ -3,9 +3,7 @@ package com.project.demo.rest.ingredient;
 import com.project.demo.logic.entity.ingredient.Ingredient;
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.http.Meta;
-import com.project.demo.logic.entity.user.User;
-import com.project.demo.logic.entity.ingredient.IngredientRepository;
-import com.project.demo.logic.entity.user.UserRepository;
+import com.project.demo.services.IngredientService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,9 +22,8 @@ import java.util.Optional;
 public class IngredientRestController {
 
     @Autowired
-    private IngredientRepository ingredientRepository;
+    private IngredientService ingredientService;
 
-    // Obtener todos los ingredientes (paginado)
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> getAll(
@@ -34,7 +32,7 @@ public class IngredientRestController {
             HttpServletRequest request) {
 
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Ingredient> ingredientsPage = ingredientRepository.findAll(pageable);
+        Page<Ingredient> ingredientsPage = ingredientService.getAllIngredients(pageable);
         Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
         meta.setTotalPages(ingredientsPage.getTotalPages());
         meta.setTotalElements(ingredientsPage.getTotalElements());
@@ -48,7 +46,7 @@ public class IngredientRestController {
     @GetMapping("/{ingredientId}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> getIngredientById(@PathVariable Long ingredientId, HttpServletRequest request) {
-        Optional<Ingredient> foundIngredient = ingredientRepository.findById(ingredientId);
+        Optional<Ingredient> foundIngredient = ingredientService.getIngredientById(ingredientId);
 
         if (foundIngredient.isPresent()) {
             return new GlobalResponseHandler().handleResponse(
@@ -60,20 +58,29 @@ public class IngredientRestController {
         } else {
             return new GlobalResponseHandler().handleResponse(
                     "Ingredient id " + ingredientId + " not found",
-                    null,  // Se pasa `null` si no hay contenido
+                    null,
                     HttpStatus.NOT_FOUND,
                     request
             );
         }
     }
 
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<?> getIngredientsByUserId(@PathVariable Long userId, HttpServletRequest request) {
+        List<Ingredient> userIngredients = ingredientService.getIngredientsByUserId(userId);
+        return new GlobalResponseHandler().handleResponse(
+                "Ingredients for user " + userId + " retrieved successfully",
+                userIngredients,
+                HttpStatus.OK,
+                request
+        );
+    }
 
-
-    // Crear un nuevo ingrediente
     @PostMapping
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> addIngredient(@RequestBody Ingredient ingredient, HttpServletRequest request) {
-        Ingredient savedIngredient = ingredientRepository.save(ingredient);
+        Ingredient savedIngredient = ingredientService.saveIngredient(ingredient);
         return new GlobalResponseHandler().handleResponse("Ingredient created successfully",
                 savedIngredient, HttpStatus.CREATED, request);
     }
@@ -81,13 +88,14 @@ public class IngredientRestController {
     @PutMapping("/{ingredientId}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> updateIngredient(@PathVariable Long ingredientId, @RequestBody Ingredient ingredient, HttpServletRequest request) {
-        Optional<Ingredient> foundIngredient = ingredientRepository.findById(ingredientId);
+        Optional<Ingredient> foundIngredient = ingredientService.getIngredientById(ingredientId);
 
         if (foundIngredient.isPresent()) {
             Ingredient existingIngredient = foundIngredient.get();
             existingIngredient.setName(ingredient.getName());
-            existingIngredient.setUserId(ingredient.getUserId());
-            ingredientRepository.save(existingIngredient);
+            existingIngredient.setMedida(ingredient.getMedida());
+            existingIngredient.setCreatedBy(ingredient.getCreatedBy());
+            ingredientService.saveIngredient(existingIngredient);
 
             return new GlobalResponseHandler().handleResponse(
                     "Ingredient updated successfully",
@@ -105,16 +113,14 @@ public class IngredientRestController {
         }
     }
 
-
-    // Eliminar un ingrediente
     @DeleteMapping("/{ingredientId}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> deleteIngredient(@PathVariable Long ingredientId, HttpServletRequest request) {
-        if (!ingredientRepository.existsById(ingredientId)) {
+        if (!ingredientService.existsById(ingredientId)) {
             return new GlobalResponseHandler().handleResponse("Ingredient id " + ingredientId + " not found",
                     HttpStatus.NOT_FOUND, request);
         }
-        ingredientRepository.deleteById(ingredientId);
+        ingredientService.deleteIngredient(ingredientId);
         return new GlobalResponseHandler().handleResponse("Ingredient deleted successfully",
                 null, HttpStatus.OK, request);
     }

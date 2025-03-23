@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     Optional<Ingredient> findByName(String name);
-    List<Ingredient> findByUserId(Long userId);
+    List<Ingredient> findByCreatedBy_Id(Long userId);
 }
