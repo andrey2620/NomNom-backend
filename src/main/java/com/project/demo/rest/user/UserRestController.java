@@ -1,5 +1,9 @@
 package com.project.demo.rest.user;
 
+import com.project.demo.logic.entity.allergies.Allergies;
+import com.project.demo.logic.entity.diet_preferences.Diet_Preferences;
+import com.project.demo.logic.entity.allergies.AllergiesRepository;
+import com.project.demo.logic.entity.diet_preferences.Diet_PreferenceRepository;
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.http.Meta;
 import com.project.demo.logic.entity.user.User;
@@ -17,7 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/users")
@@ -27,6 +31,12 @@ public class UserRestController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AllergiesRepository allergiesRepository;
+
+    @Autowired
+    private Diet_PreferenceRepository diet_preferenceRepository;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
@@ -56,21 +66,58 @@ public class UserRestController {
                 user, HttpStatus.OK, request);
     }
 
-    @PutMapping("/{userId}")
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user, HttpServletRequest request) {
-        Optional<User> foundOrder = userRepository.findById(userId);
-        if(foundOrder.isPresent()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            return new GlobalResponseHandler().handleResponse("User updated successfully",
-                    user, HttpStatus.OK, request);
-        } else {
-            return new GlobalResponseHandler().handleResponse("User id " + userId + " not found"  ,
-                    HttpStatus.NOT_FOUND, request);
-        }
-    }
+//    @PutMapping("/{userId}")
+//    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+//    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user, HttpServletRequest request) {
+//        Optional<User> foundOrder = userRepository.findById(userId);
+//        if(foundOrder.isPresent()) {
+//            user.setPassword(passwordEncoder.encode(user.getPassword()));
+//            userRepository.save(user);
+//            return new GlobalResponseHandler().handleResponse("User updated successfully",
+//                    user, HttpStatus.OK, request);
+//        } else {
+//            return new GlobalResponseHandler().handleResponse("User id " + userId + " not found"  ,
+//                    HttpStatus.NOT_FOUND, request);
+//        }
+//    }
 
+
+// Actualizar un usuario existente (con alergias y preferencias)
+@PutMapping("/{userId}")
+@PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user, @RequestParam(required = false) Set<Long> selectedAllergies, @RequestParam(required = false) Set<Long> selectedDietPreferences,  HttpServletRequest request) {
+    Optional<User> foundUser = userRepository.findById(userId);
+    if (foundUser.isPresent()) {
+        User existingUser = foundUser.get();
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        existingUser.setName(user.getName());
+        existingUser.setEmail(user.getEmail());
+
+        // Asignar alergias si se proporcionan
+        if (selectedAllergies != null) {
+            Set<Allergies> allergies = new HashSet<>(allergiesRepository.findAllById(selectedAllergies));
+            List<Allergies> allergyList = new ArrayList<>(allergies);
+            existingUser.setAllergies(allergyList);
+        }
+
+        // Asignar preferencias dietéticas si se proporcionan
+        if (selectedDietPreferences != null) {
+            Set<Diet_Preferences> dietPreferences = new HashSet<>(diet_preferenceRepository.findAllById(selectedDietPreferences));
+            List<Diet_Preferences> dietPreferenceList = new ArrayList<>(dietPreferences);
+            existingUser.setPreferences(dietPreferenceList);
+        }
+
+        // Guardar el usuario actualizado
+        userRepository.save(existingUser);
+        return new GlobalResponseHandler().handleResponse("User updated successfully",
+            existingUser, HttpStatus.OK, request);
+    } else {
+        return new GlobalResponseHandler().handleResponse("User id " + userId + " not found",
+            HttpStatus.NOT_FOUND, request);
+    }
+}
 
     @DeleteMapping("/{userId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
