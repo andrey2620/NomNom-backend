@@ -1,4 +1,6 @@
 package com.project.demo.logic.entity.user;
+import com.project.demo.logic.entity.allergies.Allergies;
+import com.project.demo.logic.entity.diet_preferences.Diet_Preferences;
 import com.project.demo.logic.entity.rol.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -48,6 +50,39 @@ public class User implements UserDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_allergy",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "allergy_id")
+    )
+    private List<Allergies> allergies;
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_preference",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "preference_id")
+    )
+    private List<Diet_Preferences> preferences;
+
+    // Getters and setters for allergies and preferences
+    public List<Allergies> getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(List<Allergies> allergies) {
+        this.allergies = allergies;
+    }
+
+    public List<Diet_Preferences> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(List<Diet_Preferences> preferences) {
+        this.preferences = preferences;
+    }
 
     // Constructors
     public User() {}
