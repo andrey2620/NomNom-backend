@@ -1,4 +1,5 @@
 package com.project.demo.logic.entity.allergies;
+import com.project.demo.logic.entity.user.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,7 +11,12 @@ public class Allergies {
     private Long id;
     private String name;
 
-    public Allergies(String name) {
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
+  public Allergies(String name) {
       this.name = name;
     }
 

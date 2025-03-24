@@ -1,4 +1,5 @@
 package com.project.demo.logic.entity.diet_preferences;
+import com.project.demo.logic.entity.user.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,6 +9,11 @@ public class Diet_Preferences {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
+
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
+
 
   public Diet_Preferences(String name) {
     this.name = name;
