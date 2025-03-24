@@ -29,20 +29,17 @@ public class RecipeGeneratorService {
         // Construir el prompt
         String prompt = """
                 En español:
-                Usando algunos de estos ingredientes: %s
-
+                Usando algunos de estos ingredientes:
                 Crea UNA receta creativa y devuélvela en el siguiente JSON ESTRICTO:
-
                 {
                   "name": "Nombre de la receta",
                   "preparationTime": 30,
                   "instructions": "Paso 1. Haz esto. Paso 2. Haz esto otro.",
                   "ingredients": [
-                    { "name": "Ingrediente A", "quantity": 2.5, "measurement": "cups" },
-                    { "name": "Ingrediente B", "quantity": 1, "measurement": "tbsp" }
+                    { "name": "Ingrediente A", "quantity": "2.5", "measurement": "tazas" },
+                    { "name": "Ingrediente B", "quantity": "1", "measurement": "cucharada" }
                   ]
                 }
-
                 Importante:
                 - Devuelve SOLO el JSON, sin explicaciones, sin texto antes o después.
                 - No uses arrays multilínea ni Markdown.
