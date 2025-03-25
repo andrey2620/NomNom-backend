@@ -18,11 +18,15 @@ public class Ingredient {
     @Column(name = "id_user", nullable = true)
     private Long userId;
 
+    @Column(name = "image", nullable = true)
+    private String image;
+
     public Ingredient() {}
 
-    public Ingredient(String name, Long userId) {
+    public Ingredient(String name, Long userId, String image) {
         this.name = name;
         this.userId = userId;
+        this.image = image;
     }
 
     public Long getId() {
@@ -48,4 +52,8 @@ public class Ingredient {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    public String getImage() { return image; }
+
+    public void setImage(String image) { this.image = image; }
 }
