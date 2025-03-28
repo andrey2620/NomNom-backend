@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RequestMapping("/auth")
@@ -32,7 +33,6 @@ public class AuthRestController {
 
     @Autowired
     private RoleRepository roleRepository;
-
 
 
     private final AuthenticationService authenticationService;
@@ -60,6 +60,12 @@ public class AuthRestController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    @PostMapping("/google-auth")
+    public ResponseEntity<?> authenticateWithGoogle(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        return authenticationService.authenticateGoogle(email);
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
@@ -77,5 +83,4 @@ public class AuthRestController {
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }
-
 }
