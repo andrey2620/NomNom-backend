@@ -24,7 +24,6 @@ public class Ingredient {
     @Column(name = "medida", length = 50)
     private String medida;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by_user_id")
     @JsonIgnore
@@ -34,13 +33,16 @@ public class Ingredient {
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 
+    @Column(name = "image", nullable = true)
+    private String image;
+
     public Ingredient() {}
 
-    public Ingredient(String name, String medida, User createdBy) {
+    public Ingredient(String name, String medida, User createdBy, String image) {
         this.name = name;
         this.medida = medida;
         this.createdBy = createdBy;
-    }
+        this.image = image;}
 
     public Long getId() {
         return id;
@@ -81,4 +83,8 @@ public class Ingredient {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
+    public String getImage() { return image; }
+
+    public void setImage(String image) { this.image = image; }
 }

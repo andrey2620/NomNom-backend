@@ -3,6 +3,7 @@ package com.project.demo.rest.ingredient;
 import com.project.demo.logic.entity.ingredient.Ingredient;
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.http.Meta;
+import com.project.demo.logic.entity.ingredient.IngredientRepository;
 import com.project.demo.services.IngredientService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Map;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,6 +25,8 @@ public class IngredientRestController {
 
     @Autowired
     private IngredientService ingredientService;
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
@@ -96,6 +99,69 @@ public class IngredientRestController {
         );
     }
 
+    // Buscar por nombre
+    @GetMapping("/name/{ingredientName}")
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<?> getIngredientByName(
+            @PathVariable String ingredientName,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            HttpServletRequest request) {
+
+        // Obtener todos los ingredientes que coincidan con el nombre (sin paginar en BD)
+        List<Ingredient> matchingIngredients = ingredientRepository.findByNameContaining(ingredientName);
+
+        System.out.println("Ingredientes encontrados: " + matchingIngredients.size());
+        for (Ingredient ingredient : matchingIngredients) {
+            System.out.println(ingredient.getName());
+        }
+
+        // Verificar si hay ingredientes encontrados
+        if (matchingIngredients.isEmpty()) {
+            return new GlobalResponseHandler().handleResponse(
+                    "Ingredient name " + ingredientName + " not found",
+                    null,
+                    HttpStatus.NOT_FOUND,
+                    request
+            );
+        }
+
+        // Calcular los índices de paginación
+        int start = (page - 1) * size;
+        int end = Math.min(start + size, matchingIngredients.size());
+
+        // Verificar si la página solicitada tiene resultados
+        if (start >= matchingIngredients.size()) {
+            return new GlobalResponseHandler().handleResponse(
+                    "No more ingredients available for this page",
+                    Collections.emptyList(),
+                    HttpStatus.OK,
+                    request
+            );
+        }
+
+        // Obtener los ingredientes paginados
+        List<Ingredient> paginatedIngredients = matchingIngredients.subList(start, end);
+
+        // Crear el objeto Meta con información de paginación
+        Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
+        meta.setTotalPages((int) Math.ceil((double) matchingIngredients.size() / size));
+        meta.setTotalElements(matchingIngredients.size());
+        meta.setPageNumber(page);
+        meta.setPageSize(size);
+
+        return new GlobalResponseHandler().handleResponse(
+                "Ingredients retrieved successfully",
+                paginatedIngredients,
+                HttpStatus.OK,
+                meta
+        );
+    }
+
+
+
+
+    // Crear un nuevo ingrediente
     @PostMapping
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> addIngredient(@RequestBody Ingredient ingredient, HttpServletRequest request) {
