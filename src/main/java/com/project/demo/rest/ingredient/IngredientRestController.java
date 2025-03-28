@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -72,6 +73,24 @@ public class IngredientRestController {
         return new GlobalResponseHandler().handleResponse(
                 "Ingredients for user " + userId + " retrieved successfully",
                 userIngredients,
+                HttpStatus.OK,
+                request
+        );
+    }
+
+    @GetMapping("/formated/user/{userId}")
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<?> getIngredientsByUserIdForIA(@PathVariable Long userId, HttpServletRequest request) {
+        List<Ingredient> userIngredients = ingredientService.getIngredientsByUserId(userId);
+
+        // Mapeamos solo a los nombres
+        List<Map<String, String>> simplified = userIngredients.stream()
+                .map(ingredient -> Map.of("name", ingredient.getName()))
+                .toList();
+
+        return new GlobalResponseHandler().handleResponse(
+                "Ingredients for user " + userId + " retrieved successfully",
+                simplified,
                 HttpStatus.OK,
                 request
         );
