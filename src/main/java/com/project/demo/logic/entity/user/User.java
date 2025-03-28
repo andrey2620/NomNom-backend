@@ -176,6 +176,8 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
+
+
     private Set<Ingredient> ingredients = new HashSet<>();
 
     public Set<Ingredient> getIngredients() {
@@ -184,5 +186,13 @@ public class User implements UserDetails {
 
     public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public String xd;
+    public String getXd() {
+        return xd;
+    }
+    public void setXd(String xd) {
+        this.xd = xd;
     }
 }
