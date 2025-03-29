@@ -1,761 +1,178 @@
 [
-  {
-    "name": "Tomate"
-  },
-  {
-    "name": "Cebolla"
-  },
-  {
-    "name": "Papa"
-  },
-  {
-    "name": "Pimienta"
-  },
-  {
-    "name": "Sal"
-  },
-  {
-    "name": "Azúcar"
-  },
-  {
-    "name": "Aceite de oliva"
-  },
-  {
-    "name": "Mantequilla"
-  },
-  {
-    "name": "Leche"
-  },
-  {
-    "name": "Harina"
-  },
-  {
-    "name": "Huevo"
-  },
-  {
-    "name": "Queso"
-  },
-  {
-    "name": "Tocino"
-  },
-  {
-    "name": "Pollo"
-  },
-  {
-    "name": "Carne de res"
-  },
-  {
-    "name": "Cerdo"
-  },
-  {
-    "name": "Pescado"
-  },
-  {
-    "name": "Camarón"
-  },
-  {
-    "name": "Limón"
-  },
-  {
-    "name": "Lima"
-  },
-  {
-    "name": "Naranja"
-  },
-  {
-    "name": "Manzana"
-  },
-  {
-    "name": "Banano"
-  },
-  {
-    "name": "Fresa"
-  },
-  {
-    "name": "Arándano"
-  },
-  {
-    "name": "Frambuesa"
-  },
-  {
-    "name": "Mora"
-  },
-  {
-    "name": "Piña"
-  },
-  {
-    "name": "Mango"
-  },
-  {
-    "name": "Durazno"
-  },
-  {
-    "name": "Pera"
-  },
-  {
-    "name": "Ciruela"
-  },
-  {
-    "name": "Cereza"
-  },
-  {
-    "name": "Uva"
-  },
-  {
-    "name": "Sandía"
-  },
-  {
-    "name": "Melón"
-  },
-  {
-    "name": "Melón verde"
-  },
-  {
-    "name": "Kiwi"
-  },
-  {
-    "name": "Aguacate"
-  },
-  {
-    "name": "Pepino"
-  },
-  {
-    "name": "Lechuga"
-  },
-  {
-    "name": "Espinaca"
-  },
-  {
-    "name": "Col rizada"
-  },
-  {
-    "name": "Brócoli"
-  },
-  {
-    "name": "Coliflor"
-  },
-  {
-    "name": "Repollo"
-  },
-  {
-    "name": "Coles de Bruselas"
-  },
-  {
-    "name": "Espárragos"
-  },
-  {
-    "name": "Ejote"
-  },
-  {
-    "name": "Chícharo"
-  },
-  {
-    "name": "Maíz"
-  },
-  {
-    "name": "Ajo"
-  },
-  {
-    "name": "Zanahoria"
-  },
-  {
-    "name": "Apio"
-  },
-  {
-    "name": "Pimiento"
-  },
-  {
-    "name": "Calabacín"
-  },
-  {
-    "name": "Berenjena"
-  },
-  {
-    "name": "Champiñón"
-  },
-  {
-    "name": "Perejil"
-  },
-  {
-    "name": "Albahaca"
-  },
-  {
-    "name": "Cilantro"
-  },
-  {
-    "name": "Menta"
-  },
-  {
-    "name": "Romero"
-  },
-  {
-    "name": "Tomillo"
-  },
-  {
-    "name": "Orégano"
-  },
-  {
-    "name": "Canela"
-  },
-  {
-    "name": "Nuez moscada"
-  },
-  {
-    "name": "Jengibre"
-  },
-  {
-    "name": "Clavo de olor"
-  },
-  {
-    "name": "Vainilla"
-  },
-  {
-    "name": "Chile en polvo"
-  },
-  {
-    "name": "Pimentón"
-  },
-  {
-    "name": "Comino"
-  },
-  {
-    "name": "Curry en polvo"
-  },
-  {
-    "name": "Mostaza"
-  },
-  {
-    "name": "Salsa de soja"
-  },
-  {
-    "name": "Salsa de pescado"
-  },
-  {
-    "name": "Salsa de ostras"
-  },
-  {
-    "name": "Kétchup"
-  },
-  {
-    "name": "Mayonesa"
-  },
-  {
-    "name": "Sriracha"
-  },
-  {
-    "name": "Tabasco"
-  },
-  {
-    "name": "Salsa inglesa"
-  },
-  {
-    "name": "Vinagre"
-  },
-  {
-    "name": "Jugo de limón"
-  },
-  {
-    "name": "Jugo de lima"
-  },
-  {
-    "name": "Jugo de naranja"
-  },
-  {
-    "name": "Sidra de manzana"
-  },
-  {
-    "name": "Vino tinto"
-  },
-  {
-    "name": "Vino blanco"
-  },
-  {
-    "name": "Cerveza"
-  },
-  {
-    "name": "Ron"
-  },
-  {
-    "name": "Whisky"
-  },
-  {
-    "name": "Vodka"
-  },
-  {
-    "name": "Tequila"
-  },
-  {
-    "name": "Ginebra"
-  },
-  {
-    "name": "Brandy"
-  },
-  {
-    "name": "Champán"
-  },
-  {
-    "name": "Crema"
-  },
-  {
-    "name": "Yogur"
-  },
-  {
-    "name": "Crema agria"
-  },
-  {
-    "name": "Helado"
-  },
-  {
-    "name": "Suero de leche"
-  },
-  {
-    "name": "Pan"
-  },
-  {
-    "name": "Pasta"
-  },
-  {
-    "name": "Arroz"
-  },
-  {
-    "name": "Quinua"
-  },
-  {
-    "name": "Cuscús"
-  },
-  {
-    "name": "Avena"
-  },
-  {
-    "name": "Cebada"
-  },
-  {
-    "name": "Bulgur"
-  },
-  {
-    "name": "Polenta"
-  },
-  {
-    "name": "Harina de maíz"
-  },
-  {
-    "name": "Miel"
-  },
-  {
-    "name": "Jarabe de arce"
-  },
-  {
-    "name": "Agave"
-  },
-  {
-    "name": "Melaza"
-  },
-  {
-    "name": "Mermelada"
-  },
-  {
-    "name": "Jalea"
-  },
-  {
-    "name": "Mantequilla de maní"
-  },
-  {
-    "name": "Mantequilla de almendra"
-  },
-  {
-    "name": "Nutella"
-  },
-  {
-    "name": "Chocolate"
-  },
-  {
-    "name": "Cacao"
-  },
-  {
-    "name": "Lentejas"
-  },
-  {
-    "name": "Garbanzos"
-  },
-  {
-    "name": "Frijoles negros"
-  },
-  {
-    "name": "Frijoles rojos"
-  },
-  {
-    "name": "Frijoles blancos"
-  },
-  {
-    "name": "Soja"
-  },
-  {
-    "name": "Tofu"
-  },
-  {
-    "name": "Seitán"
-  },
-  {
-    "name": "Tempeh"
-  },
-  {
-    "name": "Almendras"
-  },
-  {
-    "name": "Nueces"
-  },
-  {
-    "name": "Avellanas"
-  },
-  {
-    "name": "Pistachos"
-  },
-  {
-    "name": "Castañas"
-  },
-  {
-    "name": "Semillas de girasol"
-  },
-  {
-    "name": "Semillas de calabaza"
-  },
-  {
-    "name": "Semillas de lino"
-  },
-  {
-    "name": "Semillas de chía"
-  },
-  {
-    "name": "Semillas de sésamo"
-  },
-  {
-    "name": "Aceitunas"
-  },
-  {
-    "name": "Alcaparras"
-  },
-  {
-    "name": "Anchoas"
-  },
-  {
-    "name": "Atún"
-  },
-  {
-    "name": "Salmón"
-  },
-  {
-    "name": "Trucha"
-  },
-  {
-    "name": "Langosta"
-  },
-  {
-    "name": "Cangrejo"
-  },
-  {
-    "name": "Pulpo"
-  },
-  {
-    "name": "Calamar"
-  },
-  {
-    "name": "Mejillones"
-  },
-  {
-    "name": "Ostras"
-  },
-  {
-    "name": "Alga nori"
-  },
-  {
-    "name": "Alga wakame"
-  },
-  {
-    "name": "Alga kombu"
-  },
-  {
-    "name": "Harina de almendra"
-  },
-  {
-    "name": "Harina de coco"
-  },
-  {
-    "name": "Harina integral"
-  },
-  {
-    "name": "Harina de arroz"
-  },
-  {
-    "name": "Harina de centeno"
-  },
-  {
-    "name": "Harina de avena"
-  },
-  {
-    "name": "Azúcar moreno"
-  },
-  {
-    "name": "Azúcar de coco"
-  },
-  {
-    "name": "Eritritol"
-  },
-  {
-    "name": "Stevia"
-  },
-  {
-    "name": "Fructosa"
-  },
-  {
-    "name": "Xilitol"
-  },
-  {
-    "name": "Gluten de trigo"
-  },
-  {
-    "name": "Proteína de suero"
-  },
-  {
-    "name": "Proteína vegetal"
-  },
-  {
-    "name": "Levadura fresca"
-  },
-  {
-    "name": "Levadura seca"
-  },
-  {
-    "name": "Bicarbonato de sodio"
-  },
-  {
-    "name": "Polvo de hornear"
-  },
-  {
-    "name": "Goma xantana"
-  },
-  {
-    "name": "Goma guar"
-  },
-  {
-    "name": "Extracto de almendra"
-  },
-  {
-    "name": "Extracto de coco"
-  },
-  {
-    "name": "Extracto de menta"
-  },
-  {
-    "name": "Extracto de limón"
-  },
-  {
-    "name": "Pasta de vainilla"
-  },
-  {
-    "name": "Cáscara de limón"
-  },
-  {
-    "name": "Cáscara de naranja"
-  },
-  {
-    "name": "Cáscara de lima"
-  },
-  {
-    "name": "Hojas de laurel"
-  },
-  {
-    "name": "Pimienta blanca"
-  },
-  {
-    "name": "Pimienta rosa"
-  },
-  {
-    "name": "Pimienta verde"
-  },
-  {
-    "name": "Ají molido"
-  },
-  {
-    "name": "Ají amarillo"
-  },
-  {
-    "name": "Ají panca"
-  },
-  {
-    "name": "Sazonador de carne"
-  },
-  {
-    "name": "Sazonador de pollo"
-  },
-  {
-    "name": "Sazonador de pescado"
-  },
-  {
-    "name": "Ajinomoto"
-  },
-  {
-    "name": "Garam masala"
-  },
-  {
-    "name": "Pasta de curry"
-  },
-  {
-    "name": "Mostaza en grano"
-  },
-  {
-    "name": "Mostaza Dijon"
-  },
-  {
-    "name": "Mostaza amarilla"
-  },
-  {
-    "name": "Leche condensada"
-  },
-  {
-    "name": "Leche evaporada"
-  },
-  {
-    "name": "Leche de almendra"
-  },
-  {
-    "name": "Leche de avena"
-  },
-  {
-    "name": "Leche de coco"
-  },
-  {
-    "name": "Leche de soya"
-  },
-  {
-    "name": "Leche de arroz"
-  },
-  {
-    "name": "Leche en polvo"
-  },
-  {
-    "name": "Manteca de cerdo"
-  },
-  {
-    "name": "Manteca vegetal"
-  },
-  {
-    "name": "Aceite de coco"
-  },
-  {
-    "name": "Aceite de sésamo"
-  },
-  {
-    "name": "Aceite de maíz"
-  },
-  {
-    "name": "Aceite de girasol"
-  },
-  {
-    "name": "Aceite de aguacate"
-  },
-  {
-    "name": "Aceite de canola"
-  },
-  {
-    "name": "Aceite de nuez"
-  },
-  {
-    "name": "Aceite de linaza"
-  },
-  {
-    "name": "Masa madre"
-  },
-  {
-    "name": "Vinagre balsámico"
-  },
-  {
-    "name": "Vinagre de manzana"
-  },
-  {
-    "name": "Vinagre de arroz"
-  },
-  {
-    "name": "Vinagre de vino tinto"
-  },
-  {
-    "name": "Vinagre de jerez"
-  },
-  {
-    "name": "Miso"
-  },
-  {
-    "name": "Tahini"
-  },
-  {
-    "name": "Salsa de tamarindo"
-  },
-  {
-    "name": "Salsa de chile dulce"
-  },
-  {
-    "name": "Salsa de ajo"
-  },
-  {
-    "name": "Salsa teriyaki"
-  },
-  {
-    "name": "Salsa de mango"
-  },
-  {
-    "name": "Salsa de maracuyá"
-  },
-  {
-    "name": "Salsa BBQ"
-  },
-  {
-    "name": "Salsa de pimientos"
-  },
-  {
-    "name": "Gelatina sin sabor"
-  },
-  {
-    "name": "Agar-agar"
-  },
-  {
-    "name": "Grenetina"
-  },
-  {
-    "name": "Café molido"
-  },
-  {
-    "name": "Café instantáneo"
-  },
-  {
-    "name": "Té verde"
-  },
-  {
-    "name": "Té negro"
-  },
-  {
-    "name": "Té rojo"
-  },
-  {
-    "name": "Té blanco"
-  },
-  {
-    "name": "Té matcha"
-  },
-  {
-    "name": "Jengibre en polvo"
-  },
-  {
-    "name": "Raíz de cúrcuma"
-  },
-  {
-    "name": "Maca en polvo"
-  },
-  {
-    "name": "Espirulina"
-  },
-  {
-    "name": "Chlorella"
-  },
-  {
-    "name": "Levadura nutricional"
-  }
+  { "name": "Tomate", "image": "../../../assets/gifs/tomato.gif" },
+  { "name": "Tomate Cherry", "image": "../../../assets/gifs/cherryTomato.gif" },
+  { "name": "Cebolla blanca", "image": "../../../assets/gifs/whiteOnion.gif" },
+  { "name": "Cebolla morada", "image": "../../../assets/gifs/purpleOnion.gif" },
+  { "name": "Cebolla amarilla", "image": "../../../assets/gifs/whiteOnion.gif" },
+  { "name": "Papa", "image": "../../../assets/gifs/potato.gif" },
+  { "name": "Pepino", "image": "../../../assets/gifs/cucumber.gif" },
+  { "name": "Lechuga","image": "../../../assets/gifs/lettuce.gif" },
+  { "name": "Espinaca","image": "../../../assets/gifs/spinach.gif"  },
+  { "name": "Col rizada","image": "../../../assets/gifs/kale.gif"  },
+  { "name": "Brócoli","image": "../../../assets/gifs/broccoli.gif"  },
+  { "name": "Coliflor","image": "../../../assets/gifs/cauliflower.gif"  },
+  { "name": "Repollo","image": "../../../assets/gifs/cabbage.gif" },
+  { "name": "Coles de Bruselas","image": "../../../assets/gifs/cabbage.gif" },
+  { "name": "Espárragos","image": "../../../assets/gifs/asparagus.gif" },
+  { "name": "Maíz","image": "../../../assets/gifs/corn.gif" },
+  { "name": "Ajo","image": "../../../assets/gifs/garlic.gif" },
+  { "name": "Zanahoria","image": "../../../assets/gifs/carrot.gif" },
+  { "name": "Apio","image": "../../../assets/gifs/celery.gif" },
+  { "name": "Pimiento","image": "../../../assets/gifs/chili.gif" },
+  { "name": "Calabacín","image": "../../../assets/gifs/zucchini.gif" },
+  { "name": "Berenjena","image": "../../../assets/gifs/eggplant.gif" },
+  { "name": "Champiñón","image": "../../../assets/gifs/mushroom.gif" },
+  { "name": "Perejil","image": "../../../assets/gifs/parsley.gif" },
+  { "name": "Albahaca","image": "../../../assets/gifs/basil.gif" },
+  { "name": "Limón","image": "../../../assets/gifs/lemon.gif" },
+  { "name": "Lima","image": "../../../assets/gifs/lime.gif" },
+  { "name": "Naranja","image": "../../../assets/gifs/orange.gif" },
+  { "name": "Manzana","image": "../../../assets/gifs/apple.gif" },
+  { "name": "Banano","image": "../../../assets/gifs/banana.gif" },
+  { "name": "Fresa","image": "../../../assets/gifs/strawberry.gif" },
+  { "name": "Arándano","image": "../../../assets/gifs/berries.gif" },
+  { "name": "Frambuesa","image": "../../../assets/gifs/raspberry.gif" },
+  { "name": "Mora","image": "../../../assets/gifs/berries.gif" },
+  { "name": "Piña","image": "../../../assets/gifs/pineapple.gif" },
+  { "name": "Mango","image": "../../../assets/gifs/mango.gif" },
+  { "name": "Durazno","image": "../../../assets/gifs/peach.gif" },
+  { "name": "Pera","image": "../../../assets/gifs/pear.gif" },
+  { "name": "Ciruela","image": "../../../assets/gifs/plum.gif" },
+  { "name": "Cereza","image": "../../../assets/gifs/cherries.gif" },
+  { "name": "Uva","image": "../../../assets/gifs/grape.gif" },
+  { "name": "Sandía","image": "../../../assets/gifs/watermelon.gif" },
+  { "name": "Melón","image": "../../../assets/gifs/melon.gif" },
+  { "name": "Melón verde","image": "../../../assets/gifs/melon.gif" },
+  { "name": "Kiwi","image": "../../../assets/gifs/kiwi.gif" },
+  { "name": "Aguacate","image": "../../../assets/gifs/avocado.gif" },
+  { "name": "Muslos de Pollo","image": "../../../assets/gifs/chickenLeg.gif" },
+  { "name": "Pechuga de Pollo","image": "../../../assets/gifs/chickenLeg.gif" },
+  { "name": "Alitas de Pollo","image": "../../../assets/gifs/chickenWings.gif" },
+  { "name": "Tortas de Pollo","image": "../../../assets/gifs/chickenLeg.gif" },
+  { "name": "Pollo Entero","image": "../../../assets/gifs/chicken.gif" },
+  { "name": "Carne de Pollo molida","image": "../../../assets/gifs/chickenLeg.gif" },
+  { "name": "Muslos de Pavo","image": "../../../assets/gifs/turkey.gif" },
+  { "name": "Pechuga de Pavo","image": "../../../assets/gifs/turkey.gif" },
+  { "name": "Alitas de Pavo","image": "../../../assets/gifs/chickenWings.gif" },
+  { "name": "Tortas de Pavo","image": "../../../assets/gifs/turkey.gif" },
+  { "name": "Pavo Entero","image": "../../../assets/gifs/turkey.gif" },
+  { "name": "Carne de Pavo molida","image": "../../../assets/gifs/turkey.gif" },
+  { "name": "Carne de res filet","image": "../../../assets/gifs/steak.gif" },
+  { "name": "Carne de res molida","image": "../../../assets/gifs/steak.gif" },
+  { "name": "Carne de res mechada","image": "../../../assets/gifs/steak.gif" },
+  { "name": "Costillas de res ","image": "../../../assets/gifs/steak.gif" },
+  { "name": "Tortas de res ","image": "../../../assets/gifs/steak.gif" },
+  { "name": "Carne de cordero filet", "image":  "../../../assets/gifs/ribs.gif" },
+  { "name": "Carne de cordero costilla", "image":  "../../../assets/gifs/ribs.gif" },
+  { "name": "Carne de cordero lomo", "image":  "../../../assets/gifs/ribs.gif" },
+  { "name": "Carne de cordero pierna", "image":  "../../../assets/gifs/ribs.gif" },
+  { "name": "Costillas de Cerdo","image": "../../../assets/gifs/ham.gif" },
+  { "name": "Cerdo","image": "../../../assets/gifs/ham.gif" },
+  { "name": "Tocino","image": "../../../assets/gifs/bacon.gif" },
+  { "name": "Pescado Tilapia filet","image": "../../../assets/gifs/fish.gif" },
+  { "name": "Pescado Tilapia entero","image": "../../../assets/gifs/fish.gif" },
+  { "name": "Camarón" ,"image": "../../../assets/gifs/shrimp.gif" },
+  { "name": "Anchoas","image": "../../../assets/gifs/fish.gif" },
+  { "name": "Atún filet","image": "../../../assets/gifs/tuna.gif" },
+  { "name": "Atún en lata","image": "../../../assets/gifs/cannedTuna.gif" },
+  { "name": "Salmón", "image": "../../../assets/gifs/fish.gif" },
+  { "name": "Trucha","image": "../../../assets/gifs/fish.gif" },
+  { "name": "Langosta", "image": "../../../assets/gifs/lobster.gif" },
+  { "name": "Cangrejo", "image": "../../../assets/gifs/crab.gif" },
+  { "name": "Pulpo", "image": "../../../assets/gifs/octopus.gif" },
+  { "name": "Calamar", "image": "../../../assets/gifs/squid.gif" },
+  { "name": "Mejillones","image": "../../../assets/gifs/clams.gif" },
+  { "name": "Ostras", "image": "../../../assets/gifs/oyster.gif" },
+  { "name": "Algas","image": "../../../assets/gifs/seaweed.gif" },
+  { "name": "Leche", "image": "../../../assets/gifs/milk.gif" },
+  { "name": "Huevo", "image": "../../../assets/gifs/eggs.gif" },
+  { "name": "Queso Blanco","image": "../../../assets/gifs/whiteCheese.gif" },
+  { "name": "Queso Mozarella entero","image": "../../../assets/gifs/mozarellaCheese.gif" },
+  { "name": "Queso Parmesano entero", "image": "../../../assets/gifs/parmesanCheese.gif" },
+  { "name": "Queso Mozarella rallado","image": "../../../assets/gifs/mozarellaCheese.gif" },
+  { "name": "Queso Parmesano rallado", "image": "../../../assets/gifs/parmesanCheese.gif" },
+  { "name": "Queso Cheddar", "image": "../../../assets/gifs/cheddarCheese.gif" },
+  { "name": "Queso Crema", "image": "../../../assets/gifs/cottageCheese.gif" },
+  { "name": "Queso Suizo", "image": "../../../assets/gifs/swissCheese.gif" },
+  { "name": "Queso Turrialba", "image": "../../../assets/gifs/whiteCheese.gif" },
+  { "name": "Queso Fetta", "image": "../../../assets/gifs/cottageCheese.gif" },
+  { "name": "Queso Cottage", "image": "../../../assets/gifs/cottageCheese.gif" },
+  { "name": "Crema", "image": "../../../assets/gifs/cream.gif" },
+  { "name": "Yogurt", "image": "../../../assets/gifs/yogurt.gif" },
+  { "name": "Crema agria", "image": "../../../assets/gifs/cream.gif" },
+  { "name": "Helado","image": "../../../assets/gifs/iceCream.gif" },
+  { "name": "Leche condensada","image": "../../../assets/gifs/condensedMilk.gif" },
+  { "name": "Leche evaporada", "image": "../../../assets/gifs/milk.gif" },
+  { "name": "Leche de almendra" ,"image": "../../../assets/gifs/almondMilk.gif"},
+  { "name": "Leche de avena", "image": "../../../assets/gifs/milk.gif" },
+  { "name": "Leche de coco", "image": "../../../assets/gifs/milk.gif" },
+  { "name": "Leche de soya" ,"image": "../../../assets/gifs/soyMilk.gif"},
+  { "name": "Leche de arroz", "image": "../../../assets/gifs/milk.gif" },
+  { "name": "Leche en polvo", "image": "../../../assets/gifs/powderedMilk.gif" },
+  { "name": "Harina" ,"image": "../../../assets/gifs/flour.gif"},
+  { "name": "Pan" ,"image": "../../../assets/gifs/bread.gif"},
+  { "name": "Pan Baguette","image": "../../../assets/gifs/baguette.gif" },
+  { "name": "Pan Integral" ,"image": "../../../assets/gifs/integralBread.gif"},
+  { "name": "Pan Sourdough","image": "../../../assets/gifs/sourdoughBread.gif" },
+  { "name": "Pan Panecillo","image": "../../../assets/gifs/muffin.gif" },
+  { "name": "Pasta linguini","image": "../../../assets/gifs/spaghetti.gif" },
+  { "name": "Pasta Penne","image": "../../../assets/gifs/spaghetti.gif" },
+  { "name": "Pasta Lasagna" ,"image": "../../../assets/gifs/lasagna.gif"},
+  { "name": "Arroz" ,"image": "../../../assets/gifs/rice.gif"},
+  { "name": "Quinua","image": "../../../assets/gifs/friedRice.gif" },
+  { "name": "Cuscús","image": "../../../assets/gifs/friedRice.gif" },
+  { "name": "Avena","image": "../../../assets/gifs/friedRice.gif" },
+  { "name": "Cebada" ,"image": "../../../assets/gifs/barley.gif"},
+  { "name": "Harina de maíz","image": "../../../assets/gifs/genericFlour.gif" },
+  { "name": "Harina de almendra","image": "../../../assets/gifs/genericFlour.gif" },
+  { "name": "Harina de coco","image": "../../../assets/gifs/genericFlour.gif" },
+  { "name": "Harina integral","image": "../../../assets/gifs/genericFlour.gif" },
+  { "name": "Harina de arroz","image": "../../../assets/gifs/genericFlour.gif" },
+  { "name": "Harina de centeno","image": "../../../assets/gifs/genericFlour.gif" },
+  { "name": "Harina de avena","image": "../../../assets/gifs/genericFlour.gif" },
+  { "name": "Lentejas","image": "../../../assets/gifs/beans.gif" },
+  { "name": "Garbanzos","image": "../../../assets/gifs/beans2.gif" },
+  { "name": "Frijoles negros" ,"image": "../../../assets/gifs/beans.gif"},
+  { "name": "Frijoles rojos" ,"image": "../../../assets/gifs/beans.gif"},
+  { "name": "Frijoles blancos","image": "../../../assets/gifs/beans.gif" },
+  { "name": "Soja","image": "../../../assets/gifs/soyBeans.gif" },
+  { "name": "Tofu" ,"image": "../../../assets/gifs/tofu.gif" },
+  { "name": "Seitán","image": "../../../assets/gifs/tofu2.gif" },
+  { "name": "Tempeh","image": "../../../assets/gifs/tofu2.gif" },
+  { "name": "Almendras" ,"image": "../../../assets/gifs/almonds.gif" },
+  { "name": "Nueces","image": "../../../assets/gifs/nuts.gif" },
+  { "name": "Avellanas","image": "../../../assets/gifs/sesame.gif" },
+  { "name": "Pistachos","image": "../../../assets/gifs/sesame.gif" },
+  { "name": "Castañas","image": "../../../assets/gifs/chestnut.gif" },
+  { "name": "Semillas de girasol","image": "../../../assets/gifs/sunflowerSeed.gif" },
+  { "name": "Semillas de calabaza","image": "../../../assets/gifs/sesame.gif" },
+  { "name": "Semillas de lino","image": "../../../assets/gifs/sesame.gif" },
+  { "name": "Semillas de chía","image": "../../../assets/gifs/sesame.gif" },
+  { "name": "Semillas de sésamo","image": "../../../assets/gifs/sesame.gif" },
+  { "name": "Aceite de oliva","image": "../../../assets/gifs/oliveOil.gif" },
+  { "name": "Aceite de coco","image": "../../../assets/gifs/oil.gif" },
+  { "name": "Aceite de sésamo","image": "../../../assets/gifs/oil.gif" },
+  { "name": "Aceite de maíz","image": "../../../assets/gifs/oil.gif" },
+  { "name": "Aceite de girasol","image": "../../../assets/gifs/oil.gif" },
+  { "name": "Aceite de aguacate","image": "../../../assets/gifs/oil.gif" },
+  { "name": "Aceite de canola","image": "../../../assets/gifs/oil.gif" },
+  { "name": "Aceite de nuez","image": "../../../assets/gifs/oil.gif" },
+  { "name": "Aceite de linaza","image": "../../../assets/gifs/oil.gif" },
+  { "name": "Aceitunas","image": "../../../assets/gifs/olive.gif" },
+  { "name": "Alcaparras","image": "../../../assets/gifs/alcaparras.gif" },
+  { "name": "Ajinomoto","image": "../../../assets/gifs/ajinomoto.gif" },
+  { "name": "Jalea","image": "../../../assets/gifs/jam.gif" },
+  { "name": "Mantequilla","image": "../../../assets/gifs/butter.gif" },
+  { "name": "Mantequilla de maní","image": "../../../assets/gifs/peanutButter.gif" },
+  { "name": "Mantequilla de almendra","image": "../../../assets/gifs/butter.gif" },
+  { "name": "Manteca de cerdo","image": "../../../assets/gifs/fat.gif" },
+  { "name": "Manteca vegetal","image": "../../../assets/gifs/fat.gif" },
+  { "name": "Nutella","image": "../../../assets/gifs/nutella.gif" },
+  { "name": "Chocolate","image": "../../../assets/gifs/chocolateBar.gif" },
+  { "name": "Cacao","image": "../../../assets/gifs/hotCocoa.gif" },
+  { "name": "Miel","image": "../../../assets/gifs/honey.gif" },
+  { "name": "Jugo de naranja","image": "../../../assets/gifs/orangeJuice.gif" },
+  { "name": "Sidra de manzana","image": "../../../assets/gifs/appleCider.gif" },
+  { "name": "Vino tinto","image": "../../../assets/gifs/redWine.gif" },
+  { "name": "Vino blanco","image": "../../../assets/gifs/whiteWine.gif" }
 ]

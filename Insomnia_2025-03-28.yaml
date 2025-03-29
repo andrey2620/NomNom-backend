@@ -1,0 +1,757 @@
+type: collection.insomnia.rest/5.0
+name: API NomNom
+meta:
+  id: wrk_a0c5c1e07fba414d85a2c6eae01ec438
+  created: 1743203705105
+  modified: 1743203705105
+collection:
+  - name: SingUp/Login
+    meta:
+      id: fld_168ada20acf548eb945209102b59c14a
+      created: 1741829583893
+      modified: 1741829757977
+      sortKey: -1741829755392
+    children:
+      - url: http://localhost:8080/auth/login
+        name: Login Admin (Obtener Token)
+        meta:
+          id: req_01a2760e81684d9b9a0307adf97a505b
+          created: 1740367477564
+          modified: 1742780103204
+          isPrivate: false
+          sortKey: -1741829683489
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+                "email": "lopendex@gmail.com",
+                "password": "superadmin123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/auth/login
+        name: Login User (Obtener Token)
+        meta:
+          id: req_f0782e7653614ce4a5157a62a07c9392
+          created: 1740368132581
+          modified: 1742779056780
+          isPrivate: false
+          sortKey: -1741829683589
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+                "email": "user@nomnom.com",
+                "password": "user123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/auth/signup
+        name: SingUp (no auth)
+        meta:
+          id: req_906fe921332146dbb1d0ef7d9393f05e
+          created: 1741829469654
+          modified: 1741830294161
+          isPrivate: false
+          sortKey: -1741829683389
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "test", 
+            	"lastname": "test",
+            	"email": "test9@gmail.com",
+            	"password": "test123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/9.1.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/auth/google-auth
+        name: Check-Email (no auth)
+        meta:
+          id: req_1ddc05a41db0478f900a85393ad83c87
+          created: 1742094780567
+          modified: 1742095810867
+          isPrivate: false
+          sortKey: -1728641172435.5
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "lopendex@gmail.com"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/9.1.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Ingredient
+    meta:
+      id: fld_330fa8b970c346c2af86f85b2b6a7a48
+      created: 1742351445291
+      modified: 1742351819249
+      sortKey: -1742351445291
+    children:
+      - url: http://localhost:8080/ingredients
+        name: GET ALL
+        meta:
+          id: req_c02223ddead54251947160a3325a8f6f
+          created: 1742351715032
+          modified: 1743203847870
+          isPrivate: false
+          sortKey: -1742351715032
+        method: GET
+        parameters:
+          - name: page
+            value: "1"
+            disabled: false
+          - name: size
+            value: "10"
+            disabled: false
+        headers:
+          - name: User-Agent
+            value: insomnia/9.1.1
+        authentication:
+          type: bearer
+          disabled: false
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDM3OTEsImV4cCI6MTc0MzIwNzM5MX0.KcbIhOITitt1yJ9Z3zfk3kVEEZD3_r8kr-ozInXM7b8
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/ingredients/6
+        name: GET INGREDIENT BY ID
+        meta:
+          id: req_4253e44be98c47db84e08a1ad4c56488
+          created: 1742351920410
+          modified: 1742716396141
+          isPrivate: false
+          sortKey: -1742351920410
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/9.1.1
+        authentication:
+          type: bearer
+          disabled: false
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3MTU5NzgsImV4cCI6MTc0MjcxOTU3OH0.EzGBfIZu3ERT2GyDYbbEjOGgvxxuFhTbs1EVzrDCab0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/ingredients
+        name: CREATE NO USER ID
+        meta:
+          id: req_b417138a252744b19990de45bb85df7e
+          created: 1742351950782
+          modified: 1742715785550
+          isPrivate: false
+          sortKey: -1742351950782
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "xd"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/9.1.1
+        authentication:
+          type: bearer
+          disabled: false
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3MTU3NTIsImV4cCI6MTc0MjcxOTM1Mn0.nR-cf5ZhbkAwTfdcjX6hp0lCMkhep2w0YycMFwIww4M
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/ingredients
+        name: CREATE WITH USER ID
+        meta:
+          id: req_0532970b5f3b4dc6a7d35f22ea48e8c6
+          created: 1742351979625
+          modified: 1742354239740
+          isPrivate: false
+          sortKey: -1742351979625
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Cherry Tomatoo",
+            	"userId": 3
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/9.1.1
+        authentication:
+          type: bearer
+          disabled: false
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzNTIxMDMsImV4cCI6MTc0MjM1NTcwM30.O7EfvJqE4KjUUIXUMiKVvvvJWBikKGoUZ_7Dt9Xjjm0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/ingredients/15
+        name: UPDATE
+        meta:
+          id: req_d39b03c818a247318e46ada36a19c38d
+          created: 1742352012967
+          modified: 1742354263716
+          isPrivate: false
+          sortKey: -1742351979725
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Updated Tomatoo",
+            	"userId": 3
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/9.1.1
+        authentication:
+          type: bearer
+          disabled: false
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzNTIxMDMsImV4cCI6MTc0MjM1NTcwM30.O7EfvJqE4KjUUIXUMiKVvvvJWBikKGoUZ_7Dt9Xjjm0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/ingredients/15
+        name: DELETE
+        meta:
+          id: req_72b8714feeff496088b187becd3a4507
+          created: 1742352029161
+          modified: 1742354272865
+          isPrivate: false
+          sortKey: -1742351979825
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/9.1.1
+        authentication:
+          type: bearer
+          disabled: false
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzNTIxMDMsImV4cCI6MTc0MjM1NTcwM30.O7EfvJqE4KjUUIXUMiKVvvvJWBikKGoUZ_7Dt9Xjjm0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/ingredients/user/1
+        name: GET USER INGREDIENTS BY USER ID
+        meta:
+          id: req_dbfed2da319f40f2aed5aeffda32f2c8
+          created: 1742693221975
+          modified: 1743203977647
+          isPrivate: false
+          sortKey: -1742351817721
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/9.1.1
+        authentication:
+          type: bearer
+          disabled: false
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3NzY1MDEsImV4cCI6MTc0Mjc4MDEwMX0.8bNO9pa0D4ugA3iWKYbj-sgV70nQ76JKGbUf64wq5TQ
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/ingredients/formated/user/1
+        name: GET USER INGREDIENTS BY USER ID FOR IA
+        meta:
+          id: req_70e7c9e096e647c2aa21f4a4411552ac
+          created: 1743203943091
+          modified: 1743203983097
+          isPrivate: false
+          sortKey: -1742351766376.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/9.1.1
+            id: pair_eed41a94f3554a1b9caf4df6f4d7c9b5
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDM3OTEsImV4cCI6MTc0MzIwNzM5MX0.KcbIhOITitt1yJ9Z3zfk3kVEEZD3_r8kr-ozInXM7b8
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: USER
+    meta:
+      id: fld_e854ca7336a04eb4a277eba848f85bce
+      created: 1742712504740
+      modified: 1742712504740
+      sortKey: -1000000000
+    children:
+      - url: http://localhost:8080/users/2
+        name: Del user (auto set Token)
+        meta:
+          id: req_a215e8f61fde4992a687a757c93789b3
+          created: 1742712504747
+          modified: 1742713068286
+          isPrivate: false
+          sortKey: -1742712450697
+        method: DELETE
+        body:
+          mimeType: application/octet-stream
+        headers:
+          - name: Content-Type
+            value: application/octet-stream
+          - name: User-Agent
+            value: insomnia/9.1.1
+        authentication:
+          type: bearer
+          disabled: false
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3MTI1NzIsImV4cCI6MTc0MjcxNjE3Mn0.fAG9CPgjX8Vx8kq2uVjjv-MYdhnWMTQVWYB-DkMLT_U
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/users
+        name: GET USERS
+        meta:
+          id: req_9422c535388f44f093863f34606a81cc
+          created: 1742712846712
+          modified: 1743203741047
+          isPrivate: false
+          sortKey: -1742712450872
+        method: GET
+        headers:
+          - name: Authorization
+            value: Bearer {{ response.body 'Login Admin (Obtener Token)' '$.token' }}
+            id: pair_aa544c9a854b49f58b8928f7d13045c2
+        authentication:
+          type: bearer
+          disabled: false
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3MTI1NzIsImV4cCI6MTc0MjcxNjE3Mn0.fAG9CPgjX8Vx8kq2uVjjv-MYdhnWMTQVWYB-DkMLT_U
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/users/me
+        name: GET USER PROFILE
+        meta:
+          id: req_b48befd11cc6432eac9ab46a4d5ff9ce
+          created: 1742712978573
+          modified: 1742712989863
+          isPrivate: false
+          sortKey: -1742712450822
+        method: GET
+        authentication:
+          type: bearer
+          disabled: false
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3MTI1NzIsImV4cCI6MTc0MjcxNjE3Mn0.fAG9CPgjX8Vx8kq2uVjjv-MYdhnWMTQVWYB-DkMLT_U
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Recipes
+    meta:
+      id: fld_7e1d74c621ca43d2a8acde274982acee
+      created: 1742717818962
+      modified: 1743201008130
+      sortKey: -1742717818962
+    children:
+      - url: http://localhost:8080/recipes/generator
+        name: First generator
+        meta:
+          id: req_10a7333f87804b90b5f2ac724602314e
+          created: 1742532091130
+          modified: 1742868429920
+          isPrivate: false
+          sortKey: -1742717832433
+        method: GET
+        headers:
+          - name: Accept
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/recipes
+        name: CREATE RECIPE
+        meta:
+          id: req_7d73460bdba5437eb76fc5df626eae53
+          created: 1743199460570
+          modified: 1743200943495
+          isPrivate: false
+          sortKey: -1743199460570
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+            	"name": "Pizza saludable",
+            	"recipeCategory": "Comida",
+            	"description": "Una pizza con vegetales y masa integral",
+            	"instructions": "1. Precalentar horno...\n2. Agregar ingredientes...",
+            	"preparationTime": 40,
+            	"nutritionalInfo": "300 calorías por porción",
+            	"imageUrl": "..."
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDA4ODQsImV4cCI6MTc0MzIwNDQ4NH0.RuGfJIE_r0kB-4v4GnIXLhZSlQObMh2xlSqxGfo7ruI
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/recipes
+        name: GET ALL RECIPES
+        meta:
+          id: req_a597110d5ae34aada646f69c40b73441
+          created: 1743199503224
+          modified: 1743199876769
+          isPrivate: false
+          sortKey: -1743199503224
+        method: GET
+        parameters:
+          - name: page
+            value: "1"
+            disabled: false
+          - name: size
+            value: "5"
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/recipes/1
+        name: GET RECIPE BY ID
+        meta:
+          id: req_197287422e0d4b87b9955ba076afaaf9
+          created: 1743199521672
+          modified: 1743199888142
+          isPrivate: false
+          sortKey: -1743199521672
+        method: GET
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/recipes/1
+        name: UPDATE RECIPE
+        meta:
+          id: req_ce7f105290ac4f999be971f0b56a84c3
+          created: 1743199586407
+          modified: 1743199923512
+          isPrivate: false
+          sortKey: -1743199521772
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Pizza vegetariana actualizada",
+            	"recipeCategory": "Comida",
+            	"description": "Con más vegetales y sin queso",
+            	"instructions": "1. Hacer masa...\n2. Agregar ingredientes...",
+            	"preparationTime": 35,
+            	"nutritionalInfo": "250 calorías por porción",
+            	"imageUrl": "..."
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/recipes/1
+        name: DELETE RECIPE
+        meta:
+          id: req_7dda2e7386d54207a990ae9ee2958c14
+          created: 1743199605471
+          modified: 1743199901067
+          isPrivate: false
+          sortKey: -1743199521872
+        method: DELETE
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: RecipesIngredients
+    meta:
+      id: fld_dba38c00313744a6b5f93d9b4f99b78a
+      created: 1743200173718
+      modified: 1743202142967
+      sortKey: -1742534632126.5
+    children:
+      - url: http://localhost:8080/recipe/ingredient
+        name: CREATE RECIPE INGREDIENT
+        meta:
+          id: req_1b237dab86944b7698c13fe7f32cbafd
+          created: 1743200173720
+          modified: 1743200895352
+          isPrivate: false
+          sortKey: -1743199460570
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "recipe": { "id": 1 },
+              "ingredient": { "id": 1 },
+              "quantity": 2.5,
+              "measurement": "tazas"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDA4ODQsImV4cCI6MTc0MzIwNDQ4NH0.RuGfJIE_r0kB-4v4GnIXLhZSlQObMh2xlSqxGfo7ruI
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/recipe/ingredient/3
+        name: GET RECIPE INGREDIENT BY ID
+        meta:
+          id: req_06dc614b18c945ccaead9ef563cfb6ad
+          created: 1743200173721
+          modified: 1743204053733
+          isPrivate: false
+          sortKey: -1743199521672
+        method: GET
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDM3OTEsImV4cCI6MTc0MzIwNzM5MX0.KcbIhOITitt1yJ9Z3zfk3kVEEZD3_r8kr-ozInXM7b8
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/recipe/ingredient
+        name: GET ALL RECIPE INGREDIENT
+        meta:
+          id: req_38d9de4e67be49318dbcf7794883b695
+          created: 1743200173721
+          modified: 1743204034961
+          isPrivate: false
+          sortKey: -1743199503224
+        method: GET
+        parameters:
+          - name: page
+            value: "1"
+            disabled: false
+          - name: size
+            value: "5"
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDM3OTEsImV4cCI6MTc0MzIwNzM5MX0.KcbIhOITitt1yJ9Z3zfk3kVEEZD3_r8kr-ozInXM7b8
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/recipe/ingredient/1
+        name: UPDATE RECIPE INGREDIENT
+        meta:
+          id: req_949b62870a854af388a0bc6f0d9e3bb7
+          created: 1743200173722
+          modified: 1743202105530
+          isPrivate: false
+          sortKey: -1743199521772
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "recipe": { "id": 1 },
+              "ingredient": { "id": 2 },
+              "quantity": 2.5,
+              "measurement": "tazas"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/recipe/ingredient/2
+        name: DELETE RECIPE INGREDIENT
+        meta:
+          id: req_468bd30b32b44bf892b277e9ae7d7887
+          created: 1743200173723
+          modified: 1743202132194
+          isPrivate: false
+          sortKey: -1743199521872
+        method: DELETE
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_c7273e1915884a40ab5e749593f3f3bc
+    created: 1740367480171
+    modified: 1740367480171
+environments:
+  name: Base Environment
+  meta:
+    id: env_0c3b78e1cf9f4c8fb7bc1ab31b8617b2
+    created: 1740367480169
+    modified: 1743203781597
+    isPrivate: false
+  data:
+    "": "{}"

@@ -1,6 +1,9 @@
 package com.project.demo.logic.entity.recipe;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,50 +15,99 @@ public class Recipe {
     @Column(name = "id_recipe")
     private Long id;
 
-    @Column(name = "name", length = 150, nullable = false)
+    @Column(nullable = false, length = 150)
     private String name;
 
-    @Column(name = "description", columnDefinition = "TEXT", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "recipe_category", nullable = false)
+    private RecipeCategory recipeCategory;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "instructions", columnDefinition = "TEXT", nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String instructions;
 
     @Column(name = "preparation_time", nullable = false)
-    private int preparationTime;
+    private Integer preparationTime;
 
-    @Column(name = "nutritional_info", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "nutritional_info", nullable = false, columnDefinition = "TEXT")
     private String nutritionalInfo;
 
-    @Column(name = "image_url", length = 255, nullable = false)
+    @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<RecipeIngredient> ingredients;
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
-    // Getters y setters
+    // Getters y Setters
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getName() {
+        return name;
+    }
 
-    public String getInstructions() { return instructions; }
-    public void setInstructions(String instructions) { this.instructions = instructions; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public int getPreparationTime() { return preparationTime; }
-    public void setPreparationTime(int preparationTime) { this.preparationTime = preparationTime; }
+    public RecipeCategory getRecipeCategory() {
+        return recipeCategory;
+    }
 
-    public String getNutritionalInfo() { return nutritionalInfo; }
-    public void setNutritionalInfo(String nutritionalInfo) { this.nutritionalInfo = nutritionalInfo; }
+    public void setRecipeCategory(RecipeCategory recipeCategory) {
+        this.recipeCategory = recipeCategory;
+    }
 
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public String getDescription() {
+        return description;
+    }
 
-    public List<RecipeIngredient> getIngredients() { return ingredients; }
-    public void setIngredients(List<RecipeIngredient> ingredients) { this.ingredients = ingredients; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    public Integer getPreparationTime() {
+        return preparationTime;
+    }
+
+    public void setPreparationTime(Integer preparationTime) {
+        this.preparationTime = preparationTime;
+    }
+
+    public String getNutritionalInfo() {
+        return nutritionalInfo;
+    }
+
+    public void setNutritionalInfo(String nutritionalInfo) {
+        this.nutritionalInfo = nutritionalInfo;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
+        this.recipeIngredients = recipeIngredients;
+    }
 }
