@@ -66,58 +66,47 @@ public class UserRestController {
                 user, HttpStatus.OK, request);
     }
 
-//    @PutMapping("/{userId}")
-//    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-//    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user, HttpServletRequest request) {
-//        Optional<User> foundOrder = userRepository.findById(userId);
-//        if(foundOrder.isPresent()) {
-//            user.setPassword(passwordEncoder.encode(user.getPassword()));
-//            userRepository.save(user);
-//            return new GlobalResponseHandler().handleResponse("User updated successfully",
-//                    user, HttpStatus.OK, request);
-//        } else {
-//            return new GlobalResponseHandler().handleResponse("User id " + userId + " not found"  ,
-//                    HttpStatus.NOT_FOUND, request);
-//        }
-//    }
-
-
-// Actualizar un usuario existente (con alergias y preferencias)
-@PutMapping("/{userId}")
-@PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user, @RequestParam(required = false) Set<Long> selectedAllergies, @RequestParam(required = false) Set<Long> selectedDietPreferences,  HttpServletRequest request) {
-    Optional<User> foundUser = userRepository.findById(userId);
-    if (foundUser.isPresent()) {
-        User existingUser = foundUser.get();
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+    @PutMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user, HttpServletRequest request) {
+        Optional<User> foundOrder = userRepository.findById(userId);
+        if(foundOrder.isPresent()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+            return new GlobalResponseHandler().handleResponse("User updated successfully",
+                    user, HttpStatus.OK, request);
+        } else {
+            return new GlobalResponseHandler().handleResponse("User id " + userId + " not found"  ,
+                    HttpStatus.NOT_FOUND, request);
         }
-        existingUser.setName(user.getName());
-        existingUser.setEmail(user.getEmail());
-
-        // Asignar alergias si se proporcionan
-        if (selectedAllergies != null) {
-            Set<Allergies> allergies = new HashSet<>(allergiesRepository.findAllById(selectedAllergies));
-            List<Allergies> allergyList = new ArrayList<>(allergies);
-            existingUser.setAllergies(allergyList);
-        }
-
-        // Asignar preferencias dietéticas si se proporcionan
-        if (selectedDietPreferences != null) {
-            Set<Diet_Preferences> dietPreferences = new HashSet<>(diet_preferenceRepository.findAllById(selectedDietPreferences));
-            List<Diet_Preferences> dietPreferenceList = new ArrayList<>(dietPreferences);
-            existingUser.setPreferences(dietPreferenceList);
-        }
-
-        // Guardar el usuario actualizado
-        userRepository.save(existingUser);
-        return new GlobalResponseHandler().handleResponse("User updated successfully",
-            existingUser, HttpStatus.OK, request);
-    } else {
-        return new GlobalResponseHandler().handleResponse("User id " + userId + " not found",
-            HttpStatus.NOT_FOUND, request);
     }
-}
+
+
+    @GetMapping("/allergies")
+    public ResponseEntity<?> getAllAllergies(HttpServletRequest request) {
+        List<Allergies> allergies = allergiesRepository.findAll();
+        return new GlobalResponseHandler().handleResponse("Allergies retrieved successfully",
+            allergies, HttpStatus.OK, request);
+    }
+
+    @GetMapping("/diet-preferences")
+    public ResponseEntity<?> getAllDietPreferences(HttpServletRequest request) {
+        List<Diet_Preferences> dietPreferences = diet_preferenceRepository.findAll();
+        return new GlobalResponseHandler().handleResponse("Diet preferences retrieved successfully",
+            dietPreferences, HttpStatus.OK, request);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUserProfile(@PathVariable Long userId, HttpServletRequest request) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return new GlobalResponseHandler().handleResponse("User profile retrieved successfully",
+                user.get(), HttpStatus.OK, request);
+        } else {
+            return new GlobalResponseHandler().handleResponse("User not found",
+                HttpStatus.NOT_FOUND, request);
+        }
+    }
 
     @DeleteMapping("/{userId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")

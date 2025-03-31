@@ -8,15 +8,17 @@ public class Diet_Preferences {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private String name;
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
+  @Column(name = "name", length = 100, nullable = false, unique = true)
+  private String name;
 
-  public Diet_Preferences(String name) {
+  public Diet_Preferences(String name, User user) {
     this.name = name;
+    this.user = user;
   }
 
   public Diet_Preferences() {
@@ -36,5 +38,13 @@ public class Diet_Preferences {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
   }
 }

@@ -2,6 +2,8 @@ package com.project.demo.logic.entity.diet_preferences;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.demo.logic.entity.user.User;
+import com.project.demo.logic.entity.user.UserRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -14,9 +16,11 @@ import java.util.Optional;
 public class Diet_PreferencesSeeder implements ApplicationListener<ContextRefreshedEvent> {
 
   private final Diet_PreferenceRepository dietPreferencesRepository;
+  private final UserRepository userRepository;
 
-  public Diet_PreferencesSeeder(Diet_PreferenceRepository dietPreferencesRepository) {
+  public Diet_PreferencesSeeder(Diet_PreferenceRepository dietPreferencesRepository, UserRepository userRepository) {
     this.dietPreferencesRepository = dietPreferencesRepository;
+    this.userRepository = userRepository;
   }
 
   @Override
@@ -28,23 +32,27 @@ public class Diet_PreferencesSeeder implements ApplicationListener<ContextRefres
     ObjectMapper objectMapper = new ObjectMapper();
 
     try {
-      // Cargar el archivo diet_preferences.json desde el directorio de recursos
       InputStream inputStream = getClass().getClassLoader().getResourceAsStream("diet_preferences.json");
       if (inputStream == null) {
         System.out.println("No se encontró el archivo diet_preferences.json.");
         return;
       }
 
-      // Leer el archivo JSON y mapearlo a una lista de objetos Diet_Preferences
       List<Diet_Preferences> dietPreferencesList = objectMapper.readValue(inputStream, new TypeReference<>() {});
 
-      // Verificar si los registros ya existen en la base de datos
       for (Diet_Preferences dietPreference : dietPreferencesList) {
         Optional<Diet_Preferences> existingDietPreference = dietPreferencesRepository.findByName(dietPreference.getName());
+
         if (existingDietPreference.isEmpty()) {
-          // Si no existe, guardar el nuevo registro
-          dietPreferencesRepository.save(dietPreference);
-          System.out.println("Preferencia de dieta agregada: " + dietPreference.getName());
+          // Buscar usuario en la BD
+          Optional<User> userOpt = userRepository.findById(dietPreference.getUser().getId());
+          if (userOpt.isPresent()) {
+            dietPreference.setUser(userOpt.get());
+            dietPreferencesRepository.save(dietPreference);
+            System.out.println("Preferencia de dieta agregada: " + dietPreference.getName());
+          } else {
+            System.out.println("Usuario no encontrado para la preferencia: " + dietPreference.getName());
+          }
         } else {
           System.out.println("Preferencia de dieta ya existe: " + dietPreference.getName());
         }
@@ -55,3 +63,4 @@ public class Diet_PreferencesSeeder implements ApplicationListener<ContextRefres
     }
   }
 }
+

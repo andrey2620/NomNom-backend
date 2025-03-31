@@ -9,15 +9,17 @@ public class Allergies {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "name", length = 100, nullable = false, unique = true)
+    private String name;
 
   public Allergies(String name) {
       this.name = name;
+      this.user = user;
     }
 
   public Allergies() {
