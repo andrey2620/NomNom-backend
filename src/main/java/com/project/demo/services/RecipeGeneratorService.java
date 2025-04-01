@@ -146,4 +146,34 @@ public class RecipeGeneratorService {
                 - Las instrucciones deben ir como un solo string.
                 """.formatted(String.join(", ", ingredients));
     }
+
+    public JsonNode getSuggestionsForRecipe(Map<String, Object> recipeJson) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        String recipeString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(recipeJson);
+
+        String prompt = """
+                En español:
+                A partir de esta receta:
+                %s
+                
+                Da las siguientes sugerencias:
+                1. Sustituciones saludables o accesibles para los ingredientes si es necesario.
+                2. Consejos creativos de presentación para servir el platillo.
+                3. Momentos seguros dentro de la preparación donde pueden participar los niños.
+                
+                Devuélvelo en este formato JSON ESTRICTO:
+                {
+                  "ingredientSubstitutions": ["texto 1", "texto 2"],
+                  "presentationTips": ["texto 1", "texto 2"],
+                  "kidsParticipation": ["texto 1", "texto 2"]
+                }
+                
+                Importante:
+                - Solo devuelve el JSON.
+                - No expliques el resultado ni uses texto adicional.
+                - Sin markdown ni encabezados.
+                """.formatted(recipeString);
+
+        return callModelWithPrompt(prompt);
+    }
 }
