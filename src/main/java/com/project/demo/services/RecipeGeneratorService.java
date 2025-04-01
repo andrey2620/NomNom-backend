@@ -2,12 +2,17 @@ package com.project.demo.services;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.demo.logic.entity.auth.JwtTokenUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.InputStream;
 import java.util.*;
@@ -27,8 +32,11 @@ public class RecipeGeneratorService {
     @Value("${app.base-url:http://localhost:8080}")
     private String baseUrl;
 
-    // Método central que llama a la IA con un prompt dado
     public JsonNode callModelWithPrompt(String prompt) throws Exception {
+        if (prompt == null || prompt.trim().isEmpty()) {
+            throw new IllegalArgumentException("El prompt no puede estar vacío.");
+        }
+
         Map<String, Object> body = new HashMap<>();
         body.put("model", model);
         body.put("prompt", prompt);
@@ -49,16 +57,13 @@ public class RecipeGeneratorService {
         JsonNode fullResponse = objectMapper.readTree(responseBody);
         String json = fullResponse.get("response").asText().trim();
 
-        if (!json.startsWith("{")) {
-            System.err.println("Respuesta inválida del modelo:");
-            System.err.println(json);
-            throw new RuntimeException("El modelo no devolvió un JSON válido.");
+        try {
+            return objectMapper.readTree(json);
+        } catch (Exception e) {
+            throw new RuntimeException("JSON inválido generado por el modelo. Respuesta: " + json, e);
         }
-
-        return objectMapper.readTree(json);
     }
 
-    // Genera receta con todos los ingredientes del JSON local
     public JsonNode generateRecipeWithAllIngredients() throws Exception {
         InputStream inputStream = getClass().getResourceAsStream(ingredientsFilePath);
         JsonNode ingredients = objectMapper.readTree(inputStream);
@@ -72,28 +77,37 @@ public class RecipeGeneratorService {
         return callModelWithPrompt(prompt);
     }
 
-    // Genera receta personalizada a partir del userId
     public JsonNode generateRecipeForUser(Long userId) throws Exception {
         List<String> userIngredients = getFormattedIngredientsForUser(userId);
+
+        if (userIngredients == null || userIngredients.isEmpty()) {
+            throw new IllegalStateException("No se encontraron ingredientes para el usuario " + userId);
+        }
+
         return generateRecipeFromList(userIngredients);
     }
 
-    // Genera receta a partir de una lista de nombres de ingredientes
     private JsonNode generateRecipeFromList(List<String> userIngredients) throws Exception {
         String prompt = buildPrompt(userIngredients);
         return callModelWithPrompt(prompt);
     }
 
-    // Obtiene ingredientes formateados desde el endpoint existente
-    @SuppressWarnings("unchecked")
     private List<String> getFormattedIngredientsForUser(Long userId) throws Exception {
         String url = baseUrl + "/ingredients/formated/user/" + userId;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        headers.set("Authorization", "Bearer " + JwtTokenUtils.getCurrentToken());
+
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         ResponseEntity<List<Map<String, String>>> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {}
+                entity,
+                new ParameterizedTypeReference<>() {
+                }
         );
 
         if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
@@ -108,7 +122,6 @@ public class RecipeGeneratorService {
         return ingredientNames;
     }
 
-    // Prompt en español formateado con lista de ingredientes
     private String buildPrompt(List<String> ingredients) {
         return """
                 En español:

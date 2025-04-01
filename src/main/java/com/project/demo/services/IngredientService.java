@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ public class IngredientService {
         return ingredientRepository.findById(id);
     }
 
+    @Transactional
     public List<Map<String, String>> getFormattedIngredientsByUserId(Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
 
@@ -43,6 +45,7 @@ public class IngredientService {
                 })
                 .collect(Collectors.toList());
     }
+
 
     public Ingredient saveIngredient(Ingredient ingredient) {
         return ingredientRepository.save(ingredient);
@@ -82,8 +85,6 @@ public class IngredientService {
         userRepository.save(user);
         return "Ingrediente vinculado correctamente al usuario.";
     }
-
-
 
     public void deleteIngredient(Long id) {
         ingredientRepository.deleteById(id);

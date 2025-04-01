@@ -17,6 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -87,8 +89,24 @@ public class UserRestController {
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public User authenticatedUser() {
+    public ResponseEntity<?> authenticatedUser(HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (User) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
+
+        // Crear una respuesta segura sin ingredientes
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", user.getId());
+        response.put("name", user.getName());
+        response.put("lastname", user.getLastname());
+        response.put("email", user.getEmail());
+        response.put("picture", user.getPicture());
+        response.put("role", user.getRole().getName());
+
+        return new GlobalResponseHandler().handleResponse(
+                "Authenticated user retrieved successfully",
+                response,
+                HttpStatus.OK,
+                request
+        );
     }
 }

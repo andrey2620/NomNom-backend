@@ -444,17 +444,20 @@ collection:
       sortKey: -1742717818962
     children:
       - url: "{{ _.base_url }}recipes/generator"
-        name: First generator
+        name: GENERATE RECIPE WITH FULL JSON
         meta:
           id: req_3736aa6e35be4534909bb684da8b1e6c
           created: 1742532091130
-          modified: 1743464145727
+          modified: 1743484787738
           isPrivate: false
           sortKey: -1742717832433
         method: GET
         headers:
           - name: Accept
             value: application/json
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -600,18 +603,21 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}recipes/generator/user/"
+      - url: "{{ _.base_url }}recipes/generator/user/1"
         name: GENERATE USER RECIPE
         meta:
           id: req_fde5e22ac9f845b7822e48cbbf309348
           created: 1743211092491
-          modified: 1743464151043
+          modified: 1743484626069
           isPrivate: false
           sortKey: -1742715141652.5
         method: GET
         headers:
           - name: Accept
             value: application/json
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -624,7 +630,7 @@ collection:
     meta:
       id: fld_07a9544e53ad43b6bb242a4547d44900
       created: 1743200173718
-      modified: 1743202142967
+      modified: 1743486885974
       sortKey: -1742534632126.5
     children:
       - url: "{{ _.base_url }}recipe/ingredient"
@@ -779,10 +785,10 @@ environments:
       meta:
         id: env_9e1ea248965d4154802ba678e2d62d7a
         created: 1743464506795
-        modified: 1743467129355
+        modified: 1743486837522
         isPrivate: false
         sortKey: 1743464506795
       data:
         base_url: http://localhost:8080/
-        token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDM0NjY5OTYsImV4cCI6MTc0MzQ3MDU5Nn0.MS1ePDPsGxTrPAO3tVtNXECGeITN3A47DBH1xySED1I
+        token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQG5vbW5vbS5jb20iLCJpYXQiOjE3NDM0ODY4MTQsImV4cCI6MTc0MzQ5MDQxNH0.zVTaWJXV6eeeJMpbCovhyyPcSou7UzhnA8o3oXlts38
       color: "#4bfa00"
