@@ -6,6 +6,7 @@ import com.project.demo.services.EmailService;
 import com.project.demo.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,9 @@ public class PasswordResetController {
     @Autowired
     private EmailService emailService;
 
+    @Value("${app.base-url-frontend:http://localhost:4200}")
+    private String baseUrlFrontend;
+
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestParam String email, HttpServletRequest request) {
         Optional<User> userOptional = userService.findByEmail(email);
@@ -38,14 +42,13 @@ public class PasswordResetController {
 
         userService.savePasswordResetToken(user, token);
 
-        String resetLink = "http://localhost:4200/reset-password?token=" + token;
+        String resetLink = baseUrlFrontend + "/reset-password?token=" + token;
 
         emailService.sendPasswordResetEmail(user.getEmail(), resetLink);
 
         return new GlobalResponseHandler().handleResponse("Correo de recuperación enviado",
                 HttpStatus.OK, request);
     }
-
 
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestBody String newPassword, HttpServletRequest httpRequest) {

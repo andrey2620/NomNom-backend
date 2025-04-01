@@ -32,6 +32,9 @@ public class RecipeGeneratorService {
     @Value("${app.base-url:http://localhost:8080}")
     private String baseUrl;
 
+    @Value("${app.base-url-ollama:http://localhost:11434}")
+    private String baseUrlOllama;
+
     public JsonNode callModelWithPrompt(String prompt) throws Exception {
         if (prompt == null || prompt.trim().isEmpty()) {
             throw new IllegalArgumentException("El prompt no puede estar vacío.");
@@ -48,7 +51,7 @@ public class RecipeGeneratorService {
 
         ResponseEntity<String> response;
         try {
-            response = restTemplate.postForEntity("http://localhost:11434/api/generate", entity, String.class);
+            response = restTemplate.postForEntity(baseUrlOllama + "/api/generate", entity, String.class);
         } catch (RestClientException e) {
             throw new RuntimeException("Error al conectarse con el modelo IA", e);
         }
@@ -65,6 +68,7 @@ public class RecipeGeneratorService {
     }
 
     public JsonNode generateRecipeWithAllIngredients() throws Exception {
+        System.out.println(ingredientsFilePath);
         InputStream inputStream = getClass().getResourceAsStream(ingredientsFilePath);
         JsonNode ingredients = objectMapper.readTree(inputStream);
         List<String> ingredientNames = new ArrayList<>();
