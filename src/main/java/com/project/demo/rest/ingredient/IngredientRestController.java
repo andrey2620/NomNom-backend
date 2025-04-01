@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 import java.util.Collections;
 import java.util.List;
@@ -69,34 +70,11 @@ public class IngredientRestController {
         }
     }
 
-    @GetMapping("/user/{userId}")
-    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
-    public ResponseEntity<?> getIngredientsByUserId(@PathVariable Long userId, HttpServletRequest request) {
-        List<Ingredient> userIngredients = ingredientService.getIngredientsByUserId(userId);
-        return new GlobalResponseHandler().handleResponse(
-                "Ingredients for user " + userId + " retrieved successfully",
-                userIngredients,
-                HttpStatus.OK,
-                request
-        );
-    }
-
     @GetMapping("/formated/user/{userId}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
-    public ResponseEntity<?> getIngredientsByUserIdForIA(@PathVariable Long userId, HttpServletRequest request) {
-        List<Ingredient> userIngredients = ingredientService.getIngredientsByUserId(userId);
-
-        // Mapeamos solo a los nombres
-        List<Map<String, String>> simplified = userIngredients.stream()
-                .map(ingredient -> Map.of("name", ingredient.getName()))
-                .toList();
-
-        return new GlobalResponseHandler().handleResponse(
-                "Ingredients for user " + userId + " retrieved successfully",
-                simplified,
-                HttpStatus.OK,
-                request
-        );
+    public ResponseEntity<List<Map<String, String>>> getIngredientsByUserId(@PathVariable Long userId) {
+        List<Map<String, String>> ingredients = ingredientService.getFormattedIngredientsByUserId(userId);
+        return ResponseEntity.ok(ingredients);
     }
 
     // Buscar por nombre
@@ -158,10 +136,6 @@ public class IngredientRestController {
         );
     }
 
-
-
-
-    // Crear un nuevo ingrediente
     @PostMapping
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> addIngredient(@RequestBody Ingredient ingredient, HttpServletRequest request) {
@@ -169,6 +143,46 @@ public class IngredientRestController {
         return new GlobalResponseHandler().handleResponse("Ingredient created successfully",
                 savedIngredient, HttpStatus.CREATED, request);
     }
+
+    @PostMapping("/create/with-user/{userId}")
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<Ingredient> createIngredientForUser(@RequestBody Ingredient ingredient, @PathVariable Long userId) {
+        Ingredient saved = ingredientService.createIngredientAndAssignToUser(ingredient, userId);
+        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/link/{ingredientId}/user/{userId}")
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<?> linkIngredientToUser(
+            @PathVariable Long ingredientId,
+            @PathVariable Long userId,
+            HttpServletRequest request) {
+
+        try {
+            String resultMessage = ingredientService.linkExistingIngredientToUser(ingredientId, userId);
+            return new GlobalResponseHandler().handleResponse(
+                    resultMessage,
+                    null,
+                    HttpStatus.OK,
+                    request
+            );
+        } catch (IllegalArgumentException e) {
+            return new GlobalResponseHandler().handleResponse(
+                    e.getMessage(),
+                    null,
+                    HttpStatus.NOT_FOUND,
+                    request
+            );
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "Error al vincular ingrediente: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
+        }
+    }
+
 
     @PutMapping("/{ingredientId}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
@@ -179,7 +193,6 @@ public class IngredientRestController {
             Ingredient existingIngredient = foundIngredient.get();
             existingIngredient.setName(ingredient.getName());
             existingIngredient.setMedida(ingredient.getMedida());
-            existingIngredient.setCreatedBy(ingredient.getCreatedBy());
             ingredientService.saveIngredient(existingIngredient);
 
             return new GlobalResponseHandler().handleResponse(

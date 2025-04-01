@@ -1,23 +1,23 @@
 type: collection.insomnia.rest/5.0
 name: API NomNom
 meta:
-  id: wrk_a0c5c1e07fba414d85a2c6eae01ec438
-  created: 1743203705105
-  modified: 1743203705105
+  id: wrk_2179a5a0fe074fcba0db09bf86246fdf
+  created: 1743464889538
+  modified: 1743470654904
 collection:
   - name: SingUp/Login
     meta:
-      id: fld_168ada20acf548eb945209102b59c14a
+      id: fld_8bb7dd88d58b4726bd7bf2c4e4b5e492
       created: 1741829583893
       modified: 1741829757977
       sortKey: -1741829755392
     children:
-      - url: http://localhost:8080/auth/login
+      - url: "{{ _.base_url }}auth/login"
         name: Login Admin (Obtener Token)
         meta:
-          id: req_01a2760e81684d9b9a0307adf97a505b
+          id: req_a9076597d4844bfdaec24a5b04e934c9
           created: 1740367477564
-          modified: 1742780103204
+          modified: 1743463741709
           isPrivate: false
           sortKey: -1741829683489
         method: POST
@@ -39,12 +39,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/auth/login
+      - url: "{{ _.base_url }}auth/login"
         name: Login User (Obtener Token)
         meta:
-          id: req_f0782e7653614ce4a5157a62a07c9392
+          id: req_01cf5e1443b4493e9eacd0a04f23eddb
           created: 1740368132581
-          modified: 1742779056780
+          modified: 1743464245387
           isPrivate: false
           sortKey: -1741829683589
         method: POST
@@ -66,12 +66,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/auth/signup
+      - url: "{{ _.base_url }}auth/signup"
         name: SingUp (no auth)
         meta:
-          id: req_906fe921332146dbb1d0ef7d9393f05e
+          id: req_0cefc7e79d4b475ea5eb6a3398cfb73e
           created: 1741829469654
-          modified: 1741830294161
+          modified: 1743464250568
           isPrivate: false
           sortKey: -1741829683389
         method: POST
@@ -97,12 +97,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/auth/google-auth
+      - url: "{{ _.base_url }}auth/google-auth"
         name: Check-Email (no auth)
         meta:
-          id: req_1ddc05a41db0478f900a85393ad83c87
+          id: req_ef4926c64cbe4d5d84a9f76de53882e1
           created: 1742094780567
-          modified: 1742095810867
+          modified: 1743464253461
           isPrivate: false
           sortKey: -1728641172435.5
         method: POST
@@ -127,17 +127,17 @@ collection:
           rebuildPath: true
   - name: Ingredient
     meta:
-      id: fld_330fa8b970c346c2af86f85b2b6a7a48
+      id: fld_5a0dad4f01d14cc7a3437b471d53c7e8
       created: 1742351445291
       modified: 1742351819249
       sortKey: -1742351445291
     children:
-      - url: http://localhost:8080/ingredients
+      - url: "{{ _.base_url }}ingredients"
         name: GET ALL
         meta:
-          id: req_c02223ddead54251947160a3325a8f6f
+          id: req_d3ae148437fd4aceb77506e96fdf1451
           created: 1742351715032
-          modified: 1743203847870
+          modified: 1743468890683
           isPrivate: false
           sortKey: -1742351715032
         method: GET
@@ -145,16 +145,18 @@ collection:
           - name: page
             value: "1"
             disabled: false
+            id: pair_2b53c055c9474a79bb9565080544109c
           - name: size
-            value: "10"
+            value: "1000"
             disabled: false
+            id: pair_6857f26e463540109266856ffa12787d
         headers:
           - name: User-Agent
             value: insomnia/9.1.1
         authentication:
           type: bearer
           disabled: false
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDM3OTEsImV4cCI6MTc0MzIwNzM5MX0.KcbIhOITitt1yJ9Z3zfk3kVEEZD3_r8kr-ozInXM7b8
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -163,12 +165,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/ingredients/6
+      - url: "{{ _.base_url }}ingredients/181"
         name: GET INGREDIENT BY ID
         meta:
-          id: req_4253e44be98c47db84e08a1ad4c56488
+          id: req_2cc9be8caf8b41998119f688324bdb9b
           created: 1742351920410
-          modified: 1742716396141
+          modified: 1743468368745
           isPrivate: false
           sortKey: -1742351920410
         method: GET
@@ -178,7 +180,7 @@ collection:
         authentication:
           type: bearer
           disabled: false
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3MTU5NzgsImV4cCI6MTc0MjcxOTU3OH0.EzGBfIZu3ERT2GyDYbbEjOGgvxxuFhTbs1EVzrDCab0
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -187,12 +189,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/ingredients
+      - url: "{{ _.base_url }}ingredients"
         name: CREATE NO USER ID
         meta:
-          id: req_b417138a252744b19990de45bb85df7e
+          id: req_542d32d766bf4c90a0edeb57a60d863f
           created: 1742351950782
-          modified: 1742715785550
+          modified: 1743468354982
           isPrivate: false
           sortKey: -1742351950782
         method: POST
@@ -200,7 +202,9 @@ collection:
           mimeType: application/json
           text: |-
             {
-            	"name": "xd"
+            	"name": "Aguacate Dddddeluxe",
+            	"medida": "unidad",
+            	"image": "https://example.com/aguacate.png"
             }
         headers:
           - name: Content-Type
@@ -210,7 +214,7 @@ collection:
         authentication:
           type: bearer
           disabled: false
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3MTU3NTIsImV4cCI6MTc0MjcxOTM1Mn0.nR-cf5ZhbkAwTfdcjX6hp0lCMkhep2w0YycMFwIww4M
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -219,45 +223,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/ingredients
-        name: CREATE WITH USER ID
-        meta:
-          id: req_0532970b5f3b4dc6a7d35f22ea48e8c6
-          created: 1742351979625
-          modified: 1742354239740
-          isPrivate: false
-          sortKey: -1742351979625
-        method: POST
-        body:
-          mimeType: application/json
-          text: |-
-            {
-            	"name": "Cherry Tomatoo",
-            	"userId": 3
-            }
-        headers:
-          - name: Content-Type
-            value: application/json
-          - name: User-Agent
-            value: insomnia/9.1.1
-        authentication:
-          type: bearer
-          disabled: false
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzNTIxMDMsImV4cCI6MTc0MjM1NTcwM30.O7EfvJqE4KjUUIXUMiKVvvvJWBikKGoUZ_7Dt9Xjjm0
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-      - url: http://localhost:8080/ingredients/15
+      - url: "{{ _.base_url }}ingredients/15"
         name: UPDATE
         meta:
-          id: req_d39b03c818a247318e46ada36a19c38d
+          id: req_8865d947087049e5816b33620becfcc3
           created: 1742352012967
-          modified: 1742354263716
+          modified: 1743464185574
           isPrivate: false
           sortKey: -1742351979725
         method: PUT
@@ -276,7 +247,7 @@ collection:
         authentication:
           type: bearer
           disabled: false
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzNTIxMDMsImV4cCI6MTc0MjM1NTcwM30.O7EfvJqE4KjUUIXUMiKVvvvJWBikKGoUZ_7Dt9Xjjm0
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -285,12 +256,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/ingredients/15
+      - url: "{{ _.base_url }}ingredients/15"
         name: DELETE
         meta:
-          id: req_72b8714feeff496088b187becd3a4507
+          id: req_148295b409b84fbd82b272d36fc08f54
           created: 1742352029161
-          modified: 1742354272865
+          modified: 1743464179980
           isPrivate: false
           sortKey: -1742351979825
         method: DELETE
@@ -300,7 +271,7 @@ collection:
         authentication:
           type: bearer
           disabled: false
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDIzNTIxMDMsImV4cCI6MTc0MjM1NTcwM30.O7EfvJqE4KjUUIXUMiKVvvvJWBikKGoUZ_7Dt9Xjjm0
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -309,12 +280,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/ingredients/user/1
+      - url: "{{ _.base_url }}ingredients/formated/user/1"
         name: GET USER INGREDIENTS BY USER ID
         meta:
-          id: req_dbfed2da319f40f2aed5aeffda32f2c8
+          id: req_25ea3d41ecdf429abd7a199f9dcb3800
           created: 1742693221975
-          modified: 1743203977647
+          modified: 1743468699820
           isPrivate: false
           sortKey: -1742351817721
         method: GET
@@ -324,7 +295,7 @@ collection:
         authentication:
           type: bearer
           disabled: false
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3NzY1MDEsImV4cCI6MTc0Mjc4MDEwMX0.8bNO9pa0D4ugA3iWKYbj-sgV70nQ76JKGbUf64wq5TQ
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -333,22 +304,53 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/ingredients/formated/user/1
-        name: GET USER INGREDIENTS BY USER ID FOR IA
+      - url: "{{ _.base_url }}ingredients/create/with-user/1"
+        name: CREATE NEW INGREDIENT FOR USER-INGREDIENT RELATION
         meta:
-          id: req_70e7c9e096e647c2aa21f4a4411552ac
-          created: 1743203943091
-          modified: 1743203983097
+          id: req_d0200a08808f49cdbb7d9611a662e12c
+          created: 1743466906393
+          modified: 1743469105081
           isPrivate: false
-          sortKey: -1742351766376.5
-        method: GET
+          sortKey: -1742351957992.75
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Aguacate DDeluxe",
+            	"medida": "unidad",
+            	"image": "https://example.com/aguacate.png"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}ingredients/link/3/user/1"
+        name: CREATE INGREDIENT-USER RELATIONSHIP
+        meta:
+          id: req_dc542db59a244a4baa1284c0c99463b8
+          created: 1743469924212
+          modified: 1743470318669
+          isPrivate: false
+          sortKey: -1742351935596
+        method: POST
         headers:
           - name: User-Agent
             value: insomnia/9.1.1
-            id: pair_eed41a94f3554a1b9caf4df6f4d7c9b5
         authentication:
           type: bearer
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDM3OTEsImV4cCI6MTc0MzIwNzM5MX0.KcbIhOITitt1yJ9Z3zfk3kVEEZD3_r8kr-ozInXM7b8
+          disabled: false
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -359,17 +361,17 @@ collection:
           rebuildPath: true
   - name: USER
     meta:
-      id: fld_e854ca7336a04eb4a277eba848f85bce
+      id: fld_d5c18514fddd47d6b11bc17c5b571a10
       created: 1742712504740
       modified: 1742712504740
       sortKey: -1000000000
     children:
-      - url: http://localhost:8080/users/2
+      - url: "{{ _.base_url }}users/2"
         name: Del user (auto set Token)
         meta:
-          id: req_a215e8f61fde4992a687a757c93789b3
+          id: req_4ed282e6f8244e70aec9ab30b651e8a8
           created: 1742712504747
-          modified: 1742713068286
+          modified: 1743464266146
           isPrivate: false
           sortKey: -1742712450697
         method: DELETE
@@ -383,7 +385,7 @@ collection:
         authentication:
           type: bearer
           disabled: false
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3MTI1NzIsImV4cCI6MTc0MjcxNjE3Mn0.fAG9CPgjX8Vx8kq2uVjjv-MYdhnWMTQVWYB-DkMLT_U
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -392,23 +394,19 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/users
+      - url: "{{ _.base_url }}users"
         name: GET USERS
         meta:
-          id: req_9422c535388f44f093863f34606a81cc
+          id: req_86173d804f63412d8929701509a82492
           created: 1742712846712
-          modified: 1743203741047
+          modified: 1743464257736
           isPrivate: false
           sortKey: -1742712450872
         method: GET
-        headers:
-          - name: Authorization
-            value: Bearer {{ response.body 'Login Admin (Obtener Token)' '$.token' }}
-            id: pair_aa544c9a854b49f58b8928f7d13045c2
         authentication:
           type: bearer
           disabled: false
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3MTI1NzIsImV4cCI6MTc0MjcxNjE3Mn0.fAG9CPgjX8Vx8kq2uVjjv-MYdhnWMTQVWYB-DkMLT_U
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -417,19 +415,19 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/users/me
+      - url: "{{ _.base_url }}users/me"
         name: GET USER PROFILE
         meta:
-          id: req_b48befd11cc6432eac9ab46a4d5ff9ce
+          id: req_55a2b15a92114c09b511bb10d7929751
           created: 1742712978573
-          modified: 1742712989863
+          modified: 1743464261949
           isPrivate: false
           sortKey: -1742712450822
         method: GET
         authentication:
           type: bearer
           disabled: false
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDI3MTI1NzIsImV4cCI6MTc0MjcxNjE3Mn0.fAG9CPgjX8Vx8kq2uVjjv-MYdhnWMTQVWYB-DkMLT_U
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -440,17 +438,17 @@ collection:
           rebuildPath: true
   - name: Recipes
     meta:
-      id: fld_7e1d74c621ca43d2a8acde274982acee
+      id: fld_3fbd4973d3454e708bc4bd1fd0a81c3b
       created: 1742717818962
       modified: 1743201008130
       sortKey: -1742717818962
     children:
-      - url: http://localhost:8080/recipes/generator
+      - url: "{{ _.base_url }}recipes/generator"
         name: First generator
         meta:
-          id: req_10a7333f87804b90b5f2ac724602314e
+          id: req_3736aa6e35be4534909bb684da8b1e6c
           created: 1742532091130
-          modified: 1742868429920
+          modified: 1743464145727
           isPrivate: false
           sortKey: -1742717832433
         method: GET
@@ -465,12 +463,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/recipes
+      - url: "{{ _.base_url }}recipes"
         name: CREATE RECIPE
         meta:
-          id: req_7d73460bdba5437eb76fc5df626eae53
+          id: req_53246e6d4b2c43bf993fb3c10a4892a1
           created: 1743199460570
-          modified: 1743200943495
+          modified: 1743464141277
           isPrivate: false
           sortKey: -1743199460570
         method: POST
@@ -491,7 +489,7 @@ collection:
             value: application/json
         authentication:
           type: bearer
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDA4ODQsImV4cCI6MTc0MzIwNDQ4NH0.RuGfJIE_r0kB-4v4GnIXLhZSlQObMh2xlSqxGfo7ruI
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -500,12 +498,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/recipes
+      - url: "{{ _.base_url }}recipes"
         name: GET ALL RECIPES
         meta:
-          id: req_a597110d5ae34aada646f69c40b73441
+          id: req_82a2798e9a964a40b9b5e0bea61073ff
           created: 1743199503224
-          modified: 1743199876769
+          modified: 1743464137488
           isPrivate: false
           sortKey: -1743199503224
         method: GET
@@ -518,7 +516,7 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -527,18 +525,18 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/recipes/1
+      - url: "{{ _.base_url }}recipes/1"
         name: GET RECIPE BY ID
         meta:
-          id: req_197287422e0d4b87b9955ba076afaaf9
+          id: req_e56266c417d642e3b0ebf6a2825c356c
           created: 1743199521672
-          modified: 1743199888142
+          modified: 1743464132997
           isPrivate: false
           sortKey: -1743199521672
         method: GET
         authentication:
           type: bearer
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -547,12 +545,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/recipes/1
+      - url: "{{ _.base_url }}recipes/1"
         name: UPDATE RECIPE
         meta:
-          id: req_ce7f105290ac4f999be971f0b56a84c3
+          id: req_53b66dd1c54843109826a94fc4197b53
           created: 1743199586407
-          modified: 1743199923512
+          modified: 1743464108663
           isPrivate: false
           sortKey: -1743199521772
         method: PUT
@@ -573,7 +571,7 @@ collection:
             value: application/json
         authentication:
           type: bearer
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -582,18 +580,38 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/recipes/1
+      - url: "{{ _.base_url }}recipes/1"
         name: DELETE RECIPE
         meta:
-          id: req_7dda2e7386d54207a990ae9ee2958c14
+          id: req_2e5f4d30df3d4c868a81fe29742cdd92
           created: 1743199605471
-          modified: 1743199901067
+          modified: 1743464125364
           isPrivate: false
           sortKey: -1743199521872
         method: DELETE
         authentication:
           type: bearer
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}recipes/generator/user/"
+        name: GENERATE USER RECIPE
+        meta:
+          id: req_fde5e22ac9f845b7822e48cbbf309348
+          created: 1743211092491
+          modified: 1743464151043
+          isPrivate: false
+          sortKey: -1742715141652.5
+        method: GET
+        headers:
+          - name: Accept
+            value: application/json
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -604,17 +622,17 @@ collection:
           rebuildPath: true
   - name: RecipesIngredients
     meta:
-      id: fld_dba38c00313744a6b5f93d9b4f99b78a
+      id: fld_07a9544e53ad43b6bb242a4547d44900
       created: 1743200173718
       modified: 1743202142967
       sortKey: -1742534632126.5
     children:
-      - url: http://localhost:8080/recipe/ingredient
+      - url: "{{ _.base_url }}recipe/ingredient"
         name: CREATE RECIPE INGREDIENT
         meta:
-          id: req_1b237dab86944b7698c13fe7f32cbafd
+          id: req_1346f74b34a64efbb597a0bedde11593
           created: 1743200173720
-          modified: 1743200895352
+          modified: 1743464174251
           isPrivate: false
           sortKey: -1743199460570
         method: POST
@@ -632,7 +650,7 @@ collection:
             value: application/json
         authentication:
           type: bearer
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDA4ODQsImV4cCI6MTc0MzIwNDQ4NH0.RuGfJIE_r0kB-4v4GnIXLhZSlQObMh2xlSqxGfo7ruI
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -641,32 +659,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/recipe/ingredient/3
-        name: GET RECIPE INGREDIENT BY ID
-        meta:
-          id: req_06dc614b18c945ccaead9ef563cfb6ad
-          created: 1743200173721
-          modified: 1743204053733
-          isPrivate: false
-          sortKey: -1743199521672
-        method: GET
-        authentication:
-          type: bearer
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDM3OTEsImV4cCI6MTc0MzIwNzM5MX0.KcbIhOITitt1yJ9Z3zfk3kVEEZD3_r8kr-ozInXM7b8
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-      - url: http://localhost:8080/recipe/ingredient
+      - url: "{{ _.base_url }}recipe/ingredient"
         name: GET ALL RECIPE INGREDIENT
         meta:
-          id: req_38d9de4e67be49318dbcf7794883b695
+          id: req_088c3454d99a4e26a67f69e9afa24edf
           created: 1743200173721
-          modified: 1743204034961
+          modified: 1743464168749
           isPrivate: false
           sortKey: -1743199503224
         method: GET
@@ -679,7 +677,7 @@ collection:
             disabled: false
         authentication:
           type: bearer
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMyMDM3OTEsImV4cCI6MTc0MzIwNzM5MX0.KcbIhOITitt1yJ9Z3zfk3kVEEZD3_r8kr-ozInXM7b8
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -688,12 +686,32 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/recipe/ingredient/1
+      - url: "{{ _.base_url }}recipe/ingredient/1"
+        name: GET RECIPE INGREDIENT BY ID
+        meta:
+          id: req_a2ab264bf8984229a33e7fe08c8d0946
+          created: 1743200173721
+          modified: 1743464164798
+          isPrivate: false
+          sortKey: -1743199521672
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}recipe/ingredient/1"
         name: UPDATE RECIPE INGREDIENT
         meta:
-          id: req_949b62870a854af388a0bc6f0d9e3bb7
+          id: req_4debf7d2ff524c508fd7437ea1e2ab02
           created: 1743200173722
-          modified: 1743202105530
+          modified: 1743464159939
           isPrivate: false
           sortKey: -1743199521772
         method: PUT
@@ -711,7 +729,7 @@ collection:
             value: application/json
         authentication:
           type: bearer
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -720,18 +738,18 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/recipe/ingredient/2
+      - url: "{{ _.base_url }}recipe/ingredient/2"
         name: DELETE RECIPE INGREDIENT
         meta:
-          id: req_468bd30b32b44bf892b277e9ae7d7887
+          id: req_9ddc2c9d87ea4cf0a3c9b4c60a4d2eb4
           created: 1743200173723
-          modified: 1743202132194
+          modified: 1743464155451
           isPrivate: false
           sortKey: -1743199521872
         method: DELETE
         authentication:
           type: bearer
-          token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDMxOTk3MjksImV4cCI6MTc0MzIwMzMyOX0.YwtZv4Q5x8MCJCd_GU9wuFQgkvAL-WZb53qCGIumEMg
+          token: "{{ _.token }}"
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -743,15 +761,28 @@ collection:
 cookieJar:
   name: Default Jar
   meta:
-    id: jar_c7273e1915884a40ab5e749593f3f3bc
+    id: jar_63a476f7e15944bdb181080cebb5adfc
     created: 1740367480171
     modified: 1740367480171
 environments:
   name: Base Environment
   meta:
-    id: env_0c3b78e1cf9f4c8fb7bc1ab31b8617b2
+    id: env_56fbea7764b047aa836234219effff5c
     created: 1740367480169
-    modified: 1743203781597
+    modified: 1743463789385
     isPrivate: false
   data:
-    "": "{}"
+    base_url: http://localhost:8080/
+    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDM0NjM3NjAsImV4cCI6MTc0MzQ2NzM2MH0.ho1zaPtzus4q9kEf46jrHTsG63X2OSY09G6QyNc040A
+  subEnvironments:
+    - name: DEV
+      meta:
+        id: env_9e1ea248965d4154802ba678e2d62d7a
+        created: 1743464506795
+        modified: 1743467129355
+        isPrivate: false
+        sortKey: 1743464506795
+      data:
+        base_url: http://localhost:8080/
+        token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsb3BlbmRleEBnbWFpbC5jb20iLCJpYXQiOjE3NDM0NjY5OTYsImV4cCI6MTc0MzQ3MDU5Nn0.MS1ePDPsGxTrPAO3tVtNXECGeITN3A47DBH1xySED1I
+      color: "#4bfa00"
