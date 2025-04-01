@@ -50,7 +50,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_allergy",
         joinColumns = @JoinColumn(name = "user_id"),
@@ -58,7 +58,7 @@ public class User implements UserDetails {
     )
     private List<Allergies> allergies;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_preference",
         joinColumns = @JoinColumn(name = "user_id"),
