@@ -18,31 +18,22 @@ public class Ingredient {
     @Column(name = "id_ingredient")
     private Long id;
 
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
 
     @Column(name = "medida", length = 50)
     private String medida;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by_user_id")
-    @JsonIgnore
-    private User createdBy;
-
-    @ManyToMany(mappedBy = "ingredients")
-    @JsonIgnore
-    private Set<User> users = new HashSet<>();
 
     @Column(name = "image", nullable = true)
     private String image;
 
     public Ingredient() {}
 
-    public Ingredient(String name, String medida, User createdBy, String image) {
+    public Ingredient(String name, String medida, String image) {
         this.name = name;
         this.medida = medida;
-        this.createdBy = createdBy;
-        this.image = image;}
+        this.image = image;
+    }
 
     public Long getId() {
         return id;
@@ -66,22 +57,6 @@ public class Ingredient {
 
     public void setMedida(String medida) {
         this.medida = medida;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
 
     public String getImage() { return image; }

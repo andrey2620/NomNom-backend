@@ -188,11 +188,5 @@ public class User implements UserDetails {
         this.ingredients = ingredients;
     }
 
-    public String xd;
-    public String getXd() {
-        return xd;
-    }
-    public void setXd(String xd) {
-        this.xd = xd;
-    }
+
 }
