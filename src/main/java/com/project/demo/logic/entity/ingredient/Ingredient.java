@@ -1,6 +1,12 @@
 package com.project.demo.logic.entity.ingredient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.demo.logic.entity.user.User;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "ingredient")
@@ -15,17 +21,17 @@ public class Ingredient {
     @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
 
-    @Column(name = "id_user", nullable = true)
-    private Long userId;
+    @Column(name = "medida", length = 50)
+    private String medida;
 
     @Column(name = "image", nullable = true)
     private String image;
 
     public Ingredient() {}
 
-    public Ingredient(String name, Long userId, String image) {
+    public Ingredient(String name, String medida, String image) {
         this.name = name;
-        this.userId = userId;
+        this.medida = medida;
         this.image = image;
     }
 
@@ -45,12 +51,12 @@ public class Ingredient {
         this.name = name;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getMedida() {
+        return medida;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setMedida(String medida) {
+        this.medida = medida;
     }
 
     public String getImage() { return image; }

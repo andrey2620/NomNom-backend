@@ -1,4 +1,5 @@
 package com.project.demo.logic.entity.user;
+import com.project.demo.logic.entity.ingredient.Ingredient;
 import com.project.demo.logic.entity.rol.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,6 +11,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 
 @Table(name = "user")
@@ -49,9 +52,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
-    // Constructors
     public User() {}
-
 
     @Override
     public boolean isAccountNonExpired() {
@@ -167,4 +168,23 @@ public class User implements UserDetails {
     public void setTokenExpirationTime(long tokenExpirationTime) {
         this.tokenExpirationTime = tokenExpirationTime;
     }
+    @ManyToMany
+    @JoinTable(
+            name = "user_ingredient",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+
+
+    private Set<Ingredient> ingredients = new HashSet<>();
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+
 }
