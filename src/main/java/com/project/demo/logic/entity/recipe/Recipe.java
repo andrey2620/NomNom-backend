@@ -41,8 +41,6 @@ public class Recipe {
     @JsonManagedReference
     private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
-    // Getters y Setters
-
     public Long getId() {
         return id;
     }

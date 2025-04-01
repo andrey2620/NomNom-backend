@@ -9,7 +9,6 @@ public class RecipeIngredientDTO {
     private BigDecimal quantity;
     private String measurement;
 
-    // Constructor
     public RecipeIngredientDTO(Long id, Long ingredientId, Long recipeId, BigDecimal quantity, String measurement) {
         this.id = id;
         this.ingredientId = ingredientId;

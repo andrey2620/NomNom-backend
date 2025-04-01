@@ -17,30 +17,25 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Buscar un usuario por correo electrónico
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-    // Buscar un usuario por token de recuperación de contraseña
     public Optional<User> findByResetToken(String token) {
         return userRepository.findByPasswordResetToken(token);
     }
 
-    // Guardar un nuevo token de recuperación de contraseña para el usuario
     public void savePasswordResetToken(User user, String token) {
         user.setPasswordResetToken(token);
-        user.setTokenExpirationTime(Instant.now().plusSeconds(3600).toEpochMilli());  // Token válido por 1 hora
+        user.setTokenExpirationTime(Instant.now().plusSeconds(3600).toEpochMilli());
         userRepository.save(user);
     }
 
-    // Cambiar la contraseña del usuario
     public void changePassword(User user, String newPassword) {
-        // Usamos el PasswordEncoder para encriptar la nueva contraseña
         String encryptedPassword = passwordEncoder.encode(newPassword);
         user.setPassword(encryptedPassword);
-        user.setPasswordResetToken(null);  // Limpiar el token de restablecimiento
-        user.setTokenExpirationTime(0);  // Limpiar la expiración del token
+        user.setPasswordResetToken(null);
+        user.setTokenExpirationTime(0);
         userRepository.save(user);
     }
 

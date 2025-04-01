@@ -19,13 +19,11 @@ public class RecipeGeneratorRestController {
         this.recipeGeneratorService = recipeGeneratorService;
     }
 
-    // Generador de recetas con todos los ingredientes (archivo JSON)
     @GetMapping
     public JsonNode generateRecipe() throws Exception {
         return recipeGeneratorService.generateRecipeWithAllIngredients();
     }
 
-    // Generador de recetas usando solo ingredientes del usuario
     @GetMapping("/user/{userId}")
     public JsonNode generateUserRecipe(@PathVariable Long userId) throws Exception {
         return recipeGeneratorService.generateRecipeForUser(userId);

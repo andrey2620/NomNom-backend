@@ -14,7 +14,7 @@ public class JwtTokenUtils {
             String authHeader = request.getHeader("Authorization");
 
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                return authHeader.substring(7); // Quita el prefijo "Bearer"
+                return authHeader.substring(7);
             }
         }
 

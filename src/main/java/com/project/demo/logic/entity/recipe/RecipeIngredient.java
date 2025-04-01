@@ -30,8 +30,6 @@ public class RecipeIngredient {
     @Column(nullable = false, length = 50)
     private String measurement;
 
-    // Getters y Setters
-
     public Long getId() {
         return id;
     }
