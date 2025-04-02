@@ -134,11 +134,14 @@ public class RecipeGeneratorService {
                 Crea UNA receta creativa que entre en una de estas categorias:
                 [Comida][Ensalada][Jugos][Postre][Panes]
                 y devuélvela en el siguiente JSON ESTRICTO:
+                que los pasos esten separados unicamente por '.' y no la palabra paso
                 {
                   "name": "Nombre de la receta",
                   "recipeCategory": "Categoría de la receta",
                   "preparationTime": 30,
-                  "instructions": "Paso 1. Haz esto. Paso 2. Haz esto otro.",
+                  "description": "Descripción corta de la receta.",
+                  "nutritionalInfo:": "20cal, 5g proteínas, 10g carbohidratos, 5g grasas",
+                  "instructions": "Haz esto. Haz esto otro. Haz esto otro.",
                   "ingredients": [
                     { "name": "Ingrediente A", "quantity": "2.5", "measurement": "tazas" },
                     { "name": "Ingrediente B", "quantity": "1", "measurement": "cucharada" }
