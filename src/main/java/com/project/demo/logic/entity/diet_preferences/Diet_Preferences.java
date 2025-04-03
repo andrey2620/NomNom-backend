@@ -3,17 +3,13 @@ import com.project.demo.logic.entity.user.User;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "diet_preferences")
 public class Diet_Preferences {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
-  @Column(name = "name", length = 100, nullable = false, unique = true)
   private String name;
 
   public Diet_Preferences(String name, User user) {

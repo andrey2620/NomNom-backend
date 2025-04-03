@@ -3,23 +3,22 @@ import com.project.demo.logic.entity.user.User;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "allergies")
 public class Allergies {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
+
+    private boolean isSelected;
 
   public Allergies(String name) {
       this.name = name;
       this.user = user;
+      this.isSelected = true;
     }
 
   public Allergies() {
@@ -41,6 +40,13 @@ public class Allergies {
     this.id = id;
   }
 
+  public boolean isSelected() {
+    return isSelected;
+  }
+
+  public void setSelected(boolean selected) {
+    isSelected = selected;
+  }
 }
 
 

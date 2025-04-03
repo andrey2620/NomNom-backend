@@ -33,11 +33,9 @@ public class AllergiesSeeder implements ApplicationListener<ContextRefreshedEven
         return;
       }
 
-      // Deserializar el JSON a una lista de objetos de tipo Allergies
       List<Allergies> allergies = objectMapper.readValue(inputStream, new TypeReference<>() {});
 
       for (Allergies allergy : allergies) {
-        // Verificar si la alergia ya existe
         Optional<Allergies> existingAllergy = allergiesRepository.findByName(allergy.getName());
         if (existingAllergy.isEmpty()) {
           allergiesRepository.save(allergy);
