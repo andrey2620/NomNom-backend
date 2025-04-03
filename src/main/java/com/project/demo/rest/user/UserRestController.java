@@ -1,5 +1,9 @@
 package com.project.demo.rest.user;
 
+import com.project.demo.logic.entity.allergies.Allergies;
+import com.project.demo.logic.entity.diet_preferences.Diet_Preferences;
+import com.project.demo.logic.entity.allergies.AllergiesRepository;
+import com.project.demo.logic.entity.diet_preferences.Diet_PreferenceRepository;
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.http.Meta;
 import com.project.demo.logic.entity.user.User;
@@ -17,9 +21,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.util.*;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/users")
@@ -29,6 +37,12 @@ public class UserRestController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AllergiesRepository allergiesRepository;
+
+    @Autowired
+    private Diet_PreferenceRepository diet_preferenceRepository;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
@@ -72,6 +86,35 @@ public class UserRestController {
                     HttpStatus.NOT_FOUND, request);
         }
     }
+
+
+
+    @GetMapping("/allergies")
+    public ResponseEntity<?> getAllAllergies(HttpServletRequest request) {
+        List<Allergies> allergies = allergiesRepository.findAll();
+        return new GlobalResponseHandler().handleResponse("Allergies retrieved successfully",
+            allergies, HttpStatus.OK, request);
+    }
+
+    @GetMapping("/diet-preferences")
+    public ResponseEntity<?> getAllDietPreferences(HttpServletRequest request) {
+        List<Diet_Preferences> dietPreferences = diet_preferenceRepository.findAll();
+        return new GlobalResponseHandler().handleResponse("Diet preferences retrieved successfully",
+            dietPreferences, HttpStatus.OK, request);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUserProfile(@PathVariable Long userId, HttpServletRequest request) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return new GlobalResponseHandler().handleResponse("User profile retrieved successfully",
+                user.get(), HttpStatus.OK, request);
+        } else {
+            return new GlobalResponseHandler().handleResponse("User not found",
+                HttpStatus.NOT_FOUND, request);
+        }
+    }
+
 
     @DeleteMapping("/{userId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")

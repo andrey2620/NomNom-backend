@@ -1,5 +1,10 @@
 package com.project.demo.logic.entity.user;
+
+import com.project.demo.logic.entity.allergies.Allergies;
+import com.project.demo.logic.entity.diet_preferences.Diet_Preferences;
+
 import com.project.demo.logic.entity.ingredient.Ingredient;
+
 import com.project.demo.logic.entity.rol.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,7 +13,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -51,6 +55,29 @@ public class User implements UserDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Allergies> allergies;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Diet_Preferences> preferences;
+
+    public List<Allergies> getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(List<Allergies> allergies) {
+        this.allergies = allergies;
+    }
+
+    public List<Diet_Preferences> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(List<Diet_Preferences> preferences) {
+        this.preferences = preferences;
+    }
 
     public User() {}
 
