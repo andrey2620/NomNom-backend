@@ -23,7 +23,6 @@ public class DietPreferencesRestController {
   @Autowired
   private Diet_PreferenceRepository dietPreferenceRepository;
 
-  // Obtener todas las preferencias de dieta (paginado)
   @GetMapping
   @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
   public ResponseEntity<?> getAll(
@@ -47,7 +46,6 @@ public class DietPreferencesRestController {
     );
   }
 
-  // Obtener una preferencia de dieta por ID
   @GetMapping("/{dietPreferenceId}")
   @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
   public ResponseEntity<?> getById(@PathVariable Long dietPreferenceId, HttpServletRequest request) {
@@ -70,7 +68,6 @@ public class DietPreferencesRestController {
     }
   }
 
-  // Obtener una preferencia de dieta por nombre
   @GetMapping("/name/{diet_PreferenceName}")
   @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
   public ResponseEntity<?> getByName(@PathVariable String diet_PreferenceName, HttpServletRequest request) {

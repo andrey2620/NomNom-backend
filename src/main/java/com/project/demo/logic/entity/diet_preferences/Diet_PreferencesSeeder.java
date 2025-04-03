@@ -44,7 +44,6 @@ public class Diet_PreferencesSeeder implements ApplicationListener<ContextRefres
         Optional<Diet_Preferences> existingDietPreference = dietPreferencesRepository.findByName(dietPreference.getName());
 
         if (existingDietPreference.isEmpty()) {
-          // Buscar usuario en la BD
           Optional<User> userOpt = userRepository.findById(dietPreference.getUser().getId());
           if (userOpt.isPresent()) {
             dietPreference.setUser(userOpt.get());

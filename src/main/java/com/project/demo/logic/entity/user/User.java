@@ -72,7 +72,6 @@ public class User implements UserDetails {
         this.preferences = preferences;
     }
 
-    // Constructors
     public User() {}
 
 
