@@ -1,7 +1,10 @@
 package com.project.demo.rest.recipe;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.services.RecipeGeneratorService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +33,22 @@ public class RecipeGeneratorRestController {
     }
 
     @PostMapping("/suggestions")
-    public ResponseEntity<?> getRecipeSuggestions(@RequestBody Map<String, Object> recipeJson) {
+    public ResponseEntity<?> getRecipeSuggestions(@RequestBody Map<String, Object> recipeJson, HttpServletRequest request) {
         try {
             JsonNode suggestions = recipeGeneratorService.getSuggestionsForRecipe(recipeJson);
-            return ResponseEntity.ok(suggestions);
+            return new GlobalResponseHandler().handleResponse(
+                    "Sugerencias generadas exitosamente",
+                    suggestions,
+                    HttpStatus.OK,
+                    request
+            );
         } catch (Exception e) {
-            throw new RuntimeException("Error al generar sugerencias para la receta", e);
+            return new GlobalResponseHandler().handleResponse(
+                    "Error al generar sugerencias para la receta",
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
         }
     }
 }
