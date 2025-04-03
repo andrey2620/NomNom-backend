@@ -17,8 +17,6 @@ public class Allergies {
 
   public Allergies(String name) {
       this.name = name;
-      this.user = user;
-      this.isSelected = true;
     }
 
   public Allergies() {

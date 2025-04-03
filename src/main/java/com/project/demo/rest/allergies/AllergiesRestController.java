@@ -8,6 +8,8 @@ import com.project.demo.logic.entity.user.User;
 import com.project.demo.logic.entity.user.UserRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,8 +37,8 @@ public class AllergiesRestController {
   public ResponseEntity<?> getAll(
       @RequestParam(defaultValue = "1") int page,
       @RequestParam(defaultValue = "10") int size,
-      HttpServletRequest request) {
-
+      HttpServletRequest request,
+    @AuthenticationPrincipal UserDetails userDetails){
 
     Pageable pageable = PageRequest.of(page - 1, size);
     Page<Allergies> allergiesPage = allergiesRepository.findAll(pageable);
@@ -47,22 +49,21 @@ public class AllergiesRestController {
     meta.setPageSize(allergiesPage.getSize());
 
     //TODO: revisar ccuales tiene el usuario en la lista de alergias
-//    Optional<User> user = userRepository.findByName(userDetails.getUsername());
-//    List<Allergies> userAllergies = user.get().getAllergies();
+    Optional<User> optionalUser = userRepository.findByName(userDetails.getUsername());
+    List<Allergies> userAllergies = optionalUser.map(User::getAllergies).orElse(Collections.emptyList());
 
-//    List<Map<String, Object>> result = new ArrayList<>();
-//    for (Allergies allergy : allergiesPage.getContent()) {
-//      Map<String, Object> allergyMap = new HashMap<>();
-//      allergyMap.put("id", allergy.getId());
-//      allergyMap.put("name", allergy.getName());
-//      allergyMap.put("isSelected", userAllergies.contains(allergy));
-//      result.add(allergyMap);
-//    }
-
+    List<Map<String, Object>> result = new ArrayList<>();
+    for (Allergies allergy : allergiesPage.getContent()) {
+      Map<String, Object> allergyMap = new HashMap<>();
+      allergyMap.put("id", allergy.getId());
+      allergyMap.put("name", allergy.getName());
+      allergyMap.put("isSelected", userAllergies.contains(allergy));
+      result.add(allergyMap);
+    }
 
     return new GlobalResponseHandler().handleResponse(
         "Allergies retrieved successfully",
-        allergiesPage.getContent(),
+        result,
         HttpStatus.OK,
         meta
     );
@@ -125,7 +126,3 @@ public class AllergiesRestController {
 
 
 }
-
-
-
-
