@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,6 +31,11 @@ public class RecipeGeneratorRestController {
     @GetMapping("/user/{userId}")
     public JsonNode generateUserRecipe(@PathVariable Long userId) throws Exception {
         return recipeGeneratorService.generateRecipeForUser(userId);
+    }
+
+    @PostMapping("/custom")
+    public JsonNode generateCustomRecipe(@RequestBody List<String> ingredients) throws Exception {
+        return recipeGeneratorService.generateRecipeFromIngredients(ingredients);
     }
 
     @PostMapping("/suggestions")
