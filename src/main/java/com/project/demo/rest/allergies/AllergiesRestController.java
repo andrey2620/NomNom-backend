@@ -56,7 +56,8 @@ public class AllergiesRestController {
       Map<String, Object> allergyMap = new HashMap<>();
       allergyMap.put("id", allergy.getId());
       allergyMap.put("name", allergy.getName());
-      allergyMap.put("isSelected", userAllergies.contains(allergy));
+      allergyMap.put("isSelected", userAllergies.stream()
+          .anyMatch(userAllergy -> userAllergy.getId().equals(allergy.getId())));
       result.add(allergyMap);
     }
 

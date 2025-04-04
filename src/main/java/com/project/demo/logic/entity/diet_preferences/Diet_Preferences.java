@@ -3,13 +3,12 @@ import com.project.demo.logic.entity.user.User;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "diet_preferences")
 public class Diet_Preferences {
   @Id
   private Long id;
 
   private String name;
-
-  private boolean isSelected;
 
   public Diet_Preferences(String name, User user) {
     this.name = name;
@@ -19,13 +18,6 @@ public class Diet_Preferences {
   public Diet_Preferences() {
   }
 
-  public boolean isSelected() {
-    return isSelected;
-  }
-
-  public void setSelected(boolean selected) {
-    isSelected = selected;
-  }
 
   public Long getId() {
     return id;
