@@ -29,37 +29,54 @@ public class RecipeRestController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             HttpServletRequest request) {
+        try {
+            Pageable pageable = PageRequest.of(page - 1, size);
+            Page<Recipe> recipePage = recipeService.getAllRecipes(pageable);
 
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<Recipe> recipePage = recipeService.getAllRecipes(pageable);
+            Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
+            meta.setTotalPages(recipePage.getTotalPages());
+            meta.setTotalElements(recipePage.getTotalElements());
+            meta.setPageNumber(recipePage.getNumber() + 1);
+            meta.setPageSize(recipePage.getSize());
 
-        Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
-        meta.setTotalPages(recipePage.getTotalPages());
-        meta.setTotalElements(recipePage.getTotalElements());
-        meta.setPageNumber(recipePage.getNumber() + 1);
-        meta.setPageSize(recipePage.getSize());
-
-        return new GlobalResponseHandler().handleResponse("Recipes retrieved successfully",
-                recipePage.getContent(), HttpStatus.OK, meta);
+            return new GlobalResponseHandler().handleResponse("Recipes retrieved successfully",
+                    recipePage.getContent(), HttpStatus.OK, meta);
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "Error retrieving recipes: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
+        }
     }
 
     @GetMapping("/{recipeId}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> getRecipeById(@PathVariable Long recipeId, HttpServletRequest request) {
-        Optional<Recipe> recipe = recipeService.getRecipeById(recipeId);
+        try {
+            Optional<Recipe> recipe = recipeService.getRecipeById(recipeId);
 
-        if (recipe.isPresent()) {
+            if (recipe.isPresent()) {
+                return new GlobalResponseHandler().handleResponse(
+                        "Recipe retrieved successfully",
+                        recipe.get(),
+                        HttpStatus.OK,
+                        request
+                );
+            } else {
+                return new GlobalResponseHandler().handleResponse(
+                        "Recipe id " + recipeId + " not found",
+                        null,
+                        HttpStatus.NOT_FOUND,
+                        request
+                );
+            }
+        } catch (Exception e) {
             return new GlobalResponseHandler().handleResponse(
-                    "Recipe retrieved successfully",
-                    recipe.get(),
-                    HttpStatus.OK,
-                    request
-            );
-        } else {
-            return new GlobalResponseHandler().handleResponse(
-                    "Recipe id " + recipeId + " not found",
+                    "Error retrieving recipe: " + e.getMessage(),
                     null,
-                    HttpStatus.NOT_FOUND,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
                     request
             );
         }
@@ -68,42 +85,60 @@ public class RecipeRestController {
     @PostMapping
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> addRecipe(@RequestBody Recipe recipe, HttpServletRequest request) {
-        Recipe saved = recipeService.saveRecipe(recipe);
-        return new GlobalResponseHandler().handleResponse(
-                "Recipe created successfully",
-                saved,
-                HttpStatus.CREATED,
-                request
-        );
+        try {
+            Recipe saved = recipeService.saveRecipe(recipe);
+            return new GlobalResponseHandler().handleResponse(
+                    "Recipe created successfully",
+                    saved,
+                    HttpStatus.CREATED,
+                    request
+            );
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "Error creating recipe: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
+        }
     }
 
     @PutMapping("/{recipeId}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> updateRecipe(@PathVariable Long recipeId, @RequestBody Recipe recipe, HttpServletRequest request) {
-        Optional<Recipe> existing = recipeService.getRecipeById(recipeId);
-        if (existing.isPresent()) {
-            Recipe toUpdate = existing.get();
-            toUpdate.setName(recipe.getName());
-            toUpdate.setDescription(recipe.getDescription());
-            toUpdate.setInstructions(recipe.getInstructions());
-            toUpdate.setImageUrl(recipe.getImageUrl());
-            toUpdate.setPreparationTime(recipe.getPreparationTime());
-            toUpdate.setRecipeCategory(recipe.getRecipeCategory());
-            toUpdate.setNutritionalInfo(recipe.getNutritionalInfo());
+        try {
+            Optional<Recipe> existing = recipeService.getRecipeById(recipeId);
+            if (existing.isPresent()) {
+                Recipe toUpdate = existing.get();
+                toUpdate.setName(recipe.getName());
+                toUpdate.setDescription(recipe.getDescription());
+                toUpdate.setInstructions(recipe.getInstructions());
+                toUpdate.setImageUrl(recipe.getImageUrl());
+                toUpdate.setPreparationTime(recipe.getPreparationTime());
+                toUpdate.setRecipeCategory(recipe.getRecipeCategory());
+                toUpdate.setNutritionalInfo(recipe.getNutritionalInfo());
 
-            Recipe updated = recipeService.saveRecipe(toUpdate);
+                Recipe updated = recipeService.saveRecipe(toUpdate);
 
+                return new GlobalResponseHandler().handleResponse(
+                        "Recipe updated successfully",
+                        updated,
+                        HttpStatus.OK,
+                        request
+                );
+            } else {
+                return new GlobalResponseHandler().handleResponse(
+                        "Recipe id " + recipeId + " not found",
+                        null,
+                        HttpStatus.NOT_FOUND,
+                        request
+                );
+            }
+        } catch (Exception e) {
             return new GlobalResponseHandler().handleResponse(
-                    "Recipe updated successfully",
-                    updated,
-                    HttpStatus.OK,
-                    request
-            );
-        } else {
-            return new GlobalResponseHandler().handleResponse(
-                    "Recipe id " + recipeId + " not found",
+                    "Error updating recipe: " + e.getMessage(),
                     null,
-                    HttpStatus.NOT_FOUND,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
                     request
             );
         }
@@ -112,19 +147,28 @@ public class RecipeRestController {
     @DeleteMapping("/{recipeId}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> deleteRecipe(@PathVariable Long recipeId, HttpServletRequest request) {
-        if (!recipeService.existsById(recipeId)) {
+        try {
+            if (!recipeService.existsById(recipeId)) {
+                return new GlobalResponseHandler().handleResponse(
+                        "Recipe id " + recipeId + " not found",
+                        HttpStatus.NOT_FOUND,
+                        request
+                );
+            }
+            recipeService.deleteRecipe(recipeId);
             return new GlobalResponseHandler().handleResponse(
-                    "Recipe id " + recipeId + " not found",
-                    HttpStatus.NOT_FOUND,
+                    "Recipe deleted successfully",
+                    null,
+                    HttpStatus.OK,
+                    request
+            );
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "Error deleting recipe: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
                     request
             );
         }
-        recipeService.deleteRecipe(recipeId);
-        return new GlobalResponseHandler().handleResponse(
-                "Recipe deleted successfully",
-                null,
-                HttpStatus.OK,
-                request
-        );
     }
 }
