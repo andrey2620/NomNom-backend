@@ -24,7 +24,6 @@ import java.util.Optional;
 @RestController
 public class AuthRestController {
 
-
     @Autowired
     private UserRepository userRepository;
 
@@ -33,7 +32,6 @@ public class AuthRestController {
 
     @Autowired
     private RoleRepository roleRepository;
-
 
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
@@ -45,42 +43,54 @@ public class AuthRestController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@RequestBody User user) {
-        User authenticatedUser = authenticationService.authenticate(user);
+        try {
+            User authenticatedUser = authenticationService.authenticate(user);
 
-        String jwtToken = jwtService.generateToken(authenticatedUser);
+            String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setToken(jwtToken);
-        loginResponse.setExpiresIn(jwtService.getExpirationTime());
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setToken(jwtToken);
+            loginResponse.setExpiresIn(jwtService.getExpirationTime());
 
-        Optional<User> foundedUser = userRepository.findByEmail(user.getEmail());
+            Optional<User> foundedUser = userRepository.findByEmail(user.getEmail());
 
-        foundedUser.ifPresent(loginResponse::setAuthUser);
+            foundedUser.ifPresent(loginResponse::setAuthUser);
 
-        return ResponseEntity.ok(loginResponse);
+            return ResponseEntity.ok(loginResponse);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping("/google-auth")
     public ResponseEntity<?> authenticateWithGoogle(@RequestBody Map<String, String> payload) {
-        String email = payload.get("email");
-        return authenticationService.authenticateGoogle(email);
+        try {
+            String email = payload.get("email");
+            return authenticationService.authenticateGoogle(email);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error authenticating with Google");
+        }
     }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
-        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
-        if (existingUser.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already in use");
-        }
+        try {
+            Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+            if (existingUser.isPresent()) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already in use");
+            }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
 
-        if (optionalRole.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Role not found");
+            if (optionalRole.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Role not found");
+            }
+            user.setRole(optionalRole.get());
+            User savedUser = userRepository.save(user);
+            return ResponseEntity.ok(savedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user");
         }
-        user.setRole(optionalRole.get());
-        User savedUser = userRepository.save(user);
-        return ResponseEntity.ok(savedUser);
     }
 }

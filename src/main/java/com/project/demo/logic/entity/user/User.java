@@ -1,4 +1,11 @@
 package com.project.demo.logic.entity.user;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.demo.logic.entity.allergies.Allergies;
+import com.project.demo.logic.entity.diet_preferences.Diet_Preferences;
+
+import com.project.demo.logic.entity.ingredient.Ingredient;
+
 import com.project.demo.logic.entity.rol.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,10 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Table(name = "user")
 @Entity
@@ -49,9 +53,41 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
-    // Constructors
-    public User() {}
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_allergies",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "allergies_id")
+    )
+    private List<Allergies> allergies = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "user_preferences",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "preferences_id")
+    )
+    private List<Diet_Preferences> preferences = new ArrayList<>();
+
+
+    public List<Allergies> getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(List<Allergies> allergies) {
+        this.allergies = allergies;
+    }
+
+    public List<Diet_Preferences> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(List<Diet_Preferences> preferences) {
+        this.preferences = preferences;
+    }
+
+    public User() {}
 
     @Override
     public boolean isAccountNonExpired() {
@@ -167,4 +203,24 @@ public class User implements UserDetails {
     public void setTokenExpirationTime(long tokenExpirationTime) {
         this.tokenExpirationTime = tokenExpirationTime;
     }
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "user_ingredient",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+
+    private Set<Ingredient> ingredients = new HashSet<>();
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+
 }
