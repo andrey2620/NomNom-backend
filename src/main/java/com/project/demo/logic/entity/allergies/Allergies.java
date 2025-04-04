@@ -3,6 +3,7 @@ import com.project.demo.logic.entity.user.User;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "allergies")
 public class Allergies {
 
     @Id
@@ -10,7 +11,6 @@ public class Allergies {
 
     private String name;
 
-    private boolean isSelected;
 
   public Allergies(String name) {
       this.name = name;
@@ -35,13 +35,6 @@ public class Allergies {
     this.id = id;
   }
 
-  public boolean isSelected() {
-    return isSelected;
-  }
-
-  public void setSelected(boolean selected) {
-    isSelected = selected;
-  }
 }
 
 
