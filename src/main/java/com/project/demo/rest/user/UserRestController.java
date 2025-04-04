@@ -85,18 +85,14 @@ public class UserRestController {
             userToUpdate.setEmail(user.getEmail());
             userToUpdate.setPicture(user.getPicture());
 
-            // ✅ Alergias existentes
             List<Allergies> existingAllergies = userToUpdate.getAllergies();
 
-            // ✅ Alergias seleccionadas desde el frontend
             List<Long> selectedAllergiesIds = user.getAllergies().stream()
                 .map(Allergies::getId)
                 .toList();
 
-            // ✅ Mantener solo las que están seleccionadas
             existingAllergies.removeIf(allergy -> !selectedAllergiesIds.contains(allergy.getId()));
 
-            // ✅ Agregar nuevas alergias que no estén
             for (Allergies allergy : user.getAllergies()) {
                 if (existingAllergies.stream().noneMatch(a -> a.getId().equals(allergy.getId()))) {
                     allergiesRepository.findById(allergy.getId()).ifPresent(existingAllergies::add);
@@ -105,7 +101,6 @@ public class UserRestController {
 
             userToUpdate.setAllergies(existingAllergies);
 
-            // 🔥 Hacemos lo mismo para preferencias dietéticas
             List<Diet_Preferences> existingPreferences = userToUpdate.getPreferences();
 
             List<Long> selectedPreferencesIds = user.getPreferences().stream()
@@ -122,7 +117,6 @@ public class UserRestController {
 
             userToUpdate.setPreferences(existingPreferences);
 
-            // ✅ Finalmente guardamos
             userRepository.save(userToUpdate);
 
             return new GlobalResponseHandler().handleResponse(
