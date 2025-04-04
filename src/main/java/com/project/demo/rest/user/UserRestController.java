@@ -27,6 +27,7 @@ import java.util.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -75,18 +76,63 @@ public class UserRestController {
     @PutMapping("/{userId}")
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user, HttpServletRequest request) {
-        Optional<User> foundOrder = userRepository.findById(userId);
-        if (foundOrder.isPresent()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            return new GlobalResponseHandler().handleResponse("User updated successfully",
-                    user, HttpStatus.OK, request);
+        Optional<User> foundUser = userRepository.findById(userId);
+        if (foundUser.isPresent()) {
+            User userToUpdate = foundUser.get();
+
+            userToUpdate.setName(user.getName());
+            userToUpdate.setLastname(user.getLastname());
+            userToUpdate.setEmail(user.getEmail());
+            userToUpdate.setPicture(user.getPicture());
+
+            List<Allergies> existingAllergies = userToUpdate.getAllergies();
+
+            List<Long> selectedAllergiesIds = user.getAllergies().stream()
+                .map(Allergies::getId)
+                .toList();
+
+            existingAllergies.removeIf(allergy -> !selectedAllergiesIds.contains(allergy.getId()));
+
+            for (Allergies allergy : user.getAllergies()) {
+                if (existingAllergies.stream().noneMatch(a -> a.getId().equals(allergy.getId()))) {
+                    allergiesRepository.findById(allergy.getId()).ifPresent(existingAllergies::add);
+                }
+            }
+
+            userToUpdate.setAllergies(existingAllergies);
+
+            List<Diet_Preferences> existingPreferences = userToUpdate.getPreferences();
+
+            List<Long> selectedPreferencesIds = user.getPreferences().stream()
+                .map(Diet_Preferences::getId)
+                .toList();
+
+            existingPreferences.removeIf(pref -> !selectedPreferencesIds.contains(pref.getId()));
+
+            for (Diet_Preferences pref : user.getPreferences()) {
+                if (existingPreferences.stream().noneMatch(p -> p.getId().equals(pref.getId()))) {
+                    diet_preferenceRepository.findById(pref.getId()).ifPresent(existingPreferences::add);
+                }
+            }
+
+            userToUpdate.setPreferences(existingPreferences);
+
+            userRepository.save(userToUpdate);
+
+            return new GlobalResponseHandler().handleResponse(
+                "User updated successfully",
+                userToUpdate,
+                HttpStatus.OK,
+                request
+            );
         } else {
-            return new GlobalResponseHandler().handleResponse("User id " + userId + " not found",
-                    HttpStatus.NOT_FOUND, request);
+            return new GlobalResponseHandler().handleResponse(
+                "User id " + userId + " not found",
+                HttpStatus.NOT_FOUND,
+                request
+            );
         }
     }
-
 
 
     @GetMapping("/allergies")
@@ -136,19 +182,24 @@ public class UserRestController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
 
+        user.getAllergies().size();
+        user.getPreferences().size();
+
         Map<String, Object> response = new HashMap<>();
         response.put("id", user.getId());
         response.put("name", user.getName());
         response.put("lastname", user.getLastname());
         response.put("email", user.getEmail());
         response.put("picture", user.getPicture());
-        response.put("role", user.getRole().getName());
+        response.put("role", user.getRole());
+        response.put("allergies", user.getAllergies());
+        response.put("preferences", user.getPreferences());
 
         return new GlobalResponseHandler().handleResponse(
-                "Authenticated user retrieved successfully",
-                response,
-                HttpStatus.OK,
-                request
+            "Authenticated user retrieved successfully",
+            response,
+            HttpStatus.OK,
+            request
         );
     }
 }

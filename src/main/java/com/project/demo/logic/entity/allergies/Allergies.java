@@ -8,17 +8,12 @@ public class Allergies {
     @Id
     private Long id;
 
-    @ManyToOne
-    private User user;
-
     private String name;
 
     private boolean isSelected;
 
   public Allergies(String name) {
       this.name = name;
-      this.user = user;
-      this.isSelected = true;
     }
 
   public Allergies() {
