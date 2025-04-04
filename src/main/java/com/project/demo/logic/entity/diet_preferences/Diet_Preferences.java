@@ -7,17 +7,24 @@ public class Diet_Preferences {
   @Id
   private Long id;
 
-  @ManyToOne
-  private User user;
-
   private String name;
+
+  private boolean isSelected;
 
   public Diet_Preferences(String name, User user) {
     this.name = name;
-    this.user = user;
+
   }
 
   public Diet_Preferences() {
+  }
+
+  public boolean isSelected() {
+    return isSelected;
+  }
+
+  public void setSelected(boolean selected) {
+    isSelected = selected;
   }
 
   public Long getId() {
@@ -36,11 +43,4 @@ public class Diet_Preferences {
     this.name = name;
   }
 
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
 }

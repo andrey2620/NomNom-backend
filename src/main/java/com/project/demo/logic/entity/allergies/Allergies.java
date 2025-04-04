@@ -8,9 +8,6 @@ public class Allergies {
     @Id
     private Long id;
 
-    @ManyToOne
-    private User user;
-
     private String name;
 
     private boolean isSelected;

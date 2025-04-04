@@ -38,22 +38,15 @@ public class Diet_PreferencesSeeder implements ApplicationListener<ContextRefres
         return;
       }
 
-      List<Diet_Preferences> dietPreferencesList = objectMapper.readValue(inputStream, new TypeReference<>() {});
+      List<Diet_Preferences> dietPreferences = objectMapper.readValue(inputStream, new TypeReference<>() {});
 
-      for (Diet_Preferences dietPreference : dietPreferencesList) {
-        Optional<Diet_Preferences> existingDietPreference = dietPreferencesRepository.findByName(dietPreference.getName());
-
-        if (existingDietPreference.isEmpty()) {
-          Optional<User> userOpt = userRepository.findById(dietPreference.getUser().getId());
-          if (userOpt.isPresent()) {
-            dietPreference.setUser(userOpt.get());
-            dietPreferencesRepository.save(dietPreference);
-            System.out.println("Preferencia de dieta agregada: " + dietPreference.getName());
-          } else {
-            System.out.println("Usuario no encontrado para la preferencia: " + dietPreference.getName());
-          }
+      for (Diet_Preferences preference : dietPreferences) {
+        Optional<Diet_Preferences> existingPreference = dietPreferencesRepository.findByName(preference.getName());
+        if (existingPreference.isEmpty()) {
+          dietPreferencesRepository.save(preference);
+          System.out.println("Preferencia de dieta agregada: " + preference.getName());
         } else {
-          System.out.println("Preferencia de dieta ya existe: " + dietPreference.getName());
+          System.out.println("Preferencia de dieta ya existe: " + preference.getName());
         }
       }
 

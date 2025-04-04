@@ -48,7 +48,6 @@ public class AllergiesRestController {
     meta.setPageNumber(allergiesPage.getNumber() + 1);
     meta.setPageSize(allergiesPage.getSize());
 
-    //TODO: revisar ccuales tiene el usuario en la lista de alergias
     Optional<User> optionalUser = userRepository.findByName(userDetails.getUsername());
     List<Allergies> userAllergies = optionalUser.map(User::getAllergies).orElse(Collections.emptyList());
 
@@ -111,17 +110,6 @@ public class AllergiesRestController {
           request
       );
     }
-  }
-
-  @GetMapping("/user/{userId}")
-  @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
-  public ResponseEntity<?> getByUserId(@PathVariable Long userId, HttpServletRequest request) {
-    return new GlobalResponseHandler().handleResponse(
-        "Allergies retrieved successfully for user " + userId,
-        allergiesRepository.findByUser_Id(userId),
-        HttpStatus.OK,
-        request
-    );
   }
 
 
