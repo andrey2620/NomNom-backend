@@ -49,4 +49,4 @@ public class AllergiesSeeder implements ApplicationListener<ContextRefreshedEven
       System.out.println("Error al cargar las alergias: " + e.getMessage());
     }
   }
-  }
+}

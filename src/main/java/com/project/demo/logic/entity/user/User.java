@@ -1,5 +1,6 @@
 package com.project.demo.logic.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.demo.logic.entity.allergies.Allergies;
 import com.project.demo.logic.entity.diet_preferences.Diet_Preferences;
 
@@ -13,11 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
+import java.util.*;
 
 @Table(name = "user")
 @Entity
@@ -58,10 +55,21 @@ public class User implements UserDetails {
 
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Allergies> allergies;
+    @JoinTable(
+        name = "user_allergies",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "allergies_id")
+    )
+    private List<Allergies> allergies = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Diet_Preferences> preferences;
+    @JoinTable(
+        name = "user_preferences",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "preferences_id")
+    )
+    private List<Diet_Preferences> preferences = new ArrayList<>();
+
 
     public List<Allergies> getAllergies() {
         return allergies;
@@ -195,13 +203,14 @@ public class User implements UserDetails {
     public void setTokenExpirationTime(long tokenExpirationTime) {
         this.tokenExpirationTime = tokenExpirationTime;
     }
+
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "user_ingredient",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
     )
-
 
     private Set<Ingredient> ingredients = new HashSet<>();
 
