@@ -10,6 +10,7 @@ import com.project.demo.logic.entity.rol.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +25,8 @@ public class User implements UserDetails {
     private Long id;
     private String name;
     private String lastname;
-    @Column(unique = true, length = 100, nullable = false)
+    @NonNull
+    @Column(unique = true, length = 100, nullable = false  )
     private String email;
 
     private String picture;

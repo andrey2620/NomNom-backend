@@ -85,14 +85,26 @@ public class IngredientRestController {
 
     @GetMapping("/formated/user/{userId}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
-    public ResponseEntity<List<Map<String, String>>> getIngredientsByUserId(@PathVariable Long userId) {
+    public ResponseEntity<?> getIngredientsByUserId(@PathVariable Long userId, HttpServletRequest request) {
         try {
-            List<Map<String, String>> ingredients = ingredientService.getFormattedIngredientsByUserId(userId);
-            return ResponseEntity.ok(ingredients);
+            List<String> ingredients = ingredientService.getFormattedIngredientsByUserId(userId);
+
+            return new GlobalResponseHandler().handleResponse(
+                    "Ingredientes del usuario recuperados correctamente",
+                    ingredients,
+                    HttpStatus.OK,
+                    request
+            );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return new GlobalResponseHandler().handleResponse(
+                    "Error al obtener ingredientes: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
         }
     }
+
 
     @GetMapping("/name/{ingredientName}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
@@ -198,6 +210,37 @@ public class IngredientRestController {
         } catch (Exception e) {
             return new GlobalResponseHandler().handleResponse(
                     "Error al vincular ingrediente: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
+        }
+    }
+
+    @PostMapping("/bulk-link/user/{userId}")
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<?> bulkLinkIngredientsToUser(
+            @PathVariable Long userId,
+            @RequestBody List<Long> ingredientIds,
+            HttpServletRequest request) {
+        try {
+            Map<Long, String> result = ingredientService.bulkLinkIngredientsToUser(ingredientIds, userId);
+            return new GlobalResponseHandler().handleResponse(
+                    "Resultado del vínculo múltiple de ingredientes.",
+                    result,
+                    HttpStatus.OK,
+                    request
+            );
+        } catch (IllegalArgumentException e) {
+            return new GlobalResponseHandler().handleResponse(
+                    e.getMessage(),
+                    null,
+                    HttpStatus.NOT_FOUND,
+                    request
+            );
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "Error al realizar vínculo múltiple: " + e.getMessage(),
                     null,
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     request
