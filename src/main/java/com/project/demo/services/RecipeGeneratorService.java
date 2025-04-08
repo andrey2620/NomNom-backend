@@ -101,26 +101,29 @@ public class RecipeGeneratorService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
         headers.set("Authorization", "Bearer " + JwtTokenUtils.getCurrentToken());
 
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<List<Map<String, String>>> response = restTemplate.exchange(
+        ResponseEntity<JsonNode> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 entity,
-                new ParameterizedTypeReference<>() {
-                }
+                JsonNode.class
         );
 
         if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
             throw new RuntimeException("No se pudieron obtener los ingredientes del usuario.");
         }
 
+        JsonNode dataNode = response.getBody().get("data");
+        if (dataNode == null || !dataNode.isArray()) {
+            throw new RuntimeException("La estructura de respuesta no es válida.");
+        }
+
         List<String> ingredientNames = new ArrayList<>();
-        for (Map<String, String> ingredient : response.getBody()) {
-            ingredientNames.add(ingredient.get("name"));
+        for (JsonNode node : dataNode) {
+            ingredientNames.add(node.asText());
         }
 
         return ingredientNames;
