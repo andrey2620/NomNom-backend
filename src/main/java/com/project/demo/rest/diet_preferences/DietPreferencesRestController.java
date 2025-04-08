@@ -25,95 +25,119 @@ import java.util.*;
 @RequestMapping("/diet_preferences")
 public class DietPreferencesRestController {
 
-  @Autowired
-  private Diet_PreferenceRepository dietPreferenceRepository;
-  private User userDetails;
-  @Autowired
-  private UserRepository userRepository;
+    @Autowired
+    private Diet_PreferenceRepository dietPreferenceRepository;
+    private User userDetails;
+    @Autowired
+    private UserRepository userRepository;
 
-  @GetMapping
-  @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
-  public ResponseEntity<?> getAll(
-      @RequestParam(defaultValue = "1") int page,
-      @RequestParam(defaultValue = "10") int size,
-      HttpServletRequest request,
-      @AuthenticationPrincipal UserDetails userDetails) {
+    @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<?> getAll(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            HttpServletRequest request,
+            @AuthenticationPrincipal UserDetails userDetails) {
 
-    Pageable pageable = PageRequest.of(page - 1, size);
-    Page<Diet_Preferences> dietPreferencesPage = dietPreferenceRepository.findAll(pageable);
+        try {
+            Pageable pageable = PageRequest.of(page - 1, size);
+            Page<Diet_Preferences> dietPreferencesPage = dietPreferenceRepository.findAll(pageable);
 
-    Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
-    meta.setTotalPages(dietPreferencesPage.getTotalPages());
-    meta.setTotalElements(dietPreferencesPage.getTotalElements());
-    meta.setPageNumber(dietPreferencesPage.getNumber() + 1);
-    meta.setPageSize(dietPreferencesPage.getSize());
+            Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
+            meta.setTotalPages(dietPreferencesPage.getTotalPages());
+            meta.setTotalElements(dietPreferencesPage.getTotalElements());
+            meta.setPageNumber(dietPreferencesPage.getNumber() + 1);
+            meta.setPageSize(dietPreferencesPage.getSize());
 
+            Optional<User> optionalUser = userRepository.findByName(userDetails.getUsername());
+            List<Diet_Preferences> userDietPreferences = optionalUser
+                    .map(User::getPreferences)
+                    .orElse(Collections.emptyList());
 
-    Optional<User> optionalUser = userRepository.findByName(userDetails.getUsername());
-    List<Diet_Preferences> userDietPreferences = optionalUser
-        .map(User::getPreferences)
-        .orElse(Collections.emptyList());
+            List<Map<String, Object>> result = new ArrayList<>();
+            for (Diet_Preferences preference : dietPreferencesPage.getContent()) {
+                Map<String, Object> prefMap = new HashMap<>();
+                prefMap.put("id", preference.getId());
+                prefMap.put("name", preference.getName());
+                prefMap.put("isSelected", userDietPreferences.contains(preference));
+                result.add(prefMap);
+            }
 
-
-    List<Map<String, Object>> result = new ArrayList<>();
-    for (Diet_Preferences preference : dietPreferencesPage.getContent()) {
-      Map<String, Object> prefMap = new HashMap<>();
-      prefMap.put("id", preference.getId());
-      prefMap.put("name", preference.getName());
-      prefMap.put("isSelected", userDietPreferences.contains(preference));
-      result.add(prefMap);
+            return new GlobalResponseHandler().handleResponse(
+                    "Diet preferences retrieved successfully",
+                    result,
+                    HttpStatus.OK,
+                    meta
+            );
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "An error occurred while retrieving diet preferences: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
+        }
     }
 
-    return new GlobalResponseHandler().handleResponse(
-        "Diet preferences retrieved successfully",
-        result,
-        HttpStatus.OK,
-        meta
-    );
-  }
+    @GetMapping("/{dietPreferenceId}")
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<?> getById(@PathVariable Long dietPreferenceId, HttpServletRequest request) {
+        try {
+            Optional<Diet_Preferences> foundDietPreference = dietPreferenceRepository.findById(dietPreferenceId);
 
-  @GetMapping("/{dietPreferenceId}")
-  @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
-  public ResponseEntity<?> getById(@PathVariable Long dietPreferenceId, HttpServletRequest request) {
-    Optional<Diet_Preferences> foundDietPreference = dietPreferenceRepository.findById(dietPreferenceId);
-
-    if (foundDietPreference.isPresent()) {
-      return new GlobalResponseHandler().handleResponse(
-          "Diet preference retrieved successfully",
-          foundDietPreference.get(),
-          HttpStatus.OK,
-          request
-      );
-    } else {
-      return new GlobalResponseHandler().handleResponse(
-          "Diet preference id " + dietPreferenceId + " not found",
-          null,
-          HttpStatus.NOT_FOUND,
-          request
-      );
+            if (foundDietPreference.isPresent()) {
+                return new GlobalResponseHandler().handleResponse(
+                        "Diet preference retrieved successfully",
+                        foundDietPreference.get(),
+                        HttpStatus.OK,
+                        request
+                );
+            } else {
+                return new GlobalResponseHandler().handleResponse(
+                        "Diet preference id " + dietPreferenceId + " not found",
+                        null,
+                        HttpStatus.NOT_FOUND,
+                        request
+                );
+            }
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "An error occurred while retrieving diet preference: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
+        }
     }
-  }
 
-  @GetMapping("/name/{diet_PreferenceName}")
-  @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
-  public ResponseEntity<?> getByName(@PathVariable String diet_PreferenceName, HttpServletRequest request) {
-    Optional<Diet_Preferences> foundDietPreference = dietPreferenceRepository.findByName(diet_PreferenceName);
+    @GetMapping("/name/{diet_PreferenceName}")
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<?> getByName(@PathVariable String diet_PreferenceName, HttpServletRequest request) {
+        try {
+            Optional<Diet_Preferences> foundDietPreference = dietPreferenceRepository.findByName(diet_PreferenceName);
 
-    if (foundDietPreference.isPresent()) {
-      return new GlobalResponseHandler().handleResponse(
-          "Diet preference retrieved successfully",
-          foundDietPreference.get(),
-          HttpStatus.OK,
-          request
-      );
-    } else {
-      return new GlobalResponseHandler().handleResponse(
-          "Diet preference with name '" + diet_PreferenceName + "' not found",
-          null,
-          HttpStatus.NOT_FOUND,
-          request
-      );
+            if (foundDietPreference.isPresent()) {
+                return new GlobalResponseHandler().handleResponse(
+                        "Diet preference retrieved successfully",
+                        foundDietPreference.get(),
+                        HttpStatus.OK,
+                        request
+                );
+            } else {
+                return new GlobalResponseHandler().handleResponse(
+                        "Diet preference with name '" + diet_PreferenceName + "' not found",
+                        null,
+                        HttpStatus.NOT_FOUND,
+                        request
+                );
+            }
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "An error occurred while retrieving diet preference: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
+        }
     }
-  }
-
 }

@@ -30,42 +30,50 @@ public class PasswordResetController {
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestParam String email, HttpServletRequest request) {
-        Optional<User> userOptional = userService.findByEmail(email);
-        if (!userOptional.isPresent()) {
-            return new GlobalResponseHandler().handleResponse("Correo no encontrado",
-                    HttpStatus.BAD_REQUEST, request);
+        try {
+            Optional<User> userOptional = userService.findByEmail(email);
+            if (!userOptional.isPresent()) {
+                return new GlobalResponseHandler().handleResponse("Correo no encontrado",
+                        HttpStatus.BAD_REQUEST, request);
+            }
+
+            User user = userOptional.get();
+
+            String token = UUID.randomUUID().toString();
+            userService.savePasswordResetToken(user, token);
+
+            String resetLink = baseUrlFrontend + "/reset-password?token=" + token;
+            emailService.sendPasswordResetEmail(user.getEmail(), resetLink);
+
+            return new GlobalResponseHandler().handleResponse("Correo de recuperación enviado",
+                    HttpStatus.OK, request);
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse("Error al enviar el correo: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR, request);
         }
-
-        User user = userOptional.get();
-
-        String token = UUID.randomUUID().toString();
-
-        userService.savePasswordResetToken(user, token);
-
-        String resetLink = baseUrlFrontend + "/reset-password?token=" + token;
-
-        emailService.sendPasswordResetEmail(user.getEmail(), resetLink);
-
-        return new GlobalResponseHandler().handleResponse("Correo de recuperación enviado",
-                HttpStatus.OK, request);
     }
 
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestBody String newPassword, HttpServletRequest httpRequest) {
-        Optional<User> userOptional = userService.findByResetToken(token);
-        if (!userOptional.isPresent()) {
-            return new GlobalResponseHandler().handleResponse("Token no válido o expirado", HttpStatus.BAD_REQUEST, httpRequest);
+        try {
+            Optional<User> userOptional = userService.findByResetToken(token);
+            if (!userOptional.isPresent()) {
+                return new GlobalResponseHandler().handleResponse("Token no válido o expirado", HttpStatus.BAD_REQUEST, httpRequest);
+            }
+
+            User user = userOptional.get();
+            long currentTime = Instant.now().toEpochMilli();
+
+            if (user.getTokenExpirationTime() < currentTime) {
+                return new GlobalResponseHandler().handleResponse("El token ha expirado", HttpStatus.BAD_REQUEST, httpRequest);
+            }
+
+            userService.changePassword(user, newPassword);
+
+            return new GlobalResponseHandler().handleResponse("Contraseña actualizada", HttpStatus.OK, httpRequest);
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse("Error al actualizar la contraseña: " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR, httpRequest);
         }
-
-        User user = userOptional.get();
-        long currentTime = Instant.now().toEpochMilli();
-
-        if (user.getTokenExpirationTime() < currentTime) {
-            return new GlobalResponseHandler().handleResponse("El token ha expirado", HttpStatus.BAD_REQUEST, httpRequest);
-        }
-
-        userService.changePassword(user, newPassword);
-
-        return new GlobalResponseHandler().handleResponse("Contraseña actualizada", HttpStatus.OK, httpRequest);
     }
 }

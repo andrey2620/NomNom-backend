@@ -31,52 +31,68 @@ public class RecipeIngredientRestController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             HttpServletRequest request) {
+        try {
+            Pageable pageable = PageRequest.of(page - 1, size);
+            Page<RecipeIngredient> pageResult = recipeIngredientService.getAll(pageable);
 
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<RecipeIngredient> pageResult = recipeIngredientService.getAll(pageable);
+            List<RecipeIngredientDTO> dtos = pageResult.getContent()
+                    .stream()
+                    .map(ri -> new RecipeIngredientDTO(
+                            ri.getId(),
+                            ri.getIngredient().getId(),
+                            ri.getRecipe().getId(),
+                            ri.getQuantity(),
+                            ri.getMeasurement()
+                    ))
+                    .toList();
 
-        List<RecipeIngredientDTO> dtos = pageResult.getContent()
-                .stream()
-                .map(ri -> new RecipeIngredientDTO(
-                        ri.getId(),
-                        ri.getIngredient().getId(),
-                        ri.getRecipe().getId(),
-                        ri.getQuantity(),
-                        ri.getMeasurement()
-                ))
-                .toList();
+            Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
+            meta.setTotalPages(pageResult.getTotalPages());
+            meta.setTotalElements(pageResult.getTotalElements());
+            meta.setPageNumber(pageResult.getNumber() + 1);
+            meta.setPageSize(pageResult.getSize());
 
-        Meta meta = new Meta(request.getMethod(), request.getRequestURL().toString());
-        meta.setTotalPages(pageResult.getTotalPages());
-        meta.setTotalElements(pageResult.getTotalElements());
-        meta.setPageNumber(pageResult.getNumber() + 1);
-        meta.setPageSize(pageResult.getSize());
-
-        return new GlobalResponseHandler().handleResponse(
-                "RecipeIngredients retrieved successfully",
-                dtos,
-                HttpStatus.OK,
-                meta
-        );
+            return new GlobalResponseHandler().handleResponse(
+                    "RecipeIngredients retrieved successfully",
+                    dtos,
+                    HttpStatus.OK,
+                    meta
+            );
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "Error retrieving recipe ingredients: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
+        }
     }
-
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> getById(@PathVariable Long id, HttpServletRequest request) {
-        Optional<RecipeIngredient> item = recipeIngredientService.getById(id);
-        if (item.isPresent()) {
+        try {
+            Optional<RecipeIngredient> item = recipeIngredientService.getById(id);
+            if (item.isPresent()) {
+                return new GlobalResponseHandler().handleResponse(
+                        "RecipeIngredient retrieved successfully",
+                        item.get(),
+                        HttpStatus.OK,
+                        request
+                );
+            } else {
+                return new GlobalResponseHandler().handleResponse(
+                        "RecipeIngredient id " + id + " not found",
+                        null,
+                        HttpStatus.NOT_FOUND,
+                        request
+                );
+            }
+        } catch (Exception e) {
             return new GlobalResponseHandler().handleResponse(
-                    "RecipeIngredient retrieved successfully",
-                    item.get(),
-                    HttpStatus.OK,
-                    request
-            );
-        } else {
-            return new GlobalResponseHandler().handleResponse(
-                    "RecipeIngredient id " + id + " not found",
+                    "Error retrieving recipe ingredient: " + e.getMessage(),
                     null,
-                    HttpStatus.NOT_FOUND,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
                     request
             );
         }
@@ -85,39 +101,57 @@ public class RecipeIngredientRestController {
     @PostMapping
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> create(@RequestBody RecipeIngredient entity, HttpServletRequest request) {
-        RecipeIngredient saved = recipeIngredientService.save(entity);
-        return new GlobalResponseHandler().handleResponse(
-                "RecipeIngredient created successfully",
-                saved,
-                HttpStatus.CREATED,
-                request
-        );
+        try {
+            RecipeIngredient saved = recipeIngredientService.save(entity);
+            return new GlobalResponseHandler().handleResponse(
+                    "RecipeIngredient created successfully",
+                    saved,
+                    HttpStatus.CREATED,
+                    request
+            );
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "Error creating recipe ingredient: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
+        }
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody RecipeIngredient updatedData, HttpServletRequest request) {
-        Optional<RecipeIngredient> existing = recipeIngredientService.getById(id);
-        if (existing.isPresent()) {
-            RecipeIngredient item = existing.get();
-            item.setIngredient(updatedData.getIngredient());
-            item.setRecipe(updatedData.getRecipe());
-            item.setQuantity(updatedData.getQuantity());
-            item.setMeasurement(updatedData.getMeasurement());
+        try {
+            Optional<RecipeIngredient> existing = recipeIngredientService.getById(id);
+            if (existing.isPresent()) {
+                RecipeIngredient item = existing.get();
+                item.setIngredient(updatedData.getIngredient());
+                item.setRecipe(updatedData.getRecipe());
+                item.setQuantity(updatedData.getQuantity());
+                item.setMeasurement(updatedData.getMeasurement());
 
-            RecipeIngredient updated = recipeIngredientService.save(item);
+                RecipeIngredient updated = recipeIngredientService.save(item);
 
+                return new GlobalResponseHandler().handleResponse(
+                        "RecipeIngredient updated successfully",
+                        updated,
+                        HttpStatus.OK,
+                        request
+                );
+            } else {
+                return new GlobalResponseHandler().handleResponse(
+                        "RecipeIngredient id " + id + " not found",
+                        null,
+                        HttpStatus.NOT_FOUND,
+                        request
+                );
+            }
+        } catch (Exception e) {
             return new GlobalResponseHandler().handleResponse(
-                    "RecipeIngredient updated successfully",
-                    updated,
-                    HttpStatus.OK,
-                    request
-            );
-        } else {
-            return new GlobalResponseHandler().handleResponse(
-                    "RecipeIngredient id " + id + " not found",
+                    "Error updating recipe ingredient: " + e.getMessage(),
                     null,
-                    HttpStatus.NOT_FOUND,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
                     request
             );
         }
@@ -126,19 +160,28 @@ public class RecipeIngredientRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> delete(@PathVariable Long id, HttpServletRequest request) {
-        if (!recipeIngredientService.existsById(id)) {
+        try {
+            if (!recipeIngredientService.existsById(id)) {
+                return new GlobalResponseHandler().handleResponse(
+                        "RecipeIngredient id " + id + " not found",
+                        HttpStatus.NOT_FOUND,
+                        request
+                );
+            }
+            recipeIngredientService.delete(id);
             return new GlobalResponseHandler().handleResponse(
-                    "RecipeIngredient id " + id + " not found",
-                    HttpStatus.NOT_FOUND,
+                    "RecipeIngredient deleted successfully",
+                    null,
+                    HttpStatus.OK,
+                    request
+            );
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "Error deleting recipe ingredient: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
                     request
             );
         }
-        recipeIngredientService.delete(id);
-        return new GlobalResponseHandler().handleResponse(
-                "RecipeIngredient deleted successfully",
-                null,
-                HttpStatus.OK,
-                request
-        );
     }
 }

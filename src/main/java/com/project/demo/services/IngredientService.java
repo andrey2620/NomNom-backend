@@ -28,7 +28,7 @@ public class IngredientService {
     }
 
     @Transactional
-    public List<Map<String, String>> getFormattedIngredientsByUserId(Long userId) {
+    public List<String> getFormattedIngredientsByUserId(Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isEmpty()) {
@@ -38,13 +38,10 @@ public class IngredientService {
         User user = userOptional.get();
 
         return user.getIngredients().stream()
-                .map(ingredient -> {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("name", ingredient.getName());
-                    return map;
-                })
+                .map(Ingredient::getName)
                 .collect(Collectors.toList());
     }
+
 
 
     public Ingredient saveIngredient(Ingredient ingredient) {
@@ -85,6 +82,39 @@ public class IngredientService {
         userRepository.save(user);
         return "Ingrediente vinculado correctamente al usuario.";
     }
+
+    public Map<Long, String> bulkLinkIngredientsToUser(List<Long> ingredientIds, Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isEmpty()) {
+            throw new IllegalArgumentException("Usuario con id " + userId + " no existe");
+        }
+
+        User user = userOptional.get();
+        Map<Long, String> resultMessages = new HashMap<>();
+
+        for (Long ingredientId : ingredientIds) {
+            Optional<Ingredient> ingredientOptional = ingredientRepository.findById(ingredientId);
+
+            if (ingredientOptional.isEmpty()) {
+                resultMessages.put(ingredientId, "Ingrediente no encontrado");
+                continue;
+            }
+
+            Ingredient ingredient = ingredientOptional.get();
+
+            if (user.getIngredients().contains(ingredient)) {
+                resultMessages.put(ingredientId, "Ya está vinculado");
+            } else {
+                user.getIngredients().add(ingredient);
+                resultMessages.put(ingredientId, "Vinculado correctamente");
+            }
+        }
+
+        userRepository.save(user);
+        return resultMessages;
+    }
+
 
     public void deleteIngredient(Long id) {
         ingredientRepository.deleteById(id);

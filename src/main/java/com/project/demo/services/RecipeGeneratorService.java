@@ -183,4 +183,12 @@ public class RecipeGeneratorService {
 
         return callModelWithPrompt(prompt);
     }
+
+    public JsonNode generateRecipeFromIngredients(List<String> ingredients) throws Exception {
+        if (ingredients == null || ingredients.isEmpty()) {
+            throw new IllegalArgumentException("La lista de ingredientes no puede estar vacía.");
+        }
+        return generateRecipeFromList(ingredients);
+    }
+
 }
