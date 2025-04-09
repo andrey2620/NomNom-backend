@@ -1,6 +1,6 @@
+// AuthRestController.java
 package com.project.demo.rest.auth;
 
-import com.project.demo.logic.entity.auth.AuthenticationService;
 import com.project.demo.logic.entity.auth.JwtService;
 import com.project.demo.logic.entity.rol.Role;
 import com.project.demo.logic.entity.rol.RoleEnum;
@@ -8,89 +8,105 @@ import com.project.demo.logic.entity.rol.RoleRepository;
 import com.project.demo.logic.entity.user.LoginResponse;
 import com.project.demo.logic.entity.user.User;
 import com.project.demo.logic.entity.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.demo.services.AuthenticationService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.Base64;
 
-@RequestMapping("/auth")
 @RestController
+@RequestMapping("/auth")
 public class AuthRestController {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    private final AuthenticationService authenticationService;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final AuthenticationService authenticationService;
 
-    public AuthRestController(JwtService jwtService, AuthenticationService authenticationService) {
+    @Value("${google.client.id}")
+    private String clientId;
+
+    @Value("${google.client.secret}")
+    private String clientSecret;
+
+    @Value("${google.redirect.uri}")
+    private String redirectUri;
+
+    public AuthRestController(UserRepository userRepository,
+                              PasswordEncoder passwordEncoder,
+                              RoleRepository roleRepository,
+                              JwtService jwtService,
+                              AuthenticationService authenticationService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody User user) {
+    @PostMapping("/exchange-google-code")
+    public ResponseEntity<?> exchangeGoogleCode(@RequestBody Map<String, String> payload) {
         try {
-            User authenticatedUser = authenticationService.authenticate(user);
+            String code = payload.get("code");
+            String codeVerifier = payload.get("codeVerifier");
 
-            String jwtToken = jwtService.generateToken(authenticatedUser);
+            String tokenEndpoint = "https://oauth2.googleapis.com/token";
+            RestTemplate restTemplate = new RestTemplate();
 
-            LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setToken(jwtToken);
-            loginResponse.setExpiresIn(jwtService.getExpirationTime());
+            MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+            requestBody.add("code", code);
+            requestBody.add("client_id", clientId);
+            requestBody.add("client_secret", clientSecret);
+            requestBody.add("redirect_uri", redirectUri);
+            requestBody.add("grant_type", "authorization_code");
+            requestBody.add("code_verifier", codeVerifier);
 
-            Optional<User> foundedUser = userRepository.findByEmail(user.getEmail());
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(requestBody, headers);
 
-            foundedUser.ifPresent(loginResponse::setAuthUser);
+            ResponseEntity<Map> response = restTemplate.postForEntity(tokenEndpoint, request, Map.class);
+            Map<String, Object> responseBody = response.getBody();
 
-            return ResponseEntity.ok(loginResponse);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+            if (responseBody == null || !responseBody.containsKey("id_token")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No se pudo obtener el id_token de Google");
+            }
 
-    @PostMapping("/google-auth")
-    public ResponseEntity<?> authenticateWithGoogle(@RequestBody Map<String, String> payload) {
-        try {
-            String email = payload.get("email");
+            String idToken = (String) responseBody.get("id_token");
+            Claims claims = decodeJwt(idToken);
+            String email = claims.get("email", String.class);
+
             return authenticationService.authenticateGoogle(email);
+        } catch (HttpClientErrorException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error authenticating with Google");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + e.getMessage());
         }
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
+    private Claims decodeJwt(String idToken) {
+        String[] parts = idToken.split("\\.");
+        if (parts.length < 2) throw new IllegalArgumentException("Invalid JWT token");
+
+        String payload = new String(Base64.getUrlDecoder().decode(parts[1]));
+        ObjectMapper mapper = new ObjectMapper();
+
         try {
-            Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
-            if (existingUser.isPresent()) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("El Correo se encuentra en uso");
-            }
-
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
-
-            if (optionalRole.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Role not found");
-            }
-            user.setRole(optionalRole.get());
-            User savedUser = userRepository.save(user);
-            return ResponseEntity.ok(savedUser);
+            Map<String, Object> payloadMap = mapper.readValue(payload, Map.class);
+            return Jwts.claims(payloadMap);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error registering user");
+            throw new IllegalArgumentException("Unable to parse JWT: " + e.getMessage());
         }
     }
 }

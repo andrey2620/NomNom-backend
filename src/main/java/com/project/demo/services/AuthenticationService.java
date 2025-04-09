@@ -1,5 +1,6 @@
-package com.project.demo.logic.entity.auth;
+package com.project.demo.services;
 
+import com.project.demo.logic.entity.auth.JwtService;
 import com.project.demo.logic.entity.user.User;
 import com.project.demo.logic.entity.user.UserRepository;
 import org.springframework.http.ResponseEntity;
