@@ -76,7 +76,7 @@ public class UserRestController {
     }
 
     @PutMapping("/{userId}")
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'USER')")
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user, HttpServletRequest request) {
         try {
             Optional<User> foundUser = userRepository.findById(userId);
@@ -88,45 +88,52 @@ public class UserRestController {
                 userToUpdate.setEmail(user.getEmail());
                 userToUpdate.setPicture(user.getPicture());
 
-                List<Allergies> existingAllergies = userToUpdate.getAllergies();
-                List<Long> selectedAllergiesIds = user.getAllergies().stream().map(Allergies::getId).toList();
-                existingAllergies.removeIf(allergy -> !selectedAllergiesIds.contains(allergy.getId()));
-                for (Allergies allergy : user.getAllergies()) {
-                    if (existingAllergies.stream().noneMatch(a -> a.getId().equals(allergy.getId()))) {
-                        allergiesRepository.findById(allergy.getId()).ifPresent(existingAllergies::add);
+                // Actualizar ALERGIAS solo si llegaron datos
+                if (user.getAllergies() != null && !user.getAllergies().isEmpty()) {
+                    List<Allergies> existingAllergies = userToUpdate.getAllergies();
+                    List<Long> selectedAllergiesIds = user.getAllergies().stream().map(Allergies::getId).toList();
+                    existingAllergies.removeIf(allergy -> !selectedAllergiesIds.contains(allergy.getId()));
+                    for (Allergies allergy : user.getAllergies()) {
+                        if (existingAllergies.stream().noneMatch(a -> a.getId().equals(allergy.getId()))) {
+                            allergiesRepository.findById(allergy.getId()).ifPresent(existingAllergies::add);
+                        }
                     }
+                    userToUpdate.setAllergies(existingAllergies);
                 }
-                userToUpdate.setAllergies(existingAllergies);
 
-                List<Diet_Preferences> existingPreferences = userToUpdate.getPreferences();
-                List<Long> selectedPreferencesIds = user.getPreferences().stream().map(Diet_Preferences::getId).toList();
-                existingPreferences.removeIf(pref -> !selectedPreferencesIds.contains(pref.getId()));
-                for (Diet_Preferences pref : user.getPreferences()) {
-                    if (existingPreferences.stream().noneMatch(p -> p.getId().equals(pref.getId()))) {
-                        diet_preferenceRepository.findById(pref.getId()).ifPresent(existingPreferences::add);
+                // Actualizar PREFERENCIAS solo si llegaron datos
+                if (user.getPreferences() != null && !user.getPreferences().isEmpty()) {
+                    List<Diet_Preferences> existingPreferences = userToUpdate.getPreferences();
+                    List<Long> selectedPreferencesIds = user.getPreferences().stream().map(Diet_Preferences::getId).toList();
+                    existingPreferences.removeIf(pref -> !selectedPreferencesIds.contains(pref.getId()));
+                    for (Diet_Preferences pref : user.getPreferences()) {
+                        if (existingPreferences.stream().noneMatch(p -> p.getId().equals(pref.getId()))) {
+                            diet_preferenceRepository.findById(pref.getId()).ifPresent(existingPreferences::add);
+                        }
                     }
+                    userToUpdate.setPreferences(existingPreferences);
                 }
-                userToUpdate.setPreferences(existingPreferences);
 
                 userRepository.save(userToUpdate);
                 return new GlobalResponseHandler().handleResponse(
-                        "User updated successfully",
-                        userToUpdate,
-                        HttpStatus.OK,
-                        request
+                    "User updated successfully",
+                    userToUpdate,
+                    HttpStatus.OK,
+                    request
                 );
             } else {
                 return new GlobalResponseHandler().handleResponse(
-                        "User id " + userId + " not found",
-                        HttpStatus.NOT_FOUND,
-                        request
+                    "User id " + userId + " not found",
+                    HttpStatus.NOT_FOUND,
+                    request
                 );
             }
         } catch (Exception e) {
             return new GlobalResponseHandler().handleResponse("Error updating user: " + e.getMessage(),
-                    null, HttpStatus.INTERNAL_SERVER_ERROR, request);
+                null, HttpStatus.INTERNAL_SERVER_ERROR, request);
         }
     }
+
 
     @GetMapping("/allergies")
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
