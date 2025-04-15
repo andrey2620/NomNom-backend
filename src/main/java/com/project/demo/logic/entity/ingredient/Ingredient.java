@@ -27,12 +27,16 @@ public class Ingredient {
     @Column(name = "image", nullable = true)
     private String image;
 
+    @Column(name = "category", nullable = true)
+    private String category;
+
     public Ingredient() {}
 
-    public Ingredient(String name, String medida, String image) {
+    public Ingredient(String name, String medida, String image, String category) {
         this.name = name;
         this.medida = medida;
         this.image = image;
+        this.category = category;
     }
 
     public Long getId() {
@@ -62,4 +66,8 @@ public class Ingredient {
     public String getImage() { return image; }
 
     public void setImage(String image) { this.image = image; }
+
+    public String getCategory() { return category; }
+
+    public void setCategory(String category) { this.category = category; }
 }
