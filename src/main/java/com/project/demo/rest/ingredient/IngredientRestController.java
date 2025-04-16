@@ -88,7 +88,7 @@ public class IngredientRestController {
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
     public ResponseEntity<?> getIngredientsByUserId(@PathVariable Long userId, HttpServletRequest request) {
         try {
-            List<String> ingredients = ingredientService.getFormattedIngredientsByUserId(userId);
+            List<Map<String, Object>> ingredients = ingredientService.getFormattedIngredientsByUserId(userId);
 
             return new GlobalResponseHandler().handleResponse(
                     "Ingredientes del usuario recuperados correctamente",
@@ -341,6 +341,37 @@ public class IngredientRestController {
         } catch (Exception e) {
             return new GlobalResponseHandler().handleResponse(
                     "Error al vincular ingrediente: " + e.getMessage(),
+                    null,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    request
+            );
+        }
+    }
+
+    @PostMapping("/bulk-delete/user/{userId}")
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<?> bulkDeleteIngredientsFromUser(
+            @PathVariable Long userId,
+            @RequestBody List<Long> ingredientIds,
+            HttpServletRequest request) {
+        try {
+            Map<Long, String> result = ingredientService.bulkDeleteIngredientsFromUser(ingredientIds, userId);
+            return new GlobalResponseHandler().handleResponse(
+                    "Resultado de eliminación de ingredientes.",
+                    result,
+                    HttpStatus.OK,
+                    request
+            );
+        } catch (IllegalArgumentException e) {
+            return new GlobalResponseHandler().handleResponse(
+                    e.getMessage(),
+                    null,
+                    HttpStatus.NOT_FOUND,
+                    request
+            );
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse(
+                    "Error al eliminar ingredientes: " + e.getMessage(),
                     null,
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     request
