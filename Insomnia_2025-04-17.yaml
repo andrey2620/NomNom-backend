@@ -9,15 +9,15 @@ collection:
     meta:
       id: fld_8bb7dd88d58b4726bd7bf2c4e4b5e492
       created: 1741829583893
-      modified: 1741829757977
-      sortKey: -1741829755392
+      modified: 1744855319907
+      sortKey: -1742717819062
     children:
       - url: "{{ _.base_url }}auth/login"
         name: Login Admin (Obtener Token)
         meta:
           id: req_a9076597d4844bfdaec24a5b04e934c9
           created: 1740367477564
-          modified: 1743463741709
+          modified: 1744147594295
           isPrivate: false
           sortKey: -1741829683489
         method: POST
@@ -25,7 +25,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-                "email": "lopendex@gmail.com",
+                "email": "super.admin@nomnom.com",
                 "password": "superadmin123"
             }
         headers:
@@ -44,7 +44,7 @@ collection:
         meta:
           id: req_01cf5e1443b4493e9eacd0a04f23eddb
           created: 1740368132581
-          modified: 1743464245387
+          modified: 1744147404886
           isPrivate: false
           sortKey: -1741829683589
         method: POST
@@ -71,7 +71,7 @@ collection:
         meta:
           id: req_0cefc7e79d4b475ea5eb6a3398cfb73e
           created: 1741829469654
-          modified: 1743464250568
+          modified: 1744078171350
           isPrivate: false
           sortKey: -1741829683389
         method: POST
@@ -81,7 +81,7 @@ collection:
             {
             	"name": "test", 
             	"lastname": "test",
-            	"email": "test9@gmail.com",
+            	"email": "a",
             	"password": "test123"
             }
         headers:
@@ -137,7 +137,7 @@ collection:
         meta:
           id: req_d3ae148437fd4aceb77506e96fdf1451
           created: 1742351715032
-          modified: 1743468890683
+          modified: 1743804155821
           isPrivate: false
           sortKey: -1742351715032
         method: GET
@@ -194,7 +194,7 @@ collection:
         meta:
           id: req_542d32d766bf4c90a0edeb57a60d863f
           created: 1742351950782
-          modified: 1743468354982
+          modified: 1743805063861
           isPrivate: false
           sortKey: -1742351950782
         method: POST
@@ -203,8 +203,7 @@ collection:
           text: |-
             {
             	"name": "Aguacate Dddddeluxe",
-            	"medida": "unidad",
-            	"image": "https://example.com/aguacate.png"
+            	"medida": "unidad"
             }
         headers:
           - name: Content-Type
@@ -280,12 +279,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}ingredients/formated/user/1"
+      - url: "{{ _.base_url }}ingredients/formated/user/3"
         name: GET USER INGREDIENTS BY USER ID
         meta:
           id: req_25ea3d41ecdf429abd7a199f9dcb3800
           created: 1742693221975
-          modified: 1743468699820
+          modified: 1744738169227
           isPrivate: false
           sortKey: -1742351817721
         method: GET
@@ -309,7 +308,7 @@ collection:
         meta:
           id: req_d0200a08808f49cdbb7d9611a662e12c
           created: 1743466906393
-          modified: 1743469105081
+          modified: 1743804237769
           isPrivate: false
           sortKey: -1742351957992.75
         method: POST
@@ -318,8 +317,7 @@ collection:
           text: |-
             {
             	"name": "Aguacate DDeluxe",
-            	"medida": "unidad",
-            	"image": "https://example.com/aguacate.png"
+            	"medida": "unidad"
             }
         headers:
           - name: Content-Type
@@ -335,16 +333,74 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}ingredients/link/3/user/1"
+      - url: "{{ _.base_url }}ingredients/link/120/user/1"
         name: CREATE INGREDIENT-USER RELATIONSHIP
         meta:
           id: req_dc542db59a244a4baa1284c0c99463b8
           created: 1743469924212
-          modified: 1743470318669
+          modified: 1743805312387
           isPrivate: false
           sortKey: -1742351935596
         method: POST
         headers:
+          - name: User-Agent
+            value: insomnia/9.1.1
+        authentication:
+          type: bearer
+          disabled: false
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}ingredients/bulk-link/user/3"
+        name: CREATE BULK INGREDIENT/USER RELATIONSHIP
+        meta:
+          id: req_679ad6e764cd451f847f70918a569fb0
+          created: 1744013821652
+          modified: 1744013935035
+          isPrivate: false
+          sortKey: -1742351928003
+        method: POST
+        body:
+          mimeType: application/json
+          text: "[1111111, 2, 3, 4]"
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/9.1.1
+        authentication:
+          type: bearer
+          disabled: false
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}ingredients/bulk-replace/user/3"
+        name: REPLACE BULK INGREDIENT/USER RELATIONSHIP
+        meta:
+          id: req_d8b8e40bc97d4f8398efdfe465ba27df
+          created: 1744791116109
+          modified: 1744791124998
+          isPrivate: false
+          sortKey: -1742351924206.5
+        method: POST
+        body:
+          mimeType: application/json
+          text: "[1111111, 2, 3, 4]"
+        headers:
+          - name: Content-Type
+            value: application/json
           - name: User-Agent
             value: insomnia/9.1.1
         authentication:
@@ -399,7 +455,7 @@ collection:
         meta:
           id: req_86173d804f63412d8929701509a82492
           created: 1742712846712
-          modified: 1743464257736
+          modified: 1744147606453
           isPrivate: false
           sortKey: -1742712450872
         method: GET
@@ -440,7 +496,7 @@ collection:
     meta:
       id: fld_3fbd4973d3454e708bc4bd1fd0a81c3b
       created: 1742717818962
-      modified: 1743487677229
+      modified: 1744147723315
       sortKey: -1742717818962
     children:
       - url: "{{ _.base_url }}recipes/generator"
@@ -448,7 +504,7 @@ collection:
         meta:
           id: req_3736aa6e35be4534909bb684da8b1e6c
           created: 1742532091130
-          modified: 1743487700671
+          modified: 1744244983079
           isPrivate: false
           sortKey: -1742717832433
         method: GET
@@ -603,12 +659,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}recipes/generator/user/1"
-        name: GENERATE USER RECIPE
+      - url: "{{ _.base_url }}recipes/generator/user/4"
+        name: "GENERATE RECIPE WITH ID USER "
         meta:
           id: req_fde5e22ac9f845b7822e48cbbf309348
           created: 1743211092491
-          modified: 1743488063069
+          modified: 1744854610945
           isPrivate: false
           sortKey: -1742715141652.5
         method: GET
@@ -631,7 +687,7 @@ collection:
         meta:
           id: req_5d0a8a79a561491da320c55b5d4b013b
           created: 1743488079438
-          modified: 1743488167248
+          modified: 1743636232110
           isPrivate: false
           sortKey: -1742713796262.25
         method: POST
@@ -639,48 +695,63 @@ collection:
           mimeType: application/json
           text: >-
             {
-            	"name": "Ensalada de Pavo y Frutas",
+            	"name": "Ensalada de Aguacate y Coliflor",
             	"recipeCategory": "Ensalada",
             	"preparationTime": 20,
-            	"instructions": "Mezcla la lechuga, el pepino, las fresas y los arándanos en un tazón grande. Agrega la carne de pavo molida y mezcla bien. Sazona con albahaca fresca y jugo de naranja.",
+            	"description": "Una ensalada fresca y saludable con aguacate y coliflor.",
+            	"nutritionalInfo": "150cal, 5g proteínas, 15g carbohidratos, 10g grasas",
+            	"instructions": "Limpia la coliflor y córtala en flores pequeñas. Corta el aguacate a rebanadas. Mezcla ambos ingredientes con tomate cherry picado. Añade un poco de sal y pimienta al gusto.",
             	"ingredients": [
             		{
-            			"name": "Lechuga",
-            			"quantity": "2.5",
-            			"measurement": "tazas"
-            		},
-            		{
-            			"name": "Pepino",
-            			"quantity": "1",
-            			"measurement": "cucharada"
-            		},
-            		{
-            			"name": "Fresas",
+            			"name": "Coliflor",
             			"quantity": "1",
             			"measurement": "taza"
             		},
             		{
-            			"name": "Arándanos",
-            			"quantity": "0.5",
-            			"measurement": "tazas"
+            			"name": "Aguacate Deluxe",
+            			"quantity": "1/2",
+            			"measurement": "aguacates"
             		},
             		{
-            			"name": "Carne de pavo molida",
-            			"quantity": "250g",
-            			"measurement": "gramos"
-            		},
-            		{
-            			"name": "Albahaca fresca",
-            			"quantity": "1",
-            			"measurement": "cucharada"
-            		},
-            		{
-            			"name": "Jugo de naranja",
-            			"quantity": "2",
-            			"measurement": "cucharadas"
+            			"name": "Tomate Cherry",
+            			"quantity": "4",
+            			"measurement": "cherry tomates"
             		}
             	]
             }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: Accept
+            value: application/json
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}recipes/generator/ingredients"
+        name: GENERATE RECIPE WITH INGREDIENTS NAMES
+        meta:
+          id: req_fc7231b0856b41899ba825c37d72d5f0
+          created: 1744854629964
+          modified: 1744855587910
+          isPrivate: false
+          sortKey: -1742714468957.375
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            [
+              "Brócoli",
+              "Tomate",
+              "Espinaca"
+            ]
         headers:
           - name: Content-Type
             value: application/json
@@ -856,10 +927,10 @@ environments:
       meta:
         id: env_9e1ea248965d4154802ba678e2d62d7a
         created: 1743464506795
-        modified: 1743486837522
+        modified: 1744855334850
         isPrivate: false
         sortKey: 1743464506795
       data:
         base_url: http://localhost:8080/
-        token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQG5vbW5vbS5jb20iLCJpYXQiOjE3NDM0ODY4MTQsImV4cCI6MTc0MzQ5MDQxNH0.zVTaWJXV6eeeJMpbCovhyyPcSou7UzhnA8o3oXlts38
+        token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlci5hZG1pbkBub21ub20uY29tIiwiaWF0IjoxNzQ0ODU1MzI3LCJleHAiOjE3ODA4NTUzMjd9.ba8vsza07GUpgh-PVfjyHmuOuTFohtR_33dJ_AmXUrc
       color: "#4bfa00"
