@@ -77,7 +77,7 @@ public class RecipeGeneratorService {
 
     public Map<String, Object> generateRecipeForUser(Long userId) throws Exception {
         List<String> userIngredients = getFormattedIngredientsForUser(userId);
-        if (userIngredients == null || userIngredients.isEmpty()) {
+        if (userIngredients.isEmpty()) {
             throw new IllegalStateException("No se encontraron ingredientes para el usuario " + userId);
         }
         return generateRecipeFromList(userIngredients);
@@ -122,7 +122,10 @@ public class RecipeGeneratorService {
 
         List<String> ingredientNames = new ArrayList<>();
         for (JsonNode node : dataNode) {
-            ingredientNames.add(node.asText());
+            String name = node.get("name") != null ? node.get("name").asText() : "";
+            if (!name.isBlank()) {
+                ingredientNames.add(name);
+            }
         }
 
         return ingredientNames;
@@ -192,6 +195,4 @@ public class RecipeGeneratorService {
         }
         return generateRecipeFromList(ingredients);
     }
-
-
 }
