@@ -62,8 +62,7 @@ public class RecipeGeneratorService {
         }
     }
 
-    public JsonNode generateRecipeWithAllIngredients() throws Exception {
-        System.out.println(ingredientsFilePath);
+    public Map<String, Object> generateRecipeWithAllIngredients() throws Exception {
         InputStream inputStream = getClass().getResourceAsStream(ingredientsFilePath);
         JsonNode ingredients = objectMapper.readTree(inputStream);
         List<String> ingredientNames = new ArrayList<>();
@@ -72,24 +71,29 @@ public class RecipeGeneratorService {
             ingredientNames.add(node.get("name").asText());
         }
 
-        String prompt = buildPrompt(ingredientNames);
-        return callModelWithPrompt(prompt);
+        return generateRecipeFromList(ingredientNames);
     }
 
-    public JsonNode generateRecipeForUser(Long userId) throws Exception {
-        List<String> userIngredients = getFormattedIngredientsForUser(userId);
 
+    public Map<String, Object> generateRecipeForUser(Long userId) throws Exception {
+        List<String> userIngredients = getFormattedIngredientsForUser(userId);
         if (userIngredients == null || userIngredients.isEmpty()) {
             throw new IllegalStateException("No se encontraron ingredientes para el usuario " + userId);
         }
-
         return generateRecipeFromList(userIngredients);
     }
 
-    private JsonNode generateRecipeFromList(List<String> userIngredients) throws Exception {
+
+    public Map<String, Object> generateRecipeFromList(List<String> userIngredients) throws Exception {
         String prompt = buildPrompt(userIngredients);
-        return callModelWithPrompt(prompt);
+        JsonNode recipe = callModelWithPrompt(prompt);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("prompt", prompt);
+        result.put("recipe", recipe);
+        return result;
     }
+
 
     private List<String> getFormattedIngredientsForUser(Long userId) throws Exception {
         String url = baseUrl + "/ingredients/formated/user/" + userId;
@@ -182,11 +186,12 @@ public class RecipeGeneratorService {
         return callModelWithPrompt(prompt);
     }
 
-    public JsonNode generateRecipeFromIngredients(List<String> ingredients) throws Exception {
+    public Map<String, Object> generateRecipeFromIngredients(List<String> ingredients) throws Exception {
         if (ingredients == null || ingredients.isEmpty()) {
             throw new IllegalArgumentException("La lista de ingredientes no puede estar vacía.");
         }
         return generateRecipeFromList(ingredients);
     }
+
 
 }
