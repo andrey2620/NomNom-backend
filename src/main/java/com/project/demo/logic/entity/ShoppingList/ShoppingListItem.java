@@ -1,5 +1,6 @@
 package com.project.demo.logic.entity.ShoppingList;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.demo.logic.entity.ingredient.Ingredient;
 import jakarta.persistence.*;
 
@@ -13,8 +14,10 @@ public class ShoppingListItem {
   @Column(name = "id_shoppingList_item")
   private Long id;
 
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "id_shopping_list", nullable = false)
+  @JsonBackReference
   private ShoppingList shoppingList;
 
   @ManyToOne(fetch = FetchType.LAZY)

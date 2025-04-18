@@ -1,5 +1,7 @@
 package com.project.demo.logic.entity.ShoppingList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.demo.logic.entity.user.User;
 import jakarta.persistence.*;
 
@@ -21,12 +23,14 @@ public class ShoppingList {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "id_user", nullable = false)
+  @JsonIgnore
   private User user;
 
   @Column(name = "created_at", nullable = false)
   private LocalDateTime createdAt = LocalDateTime.now();
 
   @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference
   private List<ShoppingListItem> items = new ArrayList<>();
 
   public ShoppingList(Long id, String name, User user, LocalDateTime createdAt) {
