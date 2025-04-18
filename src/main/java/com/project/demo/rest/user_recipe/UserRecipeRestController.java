@@ -1,6 +1,7 @@
 package com.project.demo.rest.user_recipe;
 
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
+import com.project.demo.logic.entity.recipe.Recipe;
 import com.project.demo.logic.entity.user_recipe.UserRecipe;
 import com.project.demo.services.UserRecipeService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -66,10 +67,10 @@ public class UserRecipeRestController {
     public ResponseEntity<?> getAllByUserId(@RequestParam Long userId,
                                             HttpServletRequest request) {
         try {
-            List<UserRecipe> result = userRecipeService.getAllByUserId(userId);
+            List<Recipe> recipes = userRecipeService.getAllRecipesByUserId(userId);
             return new GlobalResponseHandler().handleResponse(
-                    "Recetas del usuario obtenidas correctamente.",
-                    result,
+                    "Recetas completas del usuario obtenidas correctamente.",
+                    recipes,
                     HttpStatus.OK,
                     request
             );
@@ -82,6 +83,7 @@ public class UserRecipeRestController {
             );
         }
     }
+
 
     @GetMapping
     public ResponseEntity<?> getByUserIdAndRecipeId(@RequestParam Long userId,

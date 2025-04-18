@@ -1,4 +1,5 @@
 package com.project.demo.logic.entity.user_recipe;
+import com.project.demo.logic.entity.recipe.Recipe;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -20,6 +21,14 @@ public class UserRecipe {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_id", insertable = false, updatable = false)
+    private Recipe recipe;
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+    
     public UserRecipe() {
     }
 
