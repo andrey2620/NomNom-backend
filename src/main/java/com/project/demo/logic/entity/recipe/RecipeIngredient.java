@@ -5,37 +5,42 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.demo.logic.entity.ingredient.Ingredient;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-
 @Entity
 @Table(name = "recipe_ingredients")
 public class RecipeIngredient {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_recipe_ingredients")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_recipe", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "recipe_id")
     @JsonBackReference
     private Recipe recipe;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_ingredient", nullable = false)
+
+    @ManyToOne
+    @JoinColumn(name = "ingredient_id")
     private Ingredient ingredient;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal quantity;
+    @Column(nullable = true)
+    private String quantity;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = true)
     private String measurement;
 
-    public Long getId() {
-        return id;
+    public RecipeIngredient() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public RecipeIngredient(Recipe recipe, Ingredient ingredient, String quantity, String measurement) {
+        this.recipe = recipe;
+        this.ingredient = ingredient;
+        this.quantity = quantity;
+        this.measurement = measurement;
+    }
+
+    // Getters y setters
+    public Long getId() {
+        return id;
     }
 
     public Recipe getRecipe() {
@@ -54,11 +59,11 @@ public class RecipeIngredient {
         this.ingredient = ingredient;
     }
 
-    public BigDecimal getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(BigDecimal quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 

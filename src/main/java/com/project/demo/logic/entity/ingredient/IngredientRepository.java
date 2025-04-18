@@ -12,4 +12,5 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     Page<Ingredient> findByNameContaining(String name, Pageable pageable);
     List<Ingredient> findByCategoryContaining(String category);
     Page<Ingredient> findByCategoryContaining(String category, Pageable pageable);
+    Optional<Ingredient> findByNameIgnoreCase(String name);
 }

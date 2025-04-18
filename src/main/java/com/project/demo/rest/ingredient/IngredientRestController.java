@@ -419,7 +419,6 @@ public class IngredientRestController {
             if (foundIngredient.isPresent()) {
                 Ingredient existingIngredient = foundIngredient.get();
                 existingIngredient.setName(ingredient.getName());
-                existingIngredient.setMedida(ingredient.getMedida());
                 ingredientService.saveIngredient(existingIngredient);
 
                 return new GlobalResponseHandler().handleResponse(

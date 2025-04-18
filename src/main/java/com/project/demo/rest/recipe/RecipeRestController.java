@@ -3,6 +3,7 @@ package com.project.demo.rest.recipe;
 import com.project.demo.logic.entity.recipe.Recipe;
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.http.Meta;
+import com.project.demo.logic.entity.recipe.RecipeFromIARequest;
 import com.project.demo.services.RecipeService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,22 +85,13 @@ public class RecipeRestController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
-    public ResponseEntity<?> addRecipe(@RequestBody Recipe recipe, HttpServletRequest request) {
+    public ResponseEntity<?> addRecipe(@RequestBody RecipeFromIARequest dto, HttpServletRequest request) {
         try {
-            Recipe saved = recipeService.saveRecipe(recipe);
-            return new GlobalResponseHandler().handleResponse(
-                    "Recipe created successfully",
-                    saved,
-                    HttpStatus.CREATED,
-                    request
-            );
+            Recipe saved = recipeService.saveRecipeFromIA(dto);
+            return new GlobalResponseHandler().handleResponse("Receta creada exitosamente desde IA", saved, HttpStatus.CREATED, request);
+
         } catch (Exception e) {
-            return new GlobalResponseHandler().handleResponse(
-                    "Error creating recipe: " + e.getMessage(),
-                    null,
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    request
-            );
+            return new GlobalResponseHandler().handleResponse("Error al guardar receta desde IA: " + e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR, request);
         }
     }
 
@@ -113,7 +105,6 @@ public class RecipeRestController {
                 toUpdate.setName(recipe.getName());
                 toUpdate.setDescription(recipe.getDescription());
                 toUpdate.setInstructions(recipe.getInstructions());
-                toUpdate.setImageUrl(recipe.getImageUrl());
                 toUpdate.setPreparationTime(recipe.getPreparationTime());
                 toUpdate.setRecipeCategory(recipe.getRecipeCategory());
                 toUpdate.setNutritionalInfo(recipe.getNutritionalInfo());

@@ -1,7 +1,7 @@
 package com.project.demo.services;
 
-import com.project.demo.logic.entity.recipe.Recipe;
-import com.project.demo.logic.entity.recipe.RecipeRepository;
+import com.project.demo.logic.entity.ingredient.Ingredient;
+import com.project.demo.logic.entity.recipe.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +15,26 @@ public class RecipeService {
 
     @Autowired
     private RecipeRepository recipeRepository;
+    @Autowired
+    private IngredientService ingredientService;
+
+    public Recipe saveRecipeFromIA(RecipeFromIARequest dto) {
+        Recipe recipe = new Recipe();
+        recipe.setName(dto.getName());
+        recipe.setRecipeCategory(RecipeCategory.valueOf(dto.getRecipeCategory()));
+        recipe.setPreparationTime(dto.getPreparationTime());
+        recipe.setDescription(dto.getDescription());
+        recipe.setNutritionalInfo(dto.getNutritionalInfo());
+        recipe.setInstructions(dto.getInstructions());
+
+        for (RecipeFromIARequest.IngredientDTO ing : dto.getIngredients()) {
+            Ingredient ingredient = ingredientService.findOrCreateByName(ing.name, ing.measurement);
+            RecipeIngredient ri = new RecipeIngredient(recipe, ingredient, ing.quantity, ing.measurement);
+            recipe.getRecipeIngredients().add(ri);
+        }
+
+        return recipeRepository.save(recipe);
+    }
 
     public Page<Recipe> getAllRecipes(Pageable pageable) {
         return recipeRepository.findAll(pageable);

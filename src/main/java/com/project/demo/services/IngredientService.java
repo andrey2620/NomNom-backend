@@ -154,4 +154,16 @@ public class IngredientService {
     public Page<Ingredient> getAllIngredients(Pageable pageable) {
         return ingredientRepository.findAll(pageable);
     }
+
+    public Ingredient findOrCreateByName(String name, String measurement) {
+        return ingredientRepository.findByNameIgnoreCase(name)
+                .orElseGet(() -> {
+                    Ingredient i = new Ingredient();
+                    i.setName(name);
+                    i.setCategory(null);
+                    i.setImage(null);
+                    return ingredientRepository.save(i);
+                });
+    }
+
 }
