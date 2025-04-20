@@ -527,7 +527,7 @@ collection:
         meta:
           id: req_53246e6d4b2c43bf993fb3c10a4892a1
           created: 1743199460570
-          modified: 1743464141277
+          modified: 1745033249355
           isPrivate: false
           sortKey: -1743199460570
         method: POST
@@ -535,13 +535,34 @@ collection:
           mimeType: application/json
           text: >-
             {
-            	"name": "Pizza saludable",
-            	"recipeCategory": "Comida",
-            	"description": "Una pizza con vegetales y masa integral",
-            	"instructions": "1. Precalentar horno...\n2. Agregar ingredientes...",
-            	"preparationTime": 40,
-            	"nutritionalInfo": "300 calorías por porción",
-            	"imageUrl": "..."
+            	"name": "Salad de Pepino y Espinaca",
+            	"recipeCategory": "Ensalada",
+            	"preparationTime": 15,
+            	"description": "Una ensalada fresca y refrescante con pepinos y espinacas.",
+            	"nutritionalInfo": "40cal, 10g proteínas, 20g carbohidratos, 0g grasas",
+            	"instructions": "Corta el pepino en rodajas finas. Lava las espinacas y sécalas con papel toalla. Mezcla ambos ingredientes en un tazón grande. Agrega un chorrito de jugo de limón y un poco de aceite de oliva para darle sabor.",
+            	"ingredients": [
+            		{
+            			"name": "Pepino",
+            			"quantity": "1",
+            			"measurement": "unidad"
+            		},
+            		{
+            			"name": "Espinaca",
+            			"quantity": "2",
+            			"measurement": "manojos"
+            		},
+            		{
+            			"name": "Aceite de oliva",
+            			"quantity": "1.5",
+            			"measurement": "cucharadas"
+            		},
+            		{
+            			"name": "Jugo de limón",
+            			"quantity": "0.5",
+            			"measurement": "cucharada"
+            		}
+            	]
             }
         headers:
           - name: Content-Type
@@ -768,6 +789,66 @@ collection:
             send: true
             store: true
           rebuildPath: true
+      - url: "{{ _.base_url }}user-recipes?userId=1&recipeId=2"
+        name: CREATE LINK RECIPE USER
+        meta:
+          id: req_f4b9518a60114a1d86e21347822f0956
+          created: 1744999368730
+          modified: 1745033024878
+          isPrivate: false
+          sortKey: -1742958646501.5
+        method: POST
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}user-recipes/all?userId=3"
+        name: GET ALL RECIPE USER LINKS
+        meta:
+          id: req_ea11615d06914a4faed4f1bcaa7cbc39
+          created: 1745005363966
+          modified: 1745098862622
+          isPrivate: false
+          sortKey: -1742838239467.25
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}user-recipes?userId=3&recipeId=750"
+        name: DELETE USER RECIPE
+        meta:
+          id: req_24909b1467d24219a5c45bcee402d3f0
+          created: 1745134517700
+          modified: 1745134920987
+          isPrivate: false
+          sortKey: -1743199521822
+        method: DELETE
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
   - name: RecipesIngredients
     meta:
       id: fld_07a9544e53ad43b6bb242a4547d44900
@@ -927,10 +1008,10 @@ environments:
       meta:
         id: env_9e1ea248965d4154802ba678e2d62d7a
         created: 1743464506795
-        modified: 1744855334850
+        modified: 1745134639951
         isPrivate: false
         sortKey: 1743464506795
       data:
         base_url: http://localhost:8080/
-        token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlci5hZG1pbkBub21ub20uY29tIiwiaWF0IjoxNzQ0ODU1MzI3LCJleHAiOjE3ODA4NTUzMjd9.ba8vsza07GUpgh-PVfjyHmuOuTFohtR_33dJ_AmXUrc
+        token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlci5hZG1pbkBub21ub20uY29tIiwiaWF0IjoxNzQ1MTM0NjMyLCJleHAiOjE3ODExMzQ2MzJ9.Ha7XM3tGBOmTaHAfffu3GujmU2pF95tXcyFajxO4MzQ
       color: "#4bfa00"
