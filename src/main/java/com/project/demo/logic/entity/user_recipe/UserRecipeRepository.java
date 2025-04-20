@@ -9,4 +9,5 @@ public interface UserRecipeRepository extends JpaRepository<UserRecipe, Long> {
     List<UserRecipe> findByUserId(Long userId);
     Optional<UserRecipe> findByUserIdAndRecipeId(Long userId, Long recipeId);
     void deleteByUserIdAndRecipeId(Long userId, Long recipeId);
+    List<UserRecipe> findByRecipeId(Long recipeId);
 }

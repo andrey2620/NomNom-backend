@@ -55,7 +55,7 @@ public class UserRecipeRestController {
             );
         } catch (Exception e) {
             return new GlobalResponseHandler().handleResponse(
-                    "Error al eliminar receta del usuario: " + e.getMessage(),
+                    e.getMessage(),
                     null,
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     request
