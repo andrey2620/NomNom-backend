@@ -80,6 +80,21 @@ public class AuthRestController {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("El Correo se encuentra en uso");
             }
 
+            String password = user.getPassword();
+            // Validaciones de la contraseña
+            if (password.length() < 8) {
+                return ResponseEntity.badRequest().body("La contraseña debe tener al menos 8 caracteres.");
+            }
+            if (!password.matches(".*[A-Z].*")) {
+                return ResponseEntity.badRequest().body("La contraseña debe contener al menos una letra mayúscula.");
+            }
+            if (!password.matches(".*\\d.*")) {
+                return ResponseEntity.badRequest().body("La contraseña debe contener al menos un número.");
+            }
+            if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+                return ResponseEntity.badRequest().body("La contraseña debe contener al menos un signo especial.");
+            }
+
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
 
