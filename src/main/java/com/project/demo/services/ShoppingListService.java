@@ -1,4 +1,4 @@
-package com.project.demo.logic.service;
+package com.project.demo.services;
 
 import com.project.demo.logic.entity.ShoppingList.ShoppingList;
 import com.project.demo.logic.entity.ShoppingList.ShoppingListItem;
@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ShoppingListService {
@@ -59,7 +60,7 @@ public class ShoppingListService {
     return shoppingListRepository.save(newList);
   }
 
-public void addManualItemsToList(Long shoppingListId, List<Map<String, Object>> items) {
+  public void addManualItemsToList(Long shoppingListId, List<Map<String, Object>> items) {
     Optional<ShoppingList> shoppingListOpt = shoppingListRepository.findById(shoppingListId);
     if (shoppingListOpt.isEmpty()) {
       throw new IllegalArgumentException("Shopping List no encontrado");
@@ -72,7 +73,7 @@ public void addManualItemsToList(Long shoppingListId, List<Map<String, Object>> 
       BigDecimal quantity = new BigDecimal(item.get("quantity").toString());
       String measurement = item.get("measurement").toString();
 
-      Optional <Ingredient> ingredientOptional = ingredientRepository.findById(ingredientId);
+      Optional<Ingredient> ingredientOptional = ingredientRepository.findById(ingredientId);
       if (ingredientOptional.isEmpty()) {
         throw new IllegalArgumentException("Ingredient " + ingredientId + " no encontrado");
       }
@@ -84,16 +85,43 @@ public void addManualItemsToList(Long shoppingListId, List<Map<String, Object>> 
 
       shoppingListItemRepository.save(newItem);
     }
-}
+  }
 
-  public List<ShoppingList> getShoppingListsByUserId(Long userId) {
+  public List<ShoppingList> getShoppingListsByUserIdAndName(Long userId, String name) {
     Optional<User> userOpt = userRepository.findById(userId);
     if (userOpt.isEmpty()) {
       throw new IllegalArgumentException("Usuario con id " + userId + " no existe");
     }
 
-    return shoppingListRepository.findByUserId(userId);
+    return shoppingListRepository.findByUserIdAndNameContainingIgnoreCase(userId, name);
   }
+
+  public List<ShoppingList> searchShoppingListsByName(Long userId, String name) {
+    Optional<User> userOpt = userRepository.findById(userId);
+    if (userOpt.isEmpty()) {
+      throw new IllegalArgumentException("Usuario con id " + userId + " no existe");
+    }
+
+    List<ShoppingList> allLists = shoppingListRepository.findByUserId(userId);
+
+    return allLists.stream()
+        .filter(list -> list.getName().toLowerCase().contains(name.toLowerCase()))
+        .collect(Collectors.toList());
+  }
+
+  public ShoppingList updateShoppingListName(Long shoppingListId, String newName) {
+    Optional<ShoppingList> shoppingListOpt = shoppingListRepository.findById(shoppingListId);
+
+    if (shoppingListOpt.isEmpty()) {
+      throw new IllegalArgumentException("Shopping list con id " + shoppingListId + " no existe");
+    }
+
+    ShoppingList shoppingList = shoppingListOpt.get();
+    shoppingList.setName(newName);
+
+    return shoppingListRepository.save(shoppingList);
+  }
+
 
   public void deleteShoppingList(Long shoppingListId) {
     Optional<ShoppingList> listOpt = shoppingListRepository.findById(shoppingListId);
@@ -103,6 +131,7 @@ public void addManualItemsToList(Long shoppingListId, List<Map<String, Object>> 
 
     shoppingListRepository.deleteById(shoppingListId);
   }
+
 
   // - descargarLista
 }

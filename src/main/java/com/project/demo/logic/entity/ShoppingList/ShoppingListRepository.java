@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ShoppingListRepository extends JpaRepository<ShoppingList, Long> {
   List<ShoppingList> findByUserId(Long userId);
+  List<ShoppingList> findByUserIdAndNameContainingIgnoreCase(Long userId, String name);
+
 }
