@@ -1,17 +1,17 @@
 package com.project.demo.services;
 
-import com.project.demo.logic.entity.menu.Menu;
-import com.project.demo.logic.entity.menu.MenuRepository;
+import com.project.demo.logic.entity.menu.*;
+import com.project.demo.logic.entity.menu_item.MenuItem;
+import com.project.demo.logic.entity.menu_item.MenuItemDTO;
+import com.project.demo.logic.entity.menu_item.MenuItemRepository;
 import com.project.demo.logic.entity.recipe.Recipe;
 import com.project.demo.logic.entity.recipe.RecipeRepository;
 import com.project.demo.logic.entity.user.User;
 import com.project.demo.logic.entity.user.UserRepository;
-import com.project.demo.rest.menu.MenuDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MenuService {
@@ -20,40 +20,63 @@ public class MenuService {
     private MenuRepository menuRepository;
 
     @Autowired
+    private MenuItemRepository menuItemRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private RecipeRepository recipeRepository;
 
-    public List<Menu> findAll() {
-        return menuRepository.findAll();
+    public Menu createMenu(MenuDTO dto) {
+        User user = userRepository.findById(dto.getUserId()).orElseThrow();
+
+        Menu menu = new Menu(dto.getName(), user);
+        menu = menuRepository.save(menu);
+
+        for (MenuItemDTO itemDto : dto.getItems()) {
+            Recipe recipe = recipeRepository.findById(itemDto.getRecipeId()).orElseThrow();
+            MenuItem item = new MenuItem(
+                    menu,
+                    recipe,
+                    MealType.valueOf(itemDto.getMealType()),
+                    DayOfWeek.valueOf(itemDto.getDayOfWeek())
+            );
+            menuItemRepository.save(item);
+        }
+        return menu;
     }
 
-    public Menu save(Menu menu) {
-        return menuRepository.save(menu);
+    public void deleteMenuById(Long menuId) {
+        if (!menuRepository.existsById(menuId)) {
+            throw new RuntimeException("El menú con ID " + menuId + " no existe");
+        }
+        menuRepository.deleteById(menuId);
+    }
+
+    public Menu updateMenuItems(Long menuId, MenuDTO dto) {
+        Menu menu = menuRepository.findById(menuId).orElseThrow(() -> new RuntimeException("Menú no encontrado"));
+
+        menu.setName(dto.getName());
+        menu = menuRepository.save(menu);
+
+        List<MenuItem> oldItems = menuItemRepository.findByMenuId(menuId);
+        menuItemRepository.deleteAll(oldItems);
+
+        for (MenuItemDTO itemDto : dto.getItems()) {
+            Recipe recipe = recipeRepository.findById(itemDto.getRecipeId()).orElseThrow(() -> new RuntimeException("Receta no encontrada"));
+            MenuItem newItem = new MenuItem(
+                    menu,
+                    recipe,
+                    MealType.valueOf(itemDto.getMealType()),
+                    DayOfWeek.valueOf(itemDto.getDayOfWeek())
+            );
+            menuItemRepository.save(newItem);
+        }
+        return menu;
     }
 
     public List<Menu> findByUserId(Long userId) {
         return menuRepository.findByUserId(userId);
-    }
-
-    public List<Menu> bulkCreate(List<MenuDTO> dtoList) {
-        List<Menu> menus = dtoList.stream().map(dto -> {
-            User user = userRepository.findById(dto.getUserId()).orElseThrow();
-            Recipe recipe = recipeRepository.findById(dto.getRecipeId()).orElseThrow();
-
-            Menu menu = new Menu();
-            menu.setUser(user);
-            menu.setRecipe(recipe);
-            menu.setMealType(dto.getMealType());
-            menu.setDayOfWeek(dto.getDayOfWeek());
-            return menu;
-        }).toList();
-
-        return menuRepository.saveAll(menus);
-    }
-
-    public void bulkDelete(List<Long> ids) {
-        menuRepository.deleteAllById(ids);
     }
 }

@@ -1,10 +1,13 @@
 package com.project.demo.logic.entity.menu;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.project.demo.logic.entity.recipe.Recipe;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.demo.logic.entity.menu_item.MenuItem;
 import com.project.demo.logic.entity.user.User;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "menu")
@@ -14,35 +17,24 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String name;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "recipe_id")
-    private Recipe recipe;
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<MenuItem> items = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private MealType mealType;
+    public Menu() {}
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private DayOfWeek dayOfWeek;
-
-    public Menu() {
-    }
-
-    public Menu(User user, Recipe recipe, MealType mealType, DayOfWeek dayOfWeek) {
+    public Menu(String name, User user) {
+        this.name = name;
         this.user = user;
-        this.recipe = recipe;
-        this.mealType = mealType;
-        this.dayOfWeek = dayOfWeek;
     }
-
-    // Getters y Setters
 
     public Long getId() {
         return id;
@@ -50,6 +42,14 @@ public class Menu {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public User getUser() {
@@ -60,27 +60,11 @@ public class Menu {
         this.user = user;
     }
 
-    public Recipe getRecipe() {
-        return recipe;
+    public List<MenuItem> getItems() {
+        return items;
     }
 
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
-
-    public MealType getMealType() {
-        return mealType;
-    }
-
-    public void setMealType(MealType mealType) {
-        this.mealType = mealType;
-    }
-
-    public DayOfWeek getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public void setDayOfWeek(DayOfWeek dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public void setItems(List<MenuItem> items) {
+        this.items = items;
     }
 }
