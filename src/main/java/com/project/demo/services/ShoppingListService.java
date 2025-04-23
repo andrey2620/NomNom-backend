@@ -5,14 +5,18 @@ import com.project.demo.logic.entity.ShoppingList.ShoppingListItem;
 import com.project.demo.logic.entity.ShoppingList.ShoppingListItemRepository;
 import com.project.demo.logic.entity.ShoppingList.ShoppingListRepository;
 import com.project.demo.logic.entity.ingredient.IngredientRepository;
-import com.project.demo.logic.entity.recipe.Recipe;
-import com.project.demo.logic.entity.recipe.RecipeIngredient;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import com.project.demo.logic.entity.recipe.RecipeIngredientRepository;
 import com.project.demo.logic.entity.recipe.RecipeRepository;
 import com.project.demo.logic.entity.user.User;
 import com.project.demo.logic.entity.ingredient.Ingredient;
 
 import com.project.demo.logic.entity.user.UserRepository;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -132,6 +136,65 @@ public class ShoppingListService {
     shoppingListRepository.deleteById(shoppingListId);
   }
 
+  public byte[] generatePdfForShoppingList(Long shoppingListId) {
+    Optional<ShoppingList> shoppingListOpt = shoppingListRepository.findById(shoppingListId);
 
-  // - descargarLista
+    if (shoppingListOpt.isEmpty()) {
+      throw new IllegalArgumentException("Shopping list con id " + shoppingListId + " no existe");
+    }
+
+    ShoppingList list = shoppingListOpt.get();
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+    PdfWriter writer = new PdfWriter(baos);
+    PdfDocument pdfDoc = new PdfDocument(writer);
+    Document document = new Document(pdfDoc);
+
+    document.add(new Paragraph("Lista de Compras: " + list.getName()).setBold().setFontSize(16));
+    document.add(new Paragraph("Fecha: " + list.getCreatedAt()));
+
+    float[] columnWidths = {200F, 100F, 100F};
+    Table table = new Table(columnWidths);
+    table.addCell("Ingrediente");
+    table.addCell("Cantidad");
+    table.addCell("Medida");
+
+    for (ShoppingListItem item : list.getItems()) {
+      table.addCell(item.getIngredient().getName());
+      table.addCell(String.valueOf(item.getQuantity()));
+      table.addCell(item.getMeasurement());
+    }
+
+    document.add(table);
+    document.close();
+
+    return baos.toByteArray();
+  }
+
+  public void removeItemFromShoppingList(Long shoppingListId, Long itemId) {
+    Optional<ShoppingList> shoppingListOpt = shoppingListRepository.findById(shoppingListId);
+    if (shoppingListOpt.isEmpty()) {
+      throw new IllegalArgumentException("Shopping list con id " + shoppingListId + " no existe");
+    }
+
+    Optional<ShoppingListItem> itemOpt = shoppingListItemRepository.findById(itemId);
+    if (itemOpt.isEmpty() || !itemOpt.get().getShoppingList().getId().equals(shoppingListId)) {
+      throw new IllegalArgumentException("El ítem no existe o no pertenece a esta lista");
+    }
+
+    shoppingListItemRepository.deleteById(itemId);
+  }
+
+  public ShoppingListItem updateShoppingListItem(Long itemId, BigDecimal quantity, String measurement) {
+    Optional<ShoppingListItem> itemOpt = shoppingListItemRepository.findById(itemId);
+    if (itemOpt.isEmpty()) {
+      throw new IllegalArgumentException("Item con id " + itemId + " no existe");
+    }
+
+    ShoppingListItem item = itemOpt.get();
+    item.setQuantity(quantity);
+    item.setMeasurement(measurement);
+    return shoppingListItemRepository.save(item);
+  }
+
 }
