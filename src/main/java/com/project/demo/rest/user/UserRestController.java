@@ -217,6 +217,8 @@ public class UserRestController {
             response.put("role", user.getRole());
             response.put("allergies", user.getAllergies());
             response.put("preferences", user.getPreferences());
+            //response.put("menus", user.getMenus());
+            //response.put("ingredients", user.getIngredients());
 
             return new GlobalResponseHandler().handleResponse(
                     "Authenticated user retrieved successfully",

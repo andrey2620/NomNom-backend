@@ -1,11 +1,13 @@
 package com.project.demo.logic.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.demo.logic.entity.allergies.Allergies;
 import com.project.demo.logic.entity.diet_preferences.Diet_Preferences;
 
 import com.project.demo.logic.entity.ingredient.Ingredient;
 
+import com.project.demo.logic.entity.menu.Menu;
 import com.project.demo.logic.entity.rol.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,7 +28,7 @@ public class User implements UserDetails {
     private String name;
     private String lastname;
     @NonNull
-    @Column(unique = true, length = 100, nullable = false  )
+    @Column(unique = true, length = 100, nullable = false)
     private String email;
 
     private String picture;
@@ -58,17 +60,17 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "user_allergies",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "allergies_id")
+            name = "user_allergies",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "allergies_id")
     )
     private List<Allergies> allergies = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "user_preferences",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "preferences_id")
+            name = "user_preferences",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "preferences_id")
     )
     private List<Diet_Preferences> preferences = new ArrayList<>();
 
@@ -89,7 +91,8 @@ public class User implements UserDetails {
         this.preferences = preferences;
     }
 
-    public User() {}
+    public User() {
+    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -184,6 +187,7 @@ public class User implements UserDetails {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
     public User setRole(Role role) {
         this.role = role;
 
@@ -224,5 +228,15 @@ public class User implements UserDetails {
         this.ingredients = ingredients;
     }
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Menu> menus = new ArrayList<>();
 
+    public List<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
+    }
 }

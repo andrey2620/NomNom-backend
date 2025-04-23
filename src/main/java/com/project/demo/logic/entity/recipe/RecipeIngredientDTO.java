@@ -1,15 +1,13 @@
 package com.project.demo.logic.entity.recipe;
 
-import java.math.BigDecimal;
-
 public class RecipeIngredientDTO {
     private Long id;
     private Long ingredientId;
     private Long recipeId;
-    private BigDecimal quantity;
+    private String quantity;
     private String measurement;
 
-    public RecipeIngredientDTO(Long id, Long ingredientId, Long recipeId, BigDecimal quantity, String measurement) {
+    public RecipeIngredientDTO(Long id, Long ingredientId, Long recipeId, String quantity, String measurement) {
         this.id = id;
         this.ingredientId = ingredientId;
         this.recipeId = recipeId;
@@ -17,6 +15,7 @@ public class RecipeIngredientDTO {
         this.measurement = measurement;
     }
 
+    // Getters y setters
     public Long getId() {
         return id;
     }
@@ -41,11 +40,11 @@ public class RecipeIngredientDTO {
         this.recipeId = recipeId;
     }
 
-    public BigDecimal getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(BigDecimal quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 
