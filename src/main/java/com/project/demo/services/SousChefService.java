@@ -44,7 +44,7 @@ public class SousChefService {
 
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("text", text);
-            requestBody.put("model_id", "eleven_monolingual_v1");
+            requestBody.put("model_id", "eleven_multilingual_v2");
 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
 
