@@ -4,6 +4,7 @@ import com.project.demo.logic.entity.recipe.Recipe;
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.http.Meta;
 import com.project.demo.logic.entity.recipe.RecipeFromIARequest;
+import com.project.demo.logic.entity.recipe.RecipeRepository;
 import com.project.demo.services.RecipeService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class RecipeRestController {
 
     @Autowired
     private RecipeService recipeService;
+
+    @Autowired
+    private RecipeRepository recipeRepository;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
@@ -162,4 +166,30 @@ public class RecipeRestController {
             );
         }
     }
+
+    @GetMapping("/by-name")
+    public ResponseEntity<?> getByName(@RequestParam String name, HttpServletRequest request) {
+        Optional<Recipe> found = recipeRepository.findByName(name);
+        if (found.isPresent()) {
+            return new GlobalResponseHandler().handleResponse("Receta encontrada", found.get(), HttpStatus.OK, request);
+        } else {
+            return new GlobalResponseHandler().handleResponse("Receta no encontrada", null, HttpStatus.NOT_FOUND, request);
+        }
+    }
+
+    @PostMapping("/manual")
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<?> saveManualRecipe(@RequestBody RecipeFromIARequest dto, HttpServletRequest request) {
+        try {
+            Recipe saved = recipeService.saveRecipeFromIA(dto);
+            return new GlobalResponseHandler().handleResponse("Receta guardada manualmente", saved, HttpStatus.CREATED, request);
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse("Error al guardar receta manual: " + e.getMessage(),
+                    null, HttpStatus.INTERNAL_SERVER_ERROR, request);
+        }
+    }
+
+
+
+
 }

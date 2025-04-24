@@ -6,6 +6,8 @@ import com.project.demo.logic.entity.allergies.AllergiesRepository;
 import com.project.demo.logic.entity.diet_preferences.Diet_PreferenceRepository;
 import com.project.demo.logic.entity.http.GlobalResponseHandler;
 import com.project.demo.logic.entity.http.Meta;
+import com.project.demo.logic.entity.recipe.Recipe;
+import com.project.demo.logic.entity.recipe.RecipeRepository;
 import com.project.demo.logic.entity.user.User;
 import com.project.demo.logic.entity.user.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.*;
 
@@ -38,6 +41,10 @@ public class UserRestController {
 
     @Autowired
     private Diet_PreferenceRepository diet_preferenceRepository;
+
+    @Autowired
+    private RecipeRepository recipeRepository;
+
 
     @GetMapping
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
@@ -231,4 +238,59 @@ public class UserRestController {
                     null, HttpStatus.INTERNAL_SERVER_ERROR, request);
         }
     }
+
+
+    @PostMapping("/{userId}/favorites/{recipeId}")
+    @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+    public ResponseEntity<?> addFavoriteRecipe(@PathVariable Long userId,
+                                               @PathVariable Long recipeId,
+                                               HttpServletRequest request) {
+        try {
+            Optional<User> userOpt = userRepository.findById(userId);
+            Optional<Recipe> recipeOpt = recipeRepository.findById(recipeId);
+
+            if (userOpt.isEmpty()) {
+                return new GlobalResponseHandler().handleResponse("Usuario no encontrado", HttpStatus.NOT_FOUND, request);
+            }
+
+            if (recipeOpt.isEmpty()) {
+                return new GlobalResponseHandler().handleResponse("Receta no encontrada", HttpStatus.NOT_FOUND, request);
+            }
+
+            User user = userOpt.get();
+            Recipe recipe = recipeOpt.get();
+
+            user.getFavoriteRecipes().add(recipe);
+            userRepository.save(user);
+
+            return new GlobalResponseHandler().handleResponse("Receta guardada como favorita", recipe, HttpStatus.OK, request);
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse("Error al guardar la receta: " + e.getMessage(),
+                    null, HttpStatus.INTERNAL_SERVER_ERROR, request);
+        }
+    }
+
+    @GetMapping("/me/favorites")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> getFavoriteRecipes(HttpServletRequest request) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = (User) authentication.getPrincipal();
+
+            List<Recipe> favoriteRecipes = new ArrayList<>(user.getFavoriteRecipes());
+
+            return new GlobalResponseHandler().handleResponse(
+                    "Recetas favoritas obtenidas correctamente",
+                    favoriteRecipes,
+                    HttpStatus.OK,
+                    request
+            );
+        } catch (Exception e) {
+            return new GlobalResponseHandler().handleResponse("Error obteniendo recetas favoritas: " + e.getMessage(),
+                    null, HttpStatus.INTERNAL_SERVER_ERROR, request);
+        }
+    }
+
+
+
 }
