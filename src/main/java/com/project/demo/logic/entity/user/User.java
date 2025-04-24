@@ -8,6 +8,7 @@ import com.project.demo.logic.entity.diet_preferences.Diet_Preferences;
 import com.project.demo.logic.entity.ingredient.Ingredient;
 
 import com.project.demo.logic.entity.menu.Menu;
+import com.project.demo.logic.entity.recipe.Recipe;
 import com.project.demo.logic.entity.rol.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -239,4 +240,27 @@ public class User implements UserDetails {
     public void setMenus(List<Menu> menus) {
         this.menus = menus;
     }
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_recipes",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private Set<Recipe> favoriteRecipes = new HashSet<>();
+
+    public Set<Recipe> getFavoriteRecipes() {
+        return favoriteRecipes;
+    }
+
+    public void setFavoriteRecipes(Set<Recipe> favoriteRecipes) {
+        this.favoriteRecipes = favoriteRecipes;
+    }
+
+    public void addFavoriteRecipe(Recipe recipe) {
+        this.favoriteRecipes.add(recipe);
+    }
+
+
 }
