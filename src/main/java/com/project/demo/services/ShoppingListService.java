@@ -1,5 +1,7 @@
 package com.project.demo.services;
 
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.layout.element.Cell;
 import com.project.demo.logic.entity.ShoppingList.ShoppingList;
 import com.project.demo.logic.entity.ShoppingList.ShoppingListItem;
 import com.project.demo.logic.entity.ShoppingList.ShoppingListItemRepository;
@@ -192,7 +194,7 @@ public class ShoppingListService {
     shoppingListRepository.deleteById(shoppingListId);
   }
 
-  public byte[] generatePdfForShoppingList(Long shoppingListId) {
+public byte[] generatePdfForShoppingList(Long shoppingListId) {
     Optional<ShoppingList> shoppingListOpt = shoppingListRepository.findById(shoppingListId);
 
     if (shoppingListOpt.isEmpty()) {
@@ -209,18 +211,24 @@ public class ShoppingListService {
     document.add(new Paragraph("Lista de Compras: " + list.getName()).setBold().setFontSize(16));
     document.add(new Paragraph("Fecha: " + list.getCreatedAt()));
 
-    float[] columnWidths = {200F, 100F, 100F};
+    float[] columnWidths = {200F, 100F};
     Table table = new Table(columnWidths);
-    table.addCell("Ingrediente");
-    table.addCell("Cantidad");
-    table.addCell("Medida");
+    table.addCell(new Cell().add(new Paragraph("Ingrediente")).setBold().setFontColor(new DeviceRgb(39, 75, 42)));
+    table.addCell(new Cell().add(new Paragraph("Cantidad")).setBold().setFontColor(new DeviceRgb(39, 75, 42)));
+
 
     for (ShoppingListItem item : list.getItems()) {
       String ingredientName = item.getIngredient() != null
           ? item.getIngredient().getName()
           : item.getCustomName();
-      table.addCell(ingredientName);
+
+      String quantity = item.getQuantity() != null ? item.getQuantity().toString() : "";
+
+      table.addCell(new Cell().add(new Paragraph(ingredientName)));
+      table.addCell(new Cell().add(new Paragraph(quantity)));
+
     }
+
 
     document.add(table);
     document.close();
