@@ -50,9 +50,64 @@ public class ShoppingListService {
     this.ingredientRepository = ingredientRepository;
   }
 
-  public List<ShoppingList> getAllShoppingLists() {
-    return shoppingListRepository.findAll();
+
+  private ShoppingListItem buildCustomItem(Map<String, Object> item, ShoppingList shoppingList) {
+    ShoppingListItem newItem = new ShoppingListItem();
+    newItem.setShoppingList(shoppingList);
+
+    // Nombre y cantidad personalizados
+    newItem.setCustomName(Optional.ofNullable(item.get("customName")).map(Object::toString).orElse("Ingrediente sin nombre"));
+    newItem.setCustomQuantity(Optional.ofNullable(item.get("customQuantity")).map(Object::toString).orElse(""));
+
+    // Cantidad y medida (opcionales pero necesarios para lógica de PDF u otros)
+    BigDecimal quantity = Optional.ofNullable(item.get("quantity"))
+            .map(Object::toString)
+            .map(val -> {
+              try {
+                return new BigDecimal(val);
+              } catch (NumberFormatException e) {
+                return BigDecimal.ONE; // valor por defecto
+              }
+            })
+            .orElse(BigDecimal.ONE);
+    String measurement = Optional.ofNullable(item.get("measurement")).map(Object::toString).orElse("unidad");
+
+    newItem.setQuantity(quantity);
+    newItem.setMeasurement(measurement);
+
+    return newItem;
   }
+
+  private ShoppingListItem buildStandardItem(Map<String, Object> item, ShoppingList shoppingList) {
+    ShoppingListItem newItem = new ShoppingListItem();
+    newItem.setShoppingList(shoppingList);
+
+    // Buscar el ingrediente en la base de datos
+    Long ingredientId = Long.valueOf(item.get("ingredientId").toString());
+    Ingredient ingredient = ingredientRepository.findById(ingredientId)
+            .orElseThrow(() -> new IllegalArgumentException("Ingredient " + ingredientId + " no encontrado"));
+    newItem.setIngredient(ingredient);
+
+    // Asignar cantidad y unidad
+    BigDecimal quantity = Optional.ofNullable(item.get("quantity"))
+            .map(Object::toString)
+            .map(val -> {
+              try {
+                return new BigDecimal(val);
+              } catch (NumberFormatException e) {
+                return BigDecimal.ONE;
+              }
+            })
+            .orElse(BigDecimal.ONE);
+    String measurement = Optional.ofNullable(item.get("measurement")).map(Object::toString).orElse("unidad");
+
+    newItem.setQuantity(quantity);
+    newItem.setMeasurement(measurement);
+
+    return newItem;
+  }
+
+
 
   public ShoppingList createManualShoppingList(Long userId, String name) {
     Optional<User> userOpt = userRepository.findById(userId);
@@ -76,35 +131,19 @@ public class ShoppingListService {
     ShoppingList shoppingList = shoppingListOpt.get();
 
     for (Map<String, Object> item : items) {
-      ShoppingListItem newItem = new ShoppingListItem();
-      newItem.setShoppingList(shoppingList);
-
-      String quantityStr = item.get("quantity").toString();
-      BigDecimal quantity = new BigDecimal(quantityStr);
-
-      String measurement = item.get("measurement") != null
-          ? item.get("measurement").toString()
-          : "";
-
-      newItem.setQuantity(quantity);
-      newItem.setMeasurement(measurement);
+      ShoppingListItem newItem;
 
       if (item.get("ingredientId") != null) {
-        Long ingredientId = Long.valueOf(item.get("ingredientId").toString());
-        Optional<Ingredient> ingredientOptional = ingredientRepository.findById(ingredientId);
-
-        if (ingredientOptional.isEmpty()) {
-          throw new IllegalArgumentException("Ingredient " + ingredientId + " no encontrado");
-        }
-
-        newItem.setIngredient(ingredientOptional.get());
+        newItem = buildStandardItem(item, shoppingList);
       } else {
-        newItem.setCustomName(item.get("name").toString());
+        newItem = buildCustomItem(item, shoppingList);
+
       }
 
       shoppingListItemRepository.save(newItem);
     }
   }
+
 
   public List<ShoppingList> getShoppingListsByUserIdAndName(Long userId, String name) {
     Optional<User> userOpt = userRepository.findById(userId);
