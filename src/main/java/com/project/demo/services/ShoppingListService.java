@@ -50,16 +50,18 @@ public class ShoppingListService {
     this.ingredientRepository = ingredientRepository;
   }
 
+  public List<ShoppingList> getAllShoppingLists() {
+    return shoppingListRepository.findAll();}
+
 
   private ShoppingListItem buildCustomItem(Map<String, Object> item, ShoppingList shoppingList) {
     ShoppingListItem newItem = new ShoppingListItem();
     newItem.setShoppingList(shoppingList);
 
-    // Nombre y cantidad personalizados
     newItem.setCustomName(Optional.ofNullable(item.get("customName")).map(Object::toString).orElse("Ingrediente sin nombre"));
     newItem.setCustomQuantity(Optional.ofNullable(item.get("customQuantity")).map(Object::toString).orElse(""));
 
-    // Cantidad y medida (opcionales pero necesarios para lógica de PDF u otros)
+    
     BigDecimal quantity = Optional.ofNullable(item.get("quantity"))
             .map(Object::toString)
             .map(val -> {
@@ -82,7 +84,7 @@ public class ShoppingListService {
     ShoppingListItem newItem = new ShoppingListItem();
     newItem.setShoppingList(shoppingList);
 
-    // Buscar el ingrediente en la base de datos
+   
     Long ingredientId = Long.valueOf(item.get("ingredientId").toString());
     Ingredient ingredient = ingredientRepository.findById(ingredientId)
             .orElseThrow(() -> new IllegalArgumentException("Ingredient " + ingredientId + " no encontrado"));
@@ -105,6 +107,7 @@ public class ShoppingListService {
     newItem.setMeasurement(measurement);
 
     return newItem;
+
   }
 
 
