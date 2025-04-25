@@ -1,15 +1,19 @@
 package com.project.demo.logic.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.demo.logic.entity.allergies.Allergies;
 import com.project.demo.logic.entity.diet_preferences.Diet_Preferences;
 
 import com.project.demo.logic.entity.ingredient.Ingredient;
 
+import com.project.demo.logic.entity.menu.Menu;
+import com.project.demo.logic.entity.recipe.Recipe;
 import com.project.demo.logic.entity.rol.Role;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +28,7 @@ public class User implements UserDetails {
     private Long id;
     private String name;
     private String lastname;
+    @NonNull
     @Column(unique = true, length = 100, nullable = false)
     private String email;
 
@@ -56,17 +61,17 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "user_allergies",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "allergies_id")
+            name = "user_allergies",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "allergies_id")
     )
     private List<Allergies> allergies = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "user_preferences",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "preferences_id")
+            name = "user_preferences",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "preferences_id")
     )
     private List<Diet_Preferences> preferences = new ArrayList<>();
 
@@ -87,7 +92,8 @@ public class User implements UserDetails {
         this.preferences = preferences;
     }
 
-    public User() {}
+    public User() {
+    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -182,6 +188,7 @@ public class User implements UserDetails {
     public void setPicture(String picture) {
         this.picture = picture;
     }
+
     public User setRole(Role role) {
         this.role = role;
 
@@ -220,6 +227,39 @@ public class User implements UserDetails {
 
     public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Menu> menus = new ArrayList<>();
+
+    public List<Menu> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<Menu> menus) {
+        this.menus = menus;
+    }
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorite_recipes",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private Set<Recipe> favoriteRecipes = new HashSet<>();
+
+    public Set<Recipe> getFavoriteRecipes() {
+        return favoriteRecipes;
+    }
+
+    public void setFavoriteRecipes(Set<Recipe> favoriteRecipes) {
+        this.favoriteRecipes = favoriteRecipes;
+    }
+
+    public void addFavoriteRecipe(Recipe recipe) {
+        this.favoriteRecipes.add(recipe);
     }
 
 

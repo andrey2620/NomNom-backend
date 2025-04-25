@@ -1,5 +1,7 @@
 package com.project.demo.services;
 
+import com.project.demo.logic.entity.recipe.Recipe;
+import com.project.demo.logic.entity.recipe.RecipeRepository;
 import com.project.demo.logic.entity.user.User;
 import com.project.demo.logic.entity.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RecipeRepository recipeRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -44,4 +49,22 @@ public class UserService {
         user.setTokenExpirationTime(0);
         userRepository.save(user);
     }
+
+
+    public void addRecipeToFavorites(Long userId, Long recipeId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new RuntimeException("Receta no encontrada"));
+
+        user.addFavoriteRecipe(recipe);
+        userRepository.save(user);
+    }
+
+    public Recipe saveRecipe(Recipe recipe) {
+        return recipeRepository.save(recipe);
+    }
+
+
 }

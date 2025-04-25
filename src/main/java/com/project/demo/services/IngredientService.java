@@ -10,10 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,7 +25,7 @@ public class IngredientService {
     }
 
     @Transactional
-    public List<Map<String, String>> getFormattedIngredientsByUserId(Long userId) {
+    public List<Map<String, Object>> getFormattedIngredientsByUserId(Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isEmpty()) {
@@ -39,13 +36,13 @@ public class IngredientService {
 
         return user.getIngredients().stream()
                 .map(ingredient -> {
-                    Map<String, String> map = new HashMap<>();
-                    map.put("name", ingredient.getName());
-                    return map;
+                    Map<String, Object> obj = new HashMap<>();
+                    obj.put("id", ingredient.getId());
+                    obj.put("name", ingredient.getName());
+                    return obj;
                 })
                 .collect(Collectors.toList());
     }
-
 
     public Ingredient saveIngredient(Ingredient ingredient) {
         return ingredientRepository.save(ingredient);
@@ -86,6 +83,66 @@ public class IngredientService {
         return "Ingrediente vinculado correctamente al usuario.";
     }
 
+    public Map<Long, String> bulkDeleteIngredientsFromUser(List<Long> ingredientIds, Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            throw new IllegalArgumentException("Usuario con id " + userId + " no existe");
+        }
+
+        User user = userOptional.get();
+        Map<Long, String> resultMessages = new HashMap<>();
+
+        for (Long ingredientId : ingredientIds) {
+            Optional<Ingredient> ingredientOptional = ingredientRepository.findById(ingredientId);
+            if (ingredientOptional.isPresent()) {
+                Ingredient ingredient = ingredientOptional.get();
+                if (user.getIngredients().contains(ingredient)) {
+                    user.getIngredients().remove(ingredient);
+                    resultMessages.put(ingredientId, "Eliminado correctamente");
+                } else {
+                    resultMessages.put(ingredientId, "Ingrediente no estaba vinculado");
+                }
+            } else {
+                resultMessages.put(ingredientId, "Ingrediente no encontrado");
+            }
+        }
+
+        userRepository.save(user);
+        return resultMessages;
+    }
+
+    public Map<Long, String> bulkLinkIngredientsToUser(List<Long> ingredientIds, Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if (userOptional.isEmpty()) {
+            throw new IllegalArgumentException("Usuario con id " + userId + " no existe");
+        }
+
+        User user = userOptional.get();
+        Map<Long, String> resultMessages = new HashMap<>();
+
+        for (Long ingredientId : ingredientIds) {
+            Optional<Ingredient> ingredientOptional = ingredientRepository.findById(ingredientId);
+
+            if (ingredientOptional.isEmpty()) {
+                resultMessages.put(ingredientId, "Ingrediente no encontrado");
+                continue;
+            }
+
+            Ingredient ingredient = ingredientOptional.get();
+
+            if (user.getIngredients().contains(ingredient)) {
+                resultMessages.put(ingredientId, "Ya está vinculado");
+            } else {
+                user.getIngredients().add(ingredient);
+                resultMessages.put(ingredientId, "Vinculado correctamente");
+            }
+        }
+
+        userRepository.save(user);
+        return resultMessages;
+    }
+
     public void deleteIngredient(Long id) {
         ingredientRepository.deleteById(id);
     }
@@ -97,4 +154,16 @@ public class IngredientService {
     public Page<Ingredient> getAllIngredients(Pageable pageable) {
         return ingredientRepository.findAll(pageable);
     }
+
+    public Ingredient findOrCreateByName(String name, String measurement) {
+        return ingredientRepository.findByNameIgnoreCase(name)
+                .orElseGet(() -> {
+                    Ingredient i = new Ingredient();
+                    i.setName(name);
+                    i.setCategory(null);
+                    i.setImage(null);
+                    return ingredientRepository.save(i);
+                });
+    }
+
 }

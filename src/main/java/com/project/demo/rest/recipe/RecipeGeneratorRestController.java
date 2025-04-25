@@ -24,18 +24,36 @@ public class RecipeGeneratorRestController {
     }
 
     @GetMapping
-    public JsonNode generateRecipe() throws Exception {
-        return recipeGeneratorService.generateRecipeWithAllIngredients();
+    public ResponseEntity<?> generateRecipe(HttpServletRequest request) throws Exception {
+        Map<String, Object> result = recipeGeneratorService.generateRecipeWithAllIngredients();
+        return new GlobalResponseHandler().handleResponse(
+                "Receta generada exitosamente",
+                result,
+                HttpStatus.OK,
+                request
+        );
     }
 
     @GetMapping("/user/{userId}")
-    public JsonNode generateUserRecipe(@PathVariable Long userId) throws Exception {
-        return recipeGeneratorService.generateRecipeForUser(userId);
+    public ResponseEntity<?> generateUserRecipe(@PathVariable Long userId, HttpServletRequest request) throws Exception {
+        Map<String, Object> result = recipeGeneratorService.generateRecipeForUser(userId);
+        return new GlobalResponseHandler().handleResponse(
+                "Receta generada exitosamente para el usuario",
+                result,
+                HttpStatus.OK,
+                request
+        );
     }
 
-    @PostMapping("/custom")
-    public JsonNode generateCustomRecipe(@RequestBody List<String> ingredients) throws Exception {
-        return recipeGeneratorService.generateRecipeFromIngredients(ingredients);
+    @PostMapping("/ingredients")
+    public ResponseEntity<?> generateCustomRecipe(@RequestBody List<String> ingredients, HttpServletRequest request) throws Exception {
+        Map<String, Object> result = recipeGeneratorService.generateRecipeFromIngredients(ingredients);
+        return new GlobalResponseHandler().handleResponse(
+                "Receta personalizada generada exitosamente",
+                result,
+                HttpStatus.OK,
+                request
+        );
     }
 
     @PostMapping("/suggestions")

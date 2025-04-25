@@ -21,18 +21,19 @@ public class Ingredient {
     @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
 
-    @Column(name = "medida", length = 50)
-    private String medida;
-
     @Column(name = "image", nullable = true)
     private String image;
 
-    public Ingredient() {}
+    @Column(name = "category", nullable = true)
+    private String category;
 
-    public Ingredient(String name, String medida, String image) {
+    public Ingredient() {
+    }
+
+    public Ingredient(String name, String image, String category) {
         this.name = name;
-        this.medida = medida;
         this.image = image;
+        this.category = category;
     }
 
     public Long getId() {
@@ -51,15 +52,19 @@ public class Ingredient {
         this.name = name;
     }
 
-    public String getMedida() {
-        return medida;
+    public String getImage() {
+        return image;
     }
 
-    public void setMedida(String medida) {
-        this.medida = medida;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public String getImage() { return image; }
+    public String getCategory() {
+        return category;
+    }
 
-    public void setImage(String image) { this.image = image; }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }

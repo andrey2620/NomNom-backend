@@ -1,17 +1,19 @@
 package com.project.demo.logic.entity.recipe;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "recipe")
 public class Recipe {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id_recipe")
     private Long id;
 
@@ -22,24 +24,35 @@ public class Recipe {
     @Column(name = "recipe_category", nullable = false)
     private RecipeCategory recipeCategory;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String description;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String instructions;
-
     @Column(name = "preparation_time", nullable = false)
     private Integer preparationTime;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String description;
 
     @Column(name = "nutritional_info", nullable = false, columnDefinition = "TEXT")
     private String nutritionalInfo;
 
-    @Column(name = "image_url", nullable = false)
-    private String imageUrl;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String instructions;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+
+    public Recipe(Long id, String name, RecipeCategory recipeCategory, Integer preparationTime, String description, String nutritionalInfo, String instructions, List<RecipeIngredient> recipeIngredients) {
+        this.id = id;
+        this.name = name;
+        this.recipeCategory = recipeCategory;
+        this.preparationTime = preparationTime;
+        this.description = description;
+        this.nutritionalInfo = nutritionalInfo;
+        this.instructions = instructions;
+        this.recipeIngredients = recipeIngredients;
+    }
+
+    public Recipe() {
+    }
 
     public Long getId() {
         return id;
@@ -97,15 +110,11 @@ public class Recipe {
         this.nutritionalInfo = nutritionalInfo;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public void setRecipeIngredients(List<RecipeIngredient> recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
     }
+    public List<RecipeIngredient> getRecipeIngredients() {
+        return recipeIngredients;
+    }
+
 }

@@ -1,13 +1,13 @@
 type: collection.insomnia.rest/5.0
 name: API NomNom
 meta:
-  id: wrk_2179a5a0fe074fcba0db09bf86246fdf
-  created: 1743464889538
-  modified: 1743470654904
+  id: wrk_c6d240f103034b7ebfcd9c1004004c4e
+  created: 1744147417517
+  modified: 1744147417517
 collection:
   - name: SingUp/Login
     meta:
-      id: fld_8bb7dd88d58b4726bd7bf2c4e4b5e492
+      id: fld_3b5f8f03ee264107843f0fe70e2b37bf
       created: 1741829583893
       modified: 1741829757977
       sortKey: -1741829755392
@@ -15,9 +15,9 @@ collection:
       - url: "{{ _.base_url }}auth/login"
         name: Login Admin (Obtener Token)
         meta:
-          id: req_a9076597d4844bfdaec24a5b04e934c9
+          id: req_9c07e753a61c49358e4b2df196b27228
           created: 1740367477564
-          modified: 1743463741709
+          modified: 1745306384587
           isPrivate: false
           sortKey: -1741829683489
         method: POST
@@ -25,7 +25,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-                "email": "lopendex@gmail.com",
+                "email": "super.admin@nomnom.com",
                 "password": "superadmin123"
             }
         headers:
@@ -42,9 +42,9 @@ collection:
       - url: "{{ _.base_url }}auth/login"
         name: Login User (Obtener Token)
         meta:
-          id: req_01cf5e1443b4493e9eacd0a04f23eddb
+          id: req_6473e582b03c4efeaaf996a9be66cf5a
           created: 1740368132581
-          modified: 1743464245387
+          modified: 1745284991028
           isPrivate: false
           sortKey: -1741829683589
         method: POST
@@ -69,9 +69,9 @@ collection:
       - url: "{{ _.base_url }}auth/signup"
         name: SingUp (no auth)
         meta:
-          id: req_0cefc7e79d4b475ea5eb6a3398cfb73e
+          id: req_1e921f86833a4beea22a00c33b59525c
           created: 1741829469654
-          modified: 1743464250568
+          modified: 1744078171350
           isPrivate: false
           sortKey: -1741829683389
         method: POST
@@ -81,7 +81,7 @@ collection:
             {
             	"name": "test", 
             	"lastname": "test",
-            	"email": "test9@gmail.com",
+            	"email": "a",
             	"password": "test123"
             }
         headers:
@@ -100,7 +100,7 @@ collection:
       - url: "{{ _.base_url }}auth/google-auth"
         name: Check-Email (no auth)
         meta:
-          id: req_ef4926c64cbe4d5d84a9f76de53882e1
+          id: req_3a5fede013f64fbd8ea416cbfc58dbb6
           created: 1742094780567
           modified: 1743464253461
           isPrivate: false
@@ -127,7 +127,7 @@ collection:
           rebuildPath: true
   - name: Ingredient
     meta:
-      id: fld_5a0dad4f01d14cc7a3437b471d53c7e8
+      id: fld_2aea15954bbc409c97bf9bf32945fca7
       created: 1742351445291
       modified: 1742351819249
       sortKey: -1742351445291
@@ -135,9 +135,9 @@ collection:
       - url: "{{ _.base_url }}ingredients"
         name: GET ALL
         meta:
-          id: req_d3ae148437fd4aceb77506e96fdf1451
+          id: req_d0785a1ef0b84573ac08c9a775cae968
           created: 1742351715032
-          modified: 1743468890683
+          modified: 1743804155821
           isPrivate: false
           sortKey: -1742351715032
         method: GET
@@ -168,7 +168,7 @@ collection:
       - url: "{{ _.base_url }}ingredients/181"
         name: GET INGREDIENT BY ID
         meta:
-          id: req_2cc9be8caf8b41998119f688324bdb9b
+          id: req_66da6eaa62574530a321603c4f1c64bb
           created: 1742351920410
           modified: 1743468368745
           isPrivate: false
@@ -192,9 +192,9 @@ collection:
       - url: "{{ _.base_url }}ingredients"
         name: CREATE NO USER ID
         meta:
-          id: req_542d32d766bf4c90a0edeb57a60d863f
+          id: req_41bde4a98c664ce585c4b9bf6004f28b
           created: 1742351950782
-          modified: 1743468354982
+          modified: 1743805063861
           isPrivate: false
           sortKey: -1742351950782
         method: POST
@@ -203,8 +203,7 @@ collection:
           text: |-
             {
             	"name": "Aguacate Dddddeluxe",
-            	"medida": "unidad",
-            	"image": "https://example.com/aguacate.png"
+            	"medida": "unidad"
             }
         headers:
           - name: Content-Type
@@ -226,7 +225,7 @@ collection:
       - url: "{{ _.base_url }}ingredients/15"
         name: UPDATE
         meta:
-          id: req_8865d947087049e5816b33620becfcc3
+          id: req_75358e84e4b34b87b143c135c98528fb
           created: 1742352012967
           modified: 1743464185574
           isPrivate: false
@@ -259,7 +258,7 @@ collection:
       - url: "{{ _.base_url }}ingredients/15"
         name: DELETE
         meta:
-          id: req_148295b409b84fbd82b272d36fc08f54
+          id: req_0d16adadcee64db89333ea99a224d536
           created: 1742352029161
           modified: 1743464179980
           isPrivate: false
@@ -283,7 +282,7 @@ collection:
       - url: "{{ _.base_url }}ingredients/formated/user/1"
         name: GET USER INGREDIENTS BY USER ID
         meta:
-          id: req_25ea3d41ecdf429abd7a199f9dcb3800
+          id: req_5837ad2da6af468b84c4d822df05a465
           created: 1742693221975
           modified: 1743468699820
           isPrivate: false
@@ -307,9 +306,9 @@ collection:
       - url: "{{ _.base_url }}ingredients/create/with-user/1"
         name: CREATE NEW INGREDIENT FOR USER-INGREDIENT RELATION
         meta:
-          id: req_d0200a08808f49cdbb7d9611a662e12c
+          id: req_75a6b954af154b109899954069db4a51
           created: 1743466906393
-          modified: 1743469105081
+          modified: 1743804237769
           isPrivate: false
           sortKey: -1742351957992.75
         method: POST
@@ -318,8 +317,7 @@ collection:
           text: |-
             {
             	"name": "Aguacate DDeluxe",
-            	"medida": "unidad",
-            	"image": "https://example.com/aguacate.png"
+            	"medida": "unidad"
             }
         headers:
           - name: Content-Type
@@ -335,12 +333,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{ _.base_url }}ingredients/link/3/user/1"
+      - url: "{{ _.base_url }}ingredients/link/120/user/1"
         name: CREATE INGREDIENT-USER RELATIONSHIP
         meta:
-          id: req_dc542db59a244a4baa1284c0c99463b8
+          id: req_a04f8b03d0644567a39c8e1e5b7a39ce
           created: 1743469924212
-          modified: 1743470318669
+          modified: 1743805312387
           isPrivate: false
           sortKey: -1742351935596
         method: POST
@@ -359,9 +357,38 @@ collection:
             send: true
             store: true
           rebuildPath: true
+      - url: "{{ _.base_url }}ingredients/bulk-link/user/3"
+        name: CREATE BULK INGREDIENT/USER RELATIONSHIP
+        meta:
+          id: req_f1602e943ed2400a88d36501d100ca33
+          created: 1744013821652
+          modified: 1744013935035
+          isPrivate: false
+          sortKey: -1742351928003
+        method: POST
+        body:
+          mimeType: application/json
+          text: "[1111111, 2, 3, 4]"
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/9.1.1
+        authentication:
+          type: bearer
+          disabled: false
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
   - name: USER
     meta:
-      id: fld_d5c18514fddd47d6b11bc17c5b571a10
+      id: fld_f80d07a142cc4440930e68f526aad7bf
       created: 1742712504740
       modified: 1742712504740
       sortKey: -1000000000
@@ -369,7 +396,7 @@ collection:
       - url: "{{ _.base_url }}users/2"
         name: Del user (auto set Token)
         meta:
-          id: req_4ed282e6f8244e70aec9ab30b651e8a8
+          id: req_3cb2c35b001a468590c451f8e24b64d0
           created: 1742712504747
           modified: 1743464266146
           isPrivate: false
@@ -397,7 +424,7 @@ collection:
       - url: "{{ _.base_url }}users"
         name: GET USERS
         meta:
-          id: req_86173d804f63412d8929701509a82492
+          id: req_d9bf4bb1268944b29e5a236d8bdfbcf3
           created: 1742712846712
           modified: 1743464257736
           isPrivate: false
@@ -418,7 +445,7 @@ collection:
       - url: "{{ _.base_url }}users/me"
         name: GET USER PROFILE
         meta:
-          id: req_55a2b15a92114c09b511bb10d7929751
+          id: req_e00875a8e23e475190554a901b109c35
           created: 1742712978573
           modified: 1743464261949
           isPrivate: false
@@ -438,7 +465,7 @@ collection:
           rebuildPath: true
   - name: Recipes
     meta:
-      id: fld_3fbd4973d3454e708bc4bd1fd0a81c3b
+      id: fld_8cb7c2aa2d2342608d71d35a4f036524
       created: 1742717818962
       modified: 1743487677229
       sortKey: -1742717818962
@@ -446,9 +473,9 @@ collection:
       - url: "{{ _.base_url }}recipes/generator"
         name: GENERATE RECIPE WITH FULL JSON
         meta:
-          id: req_3736aa6e35be4534909bb684da8b1e6c
+          id: req_2452d98a653d475d8e60635e0a575454
           created: 1742532091130
-          modified: 1743487700671
+          modified: 1743726616088
           isPrivate: false
           sortKey: -1742717832433
         method: GET
@@ -469,7 +496,7 @@ collection:
       - url: "{{ _.base_url }}recipes"
         name: CREATE RECIPE
         meta:
-          id: req_53246e6d4b2c43bf993fb3c10a4892a1
+          id: req_692d8a6dc21e4452bfca85f186b62bbf
           created: 1743199460570
           modified: 1743464141277
           isPrivate: false
@@ -504,9 +531,9 @@ collection:
       - url: "{{ _.base_url }}recipes"
         name: GET ALL RECIPES
         meta:
-          id: req_82a2798e9a964a40b9b5e0bea61073ff
+          id: req_3aac0ab722cb4e1586b277bf8bcd75e2
           created: 1743199503224
-          modified: 1743464137488
+          modified: 1744953462120
           isPrivate: false
           sortKey: -1743199503224
         method: GET
@@ -531,7 +558,7 @@ collection:
       - url: "{{ _.base_url }}recipes/1"
         name: GET RECIPE BY ID
         meta:
-          id: req_e56266c417d642e3b0ebf6a2825c356c
+          id: req_025bca08caa84524b7fb6f5b27d568df
           created: 1743199521672
           modified: 1743464132997
           isPrivate: false
@@ -551,7 +578,7 @@ collection:
       - url: "{{ _.base_url }}recipes/1"
         name: UPDATE RECIPE
         meta:
-          id: req_53b66dd1c54843109826a94fc4197b53
+          id: req_f33af6ce29e9405c95538ca28e1bcfd0
           created: 1743199586407
           modified: 1743464108663
           isPrivate: false
@@ -586,7 +613,7 @@ collection:
       - url: "{{ _.base_url }}recipes/1"
         name: DELETE RECIPE
         meta:
-          id: req_2e5f4d30df3d4c868a81fe29742cdd92
+          id: req_38efe9c09bbf4f96a3cd7258531ecbf3
           created: 1743199605471
           modified: 1743464125364
           isPrivate: false
@@ -606,9 +633,9 @@ collection:
       - url: "{{ _.base_url }}recipes/generator/user/1"
         name: GENERATE USER RECIPE
         meta:
-          id: req_fde5e22ac9f845b7822e48cbbf309348
+          id: req_ea9f4f0e4205405fa6a2e228ac069a3d
           created: 1743211092491
-          modified: 1743488063069
+          modified: 1743724498954
           isPrivate: false
           sortKey: -1742715141652.5
         method: GET
@@ -629,9 +656,9 @@ collection:
       - url: "{{ _.base_url }}recipes/generator/suggestions"
         name: GENERATE SUGGESTION
         meta:
-          id: req_5d0a8a79a561491da320c55b5d4b013b
+          id: req_bd67ba146c614fdca2641b3ca02e1b01
           created: 1743488079438
-          modified: 1743488167248
+          modified: 1743636232110
           isPrivate: false
           sortKey: -1742713796262.25
         method: POST
@@ -639,45 +666,27 @@ collection:
           mimeType: application/json
           text: >-
             {
-            	"name": "Ensalada de Pavo y Frutas",
+            	"name": "Ensalada de Aguacate y Coliflor",
             	"recipeCategory": "Ensalada",
             	"preparationTime": 20,
-            	"instructions": "Mezcla la lechuga, el pepino, las fresas y los arándanos en un tazón grande. Agrega la carne de pavo molida y mezcla bien. Sazona con albahaca fresca y jugo de naranja.",
+            	"description": "Una ensalada fresca y saludable con aguacate y coliflor.",
+            	"nutritionalInfo": "150cal, 5g proteínas, 15g carbohidratos, 10g grasas",
+            	"instructions": "Limpia la coliflor y córtala en flores pequeñas. Corta el aguacate a rebanadas. Mezcla ambos ingredientes con tomate cherry picado. Añade un poco de sal y pimienta al gusto.",
             	"ingredients": [
             		{
-            			"name": "Lechuga",
-            			"quantity": "2.5",
-            			"measurement": "tazas"
-            		},
-            		{
-            			"name": "Pepino",
-            			"quantity": "1",
-            			"measurement": "cucharada"
-            		},
-            		{
-            			"name": "Fresas",
+            			"name": "Coliflor",
             			"quantity": "1",
             			"measurement": "taza"
             		},
             		{
-            			"name": "Arándanos",
-            			"quantity": "0.5",
-            			"measurement": "tazas"
+            			"name": "Aguacate Deluxe",
+            			"quantity": "1/2",
+            			"measurement": "aguacates"
             		},
             		{
-            			"name": "Carne de pavo molida",
-            			"quantity": "250g",
-            			"measurement": "gramos"
-            		},
-            		{
-            			"name": "Albahaca fresca",
-            			"quantity": "1",
-            			"measurement": "cucharada"
-            		},
-            		{
-            			"name": "Jugo de naranja",
-            			"quantity": "2",
-            			"measurement": "cucharadas"
+            			"name": "Tomate Cherry",
+            			"quantity": "4",
+            			"measurement": "cherry tomates"
             		}
             	]
             }
@@ -699,7 +708,7 @@ collection:
           rebuildPath: true
   - name: RecipesIngredients
     meta:
-      id: fld_07a9544e53ad43b6bb242a4547d44900
+      id: fld_69951bdf59bb4f53812145156eef325f
       created: 1743200173718
       modified: 1743486885974
       sortKey: -1742534632126.5
@@ -707,7 +716,7 @@ collection:
       - url: "{{ _.base_url }}recipe/ingredient"
         name: CREATE RECIPE INGREDIENT
         meta:
-          id: req_1346f74b34a64efbb597a0bedde11593
+          id: req_9c94a9e8b77e45c0bb82a3c41edeffc5
           created: 1743200173720
           modified: 1743464174251
           isPrivate: false
@@ -736,10 +745,30 @@ collection:
             send: true
             store: true
           rebuildPath: true
+      - url: "{{ _.base_url }}recipe/ingredient/1"
+        name: GET RECIPE INGREDIENT BY ID
+        meta:
+          id: req_3361c5be3a3f4d7b972305024a1513db
+          created: 1743200173721
+          modified: 1743464164798
+          isPrivate: false
+          sortKey: -1743199521672
+        method: GET
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
       - url: "{{ _.base_url }}recipe/ingredient"
         name: GET ALL RECIPE INGREDIENT
         meta:
-          id: req_088c3454d99a4e26a67f69e9afa24edf
+          id: req_63b3abef154f474f8027accf67664285
           created: 1743200173721
           modified: 1743464168749
           isPrivate: false
@@ -764,29 +793,9 @@ collection:
             store: true
           rebuildPath: true
       - url: "{{ _.base_url }}recipe/ingredient/1"
-        name: GET RECIPE INGREDIENT BY ID
-        meta:
-          id: req_a2ab264bf8984229a33e7fe08c8d0946
-          created: 1743200173721
-          modified: 1743464164798
-          isPrivate: false
-          sortKey: -1743199521672
-        method: GET
-        authentication:
-          type: bearer
-          token: "{{ _.token }}"
-        settings:
-          renderRequestBody: true
-          encodeUrl: true
-          followRedirects: global
-          cookies:
-            send: true
-            store: true
-          rebuildPath: true
-      - url: "{{ _.base_url }}recipe/ingredient/1"
         name: UPDATE RECIPE INGREDIENT
         meta:
-          id: req_4debf7d2ff524c508fd7437ea1e2ab02
+          id: req_9d8789e22a884aa7b16fe605cde5c259
           created: 1743200173722
           modified: 1743464159939
           isPrivate: false
@@ -818,7 +827,7 @@ collection:
       - url: "{{ _.base_url }}recipe/ingredient/2"
         name: DELETE RECIPE INGREDIENT
         meta:
-          id: req_9ddc2c9d87ea4cf0a3c9b4c60a4d2eb4
+          id: req_7085e8b4a5844e4cb5e5db0e4eab4204
           created: 1743200173723
           modified: 1743464155451
           isPrivate: false
@@ -835,16 +844,258 @@ collection:
             send: true
             store: true
           rebuildPath: true
+  - name: Shopping List
+    meta:
+      id: fld_0798448949ee47d98a07b34d20340f86
+      created: 1744953375521
+      modified: 1744953375521
+      sortKey: -1744953375521
+    children:
+      - url: "{{ _.base_url }}shoppingList"
+        name: Create ShoppingList
+        meta:
+          id: req_7f4bb62c30194f199f2a12275660f269
+          created: 1744953382440
+          modified: 1744960087799
+          isPrivate: false
+          sortKey: -1744953392814
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "userId": 2,
+              "name": "Mi segunda lista"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}shoppingList/1/add-Items"
+        name: addItemToShoppingList
+        meta:
+          id: req_541eb80f0e9b4764abff57bda969e37b
+          created: 1744958039367
+          modified: 1745391217242
+          isPrivate: false
+          sortKey: -1744958039367
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            [
+              {
+                "ingredientId": 1,
+                "quantity": 2,
+                "measurement": "unidades"
+              },
+              {
+                "ingredientId": 5,
+                "quantity": 1.5,
+                "measurement": "tazas"
+              }
+            ]
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}shoppingList/user/2/search?name=mi"
+        name: GET ShoppingListsByUserId
+        meta:
+          id: req_af1f145f1bc9400d9a49923dfadd5d45
+          created: 1744958726350
+          modified: 1745385205416
+          isPrivate: false
+          sortKey: -1744958039467
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}shoppingList/2"
+        name: DELETE Shopping List
+        meta:
+          id: req_921d9cad56cc437b8ad2c07abf9eb18c
+          created: 1744960047609
+          modified: 1745379600735
+          isPrivate: false
+          sortKey: -1744960047609
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}shoppingList/1/rename"
+        name: UPDATE ShoppingList
+        meta:
+          id: req_945493fb2437425fbf28d83f4944f107
+          created: 1745306292115
+          modified: 1745379618461
+          isPrivate: false
+          sortKey: -1745306292115
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "name": "Lista actualizada"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}shoppingList/1/download"
+        name: GET ShoppingList Pdf
+        meta:
+          id: req_530bbb7c30324723a4aa6c901e8cb8df
+          created: 1745384934832
+          modified: 1745391372114
+          isPrivate: false
+          sortKey: -1745384934832
+        method: GET
+        body:
+          mimeType: application/json
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}shoppingList/1/items/1"
+        name: DELETE Item ShoppingList
+        meta:
+          id: req_fd32e464eda14d1e90bfbe52a8a8c75e
+          created: 1745387974334
+          modified: 1745388230240
+          isPrivate: false
+          sortKey: -1745387974334
+        method: DELETE
+        body:
+          mimeType: application/json
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}shoppingList/1/items/2"
+        name: UPDATE Item Shopping List
+        meta:
+          id: req_cba686ee1f384429a31a4e14f14e8b92
+          created: 1745390289537
+          modified: 1745390734942
+          isPrivate: false
+          sortKey: -1745390289537
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "quantity": 3,
+              "measurement": "kilos"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        authentication:
+          type: bearer
+          token: "{{ _.token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
 cookieJar:
   name: Default Jar
   meta:
-    id: jar_63a476f7e15944bdb181080cebb5adfc
+    id: jar_2c501f6497e848cf80bfcc718b85a8ac
     created: 1740367480171
     modified: 1740367480171
 environments:
   name: Base Environment
   meta:
-    id: env_56fbea7764b047aa836234219effff5c
+    id: env_37828967524c405298f33ddfaeb41e34
     created: 1740367480169
     modified: 1743463789385
     isPrivate: false
@@ -854,12 +1105,12 @@ environments:
   subEnvironments:
     - name: DEV
       meta:
-        id: env_9e1ea248965d4154802ba678e2d62d7a
+        id: env_b8401c757b014392b9c10c61e7112ea4
         created: 1743464506795
-        modified: 1743486837522
+        modified: 1744104659167
         isPrivate: false
         sortKey: 1743464506795
       data:
         base_url: http://localhost:8080/
-        token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQG5vbW5vbS5jb20iLCJpYXQiOjE3NDM0ODY4MTQsImV4cCI6MTc0MzQ5MDQxNH0.zVTaWJXV6eeeJMpbCovhyyPcSou7UzhnA8o3oXlts38
+        token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdXBlci5hZG1pbkBub21ub20uY29tIiwiaWF0IjoxNzQ0MTA0NjUxLCJleHAiOjE3ODAxMDQ2NTF9.UM5f3JE2BQbxEss4PB8x1CppsT3_nBpAwd0X3ePO8-M
       color: "#4bfa00"
