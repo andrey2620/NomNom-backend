@@ -35,6 +35,49 @@ public class ShoppingListRestController {
   @Autowired
   private ShoppingListService shoppingListService;
 
+  @GetMapping("/{shoppingListId}")
+  @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+  public ResponseEntity<?> getShoppingListById(@PathVariable Long shoppingListId, HttpServletRequest request) {
+    try {
+      Optional<ShoppingList> listOpt = shoppingListRepository.findById(shoppingListId);
+      if (listOpt.isEmpty()) {
+        return new GlobalResponseHandler().handleResponse("Lista no encontrada", null, HttpStatus.NOT_FOUND, request);
+      }
+
+      return new GlobalResponseHandler().handleResponse(
+          "Lista cargada correctamente",
+          listOpt.get(),
+          HttpStatus.OK,
+          request
+      );
+    } catch (Exception e) {
+      return new GlobalResponseHandler().handleResponse("Error al cargar la lista: " + e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+  }
+
+  @GetMapping("/all")
+  @PreAuthorize("hasAnyRole('USER', 'SUPER_ADMIN')")
+  public ResponseEntity<?> getAllShoppingLists(HttpServletRequest request) {
+    try {
+      List<ShoppingList> allLists = shoppingListService.getAllShoppingLists();
+      return new GlobalResponseHandler().handleResponse(
+          "Todas las listas obtenidas correctamente",
+          allLists,
+          HttpStatus.OK,
+          request
+      );
+    } catch (Exception e) {
+      return new GlobalResponseHandler().handleResponse(
+          "Error al obtener listas: " + e.getMessage(),
+          null,
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          request
+      );
+    }
+  }
+
+
+
   @PostMapping
   public ResponseEntity<?> createShoppingList(@RequestBody Map<String, Object> request) {
     try {
@@ -187,7 +230,7 @@ public class ShoppingListRestController {
       headers.setContentType(MediaType.APPLICATION_PDF);
       headers.set(
           HttpHeaders.CONTENT_DISPOSITION,
-          "attachment; filename=\"lista-" + listName + ".pdf\""
+          "attachment; filename=\"listaDeCompras-" + listName + ".pdf\""
       );
 
       return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
