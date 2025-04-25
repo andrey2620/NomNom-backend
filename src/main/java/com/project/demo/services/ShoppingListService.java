@@ -50,7 +50,10 @@ public class ShoppingListService {
     this.ingredientRepository = ingredientRepository;
   }
 
-  // Aquí irán los métodos como:
+  public List<ShoppingList> getAllShoppingLists() {
+    return shoppingListRepository.findAll();
+  }
+
   public ShoppingList createManualShoppingList(Long userId, String name) {
     Optional<User> userOpt = userRepository.findById(userId);
     if (userOpt.isEmpty()) {
@@ -87,7 +90,6 @@ public class ShoppingListService {
       newItem.setMeasurement(measurement);
 
       if (item.get("ingredientId") != null) {
-        // Ingrediente de receta
         Long ingredientId = Long.valueOf(item.get("ingredientId").toString());
         Optional<Ingredient> ingredientOptional = ingredientRepository.findById(ingredientId);
 
@@ -97,14 +99,12 @@ public class ShoppingListService {
 
         newItem.setIngredient(ingredientOptional.get());
       } else {
-        // Ingrediente manual
         newItem.setCustomName(item.get("name").toString());
       }
 
       shoppingListItemRepository.save(newItem);
     }
   }
-
 
   public List<ShoppingList> getShoppingListsByUserIdAndName(Long userId, String name) {
     Optional<User> userOpt = userRepository.findById(userId);
@@ -140,7 +140,6 @@ public class ShoppingListService {
 
     return shoppingListRepository.save(shoppingList);
   }
-
 
   public void deleteShoppingList(Long shoppingListId) {
     Optional<ShoppingList> listOpt = shoppingListRepository.findById(shoppingListId);
