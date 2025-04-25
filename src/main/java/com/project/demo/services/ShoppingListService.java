@@ -73,23 +73,38 @@ public class ShoppingListService {
     ShoppingList shoppingList = shoppingListOpt.get();
 
     for (Map<String, Object> item : items) {
-      Long ingredientId = Long.valueOf(item.get("ingredientId").toString());
-      BigDecimal quantity = new BigDecimal(item.get("quantity").toString());
-      String measurement = item.get("measurement").toString();
-
-      Optional<Ingredient> ingredientOptional = ingredientRepository.findById(ingredientId);
-      if (ingredientOptional.isEmpty()) {
-        throw new IllegalArgumentException("Ingredient " + ingredientId + " no encontrado");
-      }
       ShoppingListItem newItem = new ShoppingListItem();
-      newItem.setIngredient(ingredientOptional.get());
+      newItem.setShoppingList(shoppingList);
+
+      String quantityStr = item.get("quantity").toString();
+      BigDecimal quantity = new BigDecimal(quantityStr);
+
+      String measurement = item.get("measurement") != null
+          ? item.get("measurement").toString()
+          : "";
+
       newItem.setQuantity(quantity);
       newItem.setMeasurement(measurement);
-      newItem.setShoppingList(shoppingList);
+
+      if (item.get("ingredientId") != null) {
+        // Ingrediente de receta
+        Long ingredientId = Long.valueOf(item.get("ingredientId").toString());
+        Optional<Ingredient> ingredientOptional = ingredientRepository.findById(ingredientId);
+
+        if (ingredientOptional.isEmpty()) {
+          throw new IllegalArgumentException("Ingredient " + ingredientId + " no encontrado");
+        }
+
+        newItem.setIngredient(ingredientOptional.get());
+      } else {
+        // Ingrediente manual
+        newItem.setCustomName(item.get("name").toString());
+      }
 
       shoppingListItemRepository.save(newItem);
     }
   }
+
 
   public List<ShoppingList> getShoppingListsByUserIdAndName(Long userId, String name) {
     Optional<User> userOpt = userRepository.findById(userId);
@@ -160,9 +175,10 @@ public class ShoppingListService {
     table.addCell("Medida");
 
     for (ShoppingListItem item : list.getItems()) {
-      table.addCell(item.getIngredient().getName());
-      table.addCell(String.valueOf(item.getQuantity()));
-      table.addCell(item.getMeasurement());
+      String ingredientName = item.getIngredient() != null
+          ? item.getIngredient().getName()
+          : item.getCustomName();
+      table.addCell(ingredientName);
     }
 
     document.add(table);
