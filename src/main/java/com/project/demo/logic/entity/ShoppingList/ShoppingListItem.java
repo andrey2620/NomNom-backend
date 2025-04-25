@@ -15,10 +15,10 @@ public class ShoppingListItem {
   @Column(name = "id_shoppingList_item")
   private Long id;
 
-  @Column(name = "custom_name")
+  @Column(name = "custom_name", nullable = true)
   private String customName;
 
-  @Column(name = "custom_quantity")
+  @Column(name = "custom_quantity", nullable = true)
   private String customQuantity;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -31,10 +31,10 @@ public class ShoppingListItem {
   @JoinColumn(name = "id_ingredient", nullable = true)
   private Ingredient ingredient;
 
-  @Column(nullable = false, precision = 10, scale = 2)
+  @Column(nullable = true, precision = 10, scale = 2)
   private BigDecimal quantity;
 
-  @Column(nullable = false, length = 50)
+  @Column(nullable = true, length = 50)
   private String measurement;
 
   public ShoppingListItem() {
