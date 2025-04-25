@@ -50,6 +50,7 @@ public class ShoppingListService {
     this.ingredientRepository = ingredientRepository;
   }
 
+
   private ShoppingListItem buildCustomItem(Map<String, Object> item, ShoppingList shoppingList) {
     ShoppingListItem newItem = new ShoppingListItem();
     newItem.setShoppingList(shoppingList);
@@ -107,6 +108,7 @@ public class ShoppingListService {
   }
 
 
+
   public ShoppingList createManualShoppingList(Long userId, String name) {
     Optional<User> userOpt = userRepository.findById(userId);
     if (userOpt.isEmpty()) {
@@ -135,12 +137,12 @@ public class ShoppingListService {
         newItem = buildStandardItem(item, shoppingList);
       } else {
         newItem = buildCustomItem(item, shoppingList);
+
       }
 
       shoppingListItemRepository.save(newItem);
     }
   }
-
 
 
   public List<ShoppingList> getShoppingListsByUserIdAndName(Long userId, String name) {
@@ -177,7 +179,6 @@ public class ShoppingListService {
 
     return shoppingListRepository.save(shoppingList);
   }
-
 
   public void deleteShoppingList(Long shoppingListId) {
     Optional<ShoppingList> listOpt = shoppingListRepository.findById(shoppingListId);
