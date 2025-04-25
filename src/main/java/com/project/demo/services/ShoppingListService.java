@@ -49,7 +49,7 @@ public class ShoppingListService {
     this.userRepository = userRepository;
     this.ingredientRepository = ingredientRepository;
   }
-
+//COMENTARIO
   public List<ShoppingList> getAllShoppingLists() {
     return shoppingListRepository.findAll();
   }
