@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Vegetarian",
+    "description": "No meat, poultry, or seafood"
+  },
+  {
+    "name": "Vegan",
+    "description": "No animal products or by-products"
+  },
+  {
+    "name": "Gluten-Free",
+    "description": "No wheat, barley, or rye"
+  }
+]

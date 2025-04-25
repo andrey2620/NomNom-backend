@@ -29,7 +29,7 @@ public class IngredientSeeder implements ApplicationListener<ContextRefreshedEve
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("ingredients.json");
             if (inputStream == null) {
-                System.out.println("No se encontró el archivo ingredients.json.");
+                //System.out.println("No se encontró el archivo ingredients.json.");
                 return;
             }
 
@@ -39,14 +39,14 @@ public class IngredientSeeder implements ApplicationListener<ContextRefreshedEve
                 Optional<Ingredient> existingIngredient = ingredientRepository.findByName(ingredient.getName());
                 if (existingIngredient.isEmpty()) {
                     ingredientRepository.save(ingredient);
-                    System.out.println("Ingrediente agregado: " + ingredient.getName());
+                    //System.out.println("Ingrediente agregado: " + ingredient.getName());
                 } else {
-                    System.out.println("Ingrediente ya existe: " + ingredient.getName());
+                    //System.out.println("Ingrediente ya existe: " + ingredient.getName());
                 }
             }
 
         } catch (Exception e) {
-            System.out.println("Error al cargar los ingredientes: " + e.getMessage());
+            //System.out.println("Error al cargar los ingredientes: " + e.getMessage());
         }
     }
 }

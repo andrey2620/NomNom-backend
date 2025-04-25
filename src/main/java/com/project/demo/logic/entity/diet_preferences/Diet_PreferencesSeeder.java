@@ -34,7 +34,7 @@ public class Diet_PreferencesSeeder implements ApplicationListener<ContextRefres
     try {
       InputStream inputStream = getClass().getClassLoader().getResourceAsStream("diet_preferences.json");
       if (inputStream == null) {
-        System.out.println("No se encontró el archivo diet_preferences.json.");
+        //System.out.println("No se encontró el archivo diet_preferences.json.");
         return;
       }
 
@@ -44,14 +44,14 @@ public class Diet_PreferencesSeeder implements ApplicationListener<ContextRefres
         Optional<Diet_Preferences> existingPreference = dietPreferencesRepository.findByName(preference.getName());
         if (existingPreference.isEmpty()) {
           dietPreferencesRepository.save(preference);
-          System.out.println("Preferencia de dieta agregada: " + preference.getName());
+          //System.out.println("Preferencia de dieta agregada: " + preference.getName());
         } else {
-          System.out.println("Preferencia de dieta ya existe: " + preference.getName());
+          //System.out.println("Preferencia de dieta ya existe: " + preference.getName());
         }
       }
 
     } catch (Exception e) {
-      System.out.println("Error al cargar las preferencias de dieta: " + e.getMessage());
+      //System.out.println("Error al cargar las preferencias de dieta: " + e.getMessage());
     }
   }
 }

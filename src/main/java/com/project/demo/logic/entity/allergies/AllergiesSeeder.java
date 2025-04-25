@@ -29,7 +29,7 @@ public class AllergiesSeeder implements ApplicationListener<ContextRefreshedEven
     try {
       InputStream inputStream = getClass().getClassLoader().getResourceAsStream("allergies.json");
       if (inputStream == null) {
-        System.out.println("No se encontró el archivo allergies.json.");
+        //System.out.println("No se encontró el archivo allergies.json.");
         return;
       }
 
@@ -39,14 +39,14 @@ public class AllergiesSeeder implements ApplicationListener<ContextRefreshedEven
         Optional<Allergies> existingAllergy = allergiesRepository.findByName(allergy.getName());
         if (existingAllergy.isEmpty()) {
           allergiesRepository.save(allergy);
-          System.out.println("Alergia agregada: " + allergy.getName());
+          //System.out.println("Alergia agregada: " + allergy.getName());
         } else {
-          System.out.println("Alergia ya existe: " + allergy.getName());
+          //System.out.println("Alergia ya existe: " + allergy.getName());
         }
       }
 
     } catch (Exception e) {
-      System.out.println("Error al cargar las alergias: " + e.getMessage());
+      //System.out.println("Error al cargar las alergias: " + e.getMessage());
     }
   }
 }
